@@ -9,9 +9,12 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 //Hàm để reqired các layout
- function layout($layoutName = 'header', $data = []) {
-   if(file_exists(_WEB_PATH_TEMPLATE.'/layouts/'.$layoutName.'.php')) {
-      require_once _WEB_PATH_TEMPLATE.'/layouts/'.$layoutName.'.php';
+ function layout($layoutName = 'header',$dir, $data = []) {
+  if(!empty($dir)) {
+    $dir = '/'.$dir;
+  }
+   if(file_exists(_WEB_PATH_TEMPLATE.$dir.'/layouts/'.$layoutName.'.php')) {
+      require_once _WEB_PATH_TEMPLATE.$dir.'/layouts/'.$layoutName.'.php';
    }
  }
 
@@ -233,5 +236,29 @@ function autoRemoveLoginToken() {
     setcookie('userId', $userId, time()-60);
     return true;
   }
+  return false;
+}
+
+//Action menu sidebar (active and menu-open)
+function activeMenuSidebar($module, $action='', $sub = false) { 
+  if(empty(getBody()['module'])) {
+    if(empty($module)) {
+      return true;
+    }
+  } else {
+    if(!empty(getBody()['action'])) {
+      if(getBody()["module"] == $module && getBody()["action"] == $action) {
+        return true;
+      }
+      if(getBody()["module"] == $module && $sub) {
+        return true;
+      }
+    } else {
+      if(getBody()["module"] == $module && empty($action)) {
+        return true;
+      }
+    }
+  }
+  
   return false;
 }

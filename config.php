@@ -16,6 +16,7 @@ const _INCODE = true; // ngăn chặn hành vi truy cập trực tiếp vào fil
 
 // Thiết lập host
 define('_WEB_HOST_ROOT', 'http://'.$_SERVER['HTTP_HOST'].'/PHP/PHP_co_ban/Module05/radix'); //địa chỉ trang chủ
+define('_WEB_HOST_ROOT_ADMIN', 'http://'.$_SERVER['HTTP_HOST'].'/PHP/PHP_co_ban/Module05/radix/admin'); //địa chỉ trang chủ admin
 
 // Đường dẫn thiết lập template của client
 define('_WEB_HOST_TEMPLATE', _WEB_HOST_ROOT.'/templates/client');
@@ -26,7 +27,7 @@ define('_WEB_HOST_TEMPLATE_ADMIN', _WEB_HOST_ROOT.'/templates/admin');
 
 // Thiết lập path
 define('_WEB_PATH_ROOT', __DIR__);
-define('_WEB_PATH_TEMPLATE', _WEB_PATH_ROOT.'\templates\client');
+define('_WEB_PATH_TEMPLATE', _WEB_PATH_ROOT.'\templates');
 
 // thiết lập kết nối csdl
 const _HOST = 'localhost';
