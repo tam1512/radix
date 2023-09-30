@@ -263,3 +263,25 @@ function activeMenuSidebar($module, $action='', $sub = false) {
   
   return false;
 }
+
+//Get link admin
+function getLinkAdmin($module, $action = "", $params = []) {
+  $url = _WEB_HOST_ROOT_ADMIN;
+  if(!empty($module)) {
+    $url .= "/?module=$module";
+  }
+
+  if(!empty($action)) {
+    $url.= "&action=$action";
+  }
+
+  /**
+   * $params = ['id' => 1, 'keyword' => 'unicode']
+   * => paramString = id=1&keyword=unicode
+   */
+  if(!empty($params)) {
+    $paramString = http_build_query($params);
+    $url.="&$paramString";
+  }
+  return $url;
+}

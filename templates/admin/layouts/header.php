@@ -24,8 +24,6 @@ if(!empty($queryToken)) {
   setFlashData('msg_type', '');
   redirect('admin?module=auth&action=login');
 }
-$linkLogout = _WEB_HOST_ROOT.'/admin?module=auth&action=logout';
-
 ?>
 
 <!DOCTYPE html>
@@ -60,6 +58,9 @@ $linkLogout = _WEB_HOST_ROOT.'/admin?module=auth&action=logout';
       href="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>plugins/daterangepicker/daterangepicker.css">
    <!-- summernote -->
    <link rel="stylesheet" href="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>plugins/summernote/summernote-bs4.css">
+   <!-- Style -->
+   <link rel="stylesheet"
+      href="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets'; ?>/css/style.css?ver=<?php echo rand(); ?>">
    <!-- Google Font: Source Sans Pro -->
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
 </head>
@@ -73,12 +74,6 @@ $linkLogout = _WEB_HOST_ROOT.'/admin?module=auth&action=logout';
          <ul class="navbar-nav">
             <li class="nav-item">
                <a class="nav-link" data-widget="pushmenu" href="#" role="button"><i class="fas fa-bars"></i></a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-               <a href="index3.html" class="nav-link">Home</a>
-            </li>
-            <li class="nav-item d-none d-sm-inline-block">
-               <a href="#" class="nav-link">Contact</a>
             </li>
          </ul>
 
@@ -96,67 +91,6 @@ $linkLogout = _WEB_HOST_ROOT.'/admin?module=auth&action=logout';
 
          <!-- Right navbar links -->
          <ul class="navbar-nav ml-auto">
-            <!-- Messages Dropdown Menu -->
-            <li class="nav-item dropdown">
-               <a class="nav-link" data-toggle="dropdown" href="#">
-                  <i class="far fa-comments"></i>
-                  <span class="badge badge-danger navbar-badge">3</span>
-               </a>
-               <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
-                  <a href="#" class="dropdown-item">
-                     <!-- Message Start -->
-                     <div class="media">
-                        <img src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>img/user1-128x128.jpg"
-                           alt="User Avatar" class="img-size-50 mr-3 img-circle">
-                        <div class="media-body">
-                           <h3 class="dropdown-item-title">
-                              Brad Diesel
-                              <span class="float-right text-sm text-danger"><i class="fas fa-star"></i></span>
-                           </h3>
-                           <p class="text-sm">Call me whenever you can...</p>
-                           <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                        </div>
-                     </div>
-                     <!-- Message End -->
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">
-                     <!-- Message Start -->
-                     <div class="media">
-                        <img src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>img/user8-128x128.jpg"
-                           alt="User Avatar" class="img-size-50 img-circle mr-3">
-                        <div class="media-body">
-                           <h3 class="dropdown-item-title">
-                              John Pierce
-                              <span class="float-right text-sm text-muted"><i class="fas fa-star"></i></span>
-                           </h3>
-                           <p class="text-sm">I got your message bro</p>
-                           <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                        </div>
-                     </div>
-                     <!-- Message End -->
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item">
-                     <!-- Message Start -->
-                     <div class="media">
-                        <img src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>img/user3-128x128.jpg"
-                           alt="User Avatar" class="img-size-50 img-circle mr-3">
-                        <div class="media-body">
-                           <h3 class="dropdown-item-title">
-                              Nora Silvester
-                              <span class="float-right text-sm text-warning"><i class="fas fa-star"></i></span>
-                           </h3>
-                           <p class="text-sm">The subject goes here</p>
-                           <p class="text-sm text-muted"><i class="far fa-clock mr-1"></i> 4 Hours Ago</p>
-                        </div>
-                     </div>
-                     <!-- Message End -->
-                  </a>
-                  <div class="dropdown-divider"></div>
-                  <a href="#" class="dropdown-item dropdown-footer">See All Messages</a>
-               </div>
-            </li>
             <!-- Notifications Dropdown Menu -->
             <li class="nav-item dropdown">
                <a class="nav-link" data-toggle="dropdown" href="#">
@@ -184,10 +118,27 @@ $linkLogout = _WEB_HOST_ROOT.'/admin?module=auth&action=logout';
                   <a href="#" class="dropdown-item dropdown-footer">See All Notifications</a>
                </div>
             </li>
-            <li class="nav-item">
-               <a class="nav-link" data-widget="control-sidebar" data-slide="true" href="#" role="button">
-                  <i class="fas fa-th-large"></i>
+            <!-- Information user -->
+            <li class="nav-item dropdown">
+               <a class="nav-link" data-toggle="dropdown" href="#">
+                  <i class="far fa-user">
+                     Chào <?php echo ucfirst($fullname) ?>
+                  </i>
                </a>
+               <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
+                  <div class="dropdown-divider"></div>
+                  <a href="<?php echo getLinkAdmin('users', 'infor',['id'=>$id]) ?>" class="dropdown-item">
+                     <i class="fa fa-info-circle mr-2"></i> Thông tin cá nhân
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="<?php echo getLinkAdmin('users', 'edit_pass',['id'=>$id]) ?>" class="dropdown-item">
+                     <i class="fa fa-cog mr-2"></i> Đổi mật khẩu
+                  </a>
+                  <div class="dropdown-divider"></div>
+                  <a href="<?php echo getLinkAdmin('auth', 'logout') ?>" class="dropdown-item">
+                     <i class="fa fa-sign-out-alt mr-2"></i> Đăng xuất
+                  </a>
+               </div>
             </li>
          </ul>
       </nav>
