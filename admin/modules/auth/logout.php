@@ -6,9 +6,9 @@ if(!defined('_INCODE')) die('Access denied...');
 
  if(isLogin()) {
    $token = getSession('login_token');
-   delete('loginToken', "token = '$token'");
+   delete('login_token', "token = '$token'");
    removeSession('login_token');
    setFlashData('msg', '');
    setFlashData('msg_type', '');
-   redirect('?module=auth&action=login');   
+   redirect('admin?module=auth&action=login');   
  }

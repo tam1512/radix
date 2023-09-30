@@ -8,7 +8,6 @@ function query($sql, $data=[], $statementStatus = false) {
    $query = false;
    try{
       $statement = $conn->prepare($sql);
-
       if(empty($data)) {
          $query = $statement->execute();
       } else {

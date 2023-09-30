@@ -1,4 +1,12 @@
 <?php 
+if(!defined('_INCODE')) die('Access denied...');
+
+if(!isLogin()) {
+   redirect("admin?module=auth&action=login");
+ }
+ //Lấy userID
+ $userId = $_COOKIE['user_id'];
+
    $data = [
       'title' => 'Tổng quan'
    ];
@@ -6,11 +14,17 @@
    layout('header', 'admin', $data);
    layout('sidebar', 'admin', $data);
    layout('breadcrumb', 'admin', $data);
+
+   $message = getFlashData('msg');
+   $msgType = getFlashData('msg_type');
 ?>
 <!-- Main content -->
 <section class="content">
    <div class="container-fluid">
       <!-- Small boxes (Stat box) -->
+      <?php 
+         getMsg($message, $msgType);
+      ?>
       <div class="row">
          <div class="col-lg-3 col-6">
             <!-- small box -->

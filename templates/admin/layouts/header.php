@@ -1,3 +1,33 @@
+<?php 
+if(!defined('_INCODE')) die('Access denied...');
+
+if(!isLogin()) {
+  setFlashData('msg', '');
+  setFlashData('msg_type', '');
+  redirect('admin?module=auth&action=login');
+}
+autoLogin();
+$isLogin = autoRemoveLoginToken();
+if(!$isLogin) {
+   saveActivity();   
+}
+//  autoRemoveLoginToken();
+$token = getSession('login_token');
+
+$queryToken = firstRaw("SELECT user_id FROM login_token WHERE token = '$token'");
+if(!empty($queryToken)) {
+   $id = $queryToken['user_id'];
+   $queryUser = firstRaw("SELECT fullname FROM users WHERE id = '$id'");
+   $fullname = $queryUser['fullname'];
+} else {
+  setFlashData('msg', '');
+  setFlashData('msg_type', '');
+  redirect('admin?module=auth&action=login');
+}
+$linkLogout = _WEB_HOST_ROOT.'/admin?module=auth&action=logout';
+
+?>
+
 <!DOCTYPE html>
 <html>
 

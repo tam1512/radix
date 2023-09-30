@@ -7,11 +7,11 @@ $data = [
    'title' => 'Đăng nhập hệ thống'
 ];
 
-layout('header-login', $data);
+layout('header-login','admin', $data);
 
 autoLogin();
 if(isLogin()) {
-   redirect('?module=users');
+   redirect('admin');
 }
 // autoRemoveLoginToken();
 
@@ -47,31 +47,28 @@ if(isPost()) {
 
    if(empty($errors)) {
       // Đăng nhập thành công
-      
       //Lấy userID
-      $userId = firstRaw("SELECT id FROM users WHERE email = '$email'")['id'];
+      $user_id = firstRaw("SELECT id FROM users WHERE email = '$email'")['id'];
 
       //Tạo login token 
-      $loginToken = sha1(uniqid().time());
-      // Thêm login token vào bảng logintoken
+      $login_token = sha1(uniqid().time());
+      // Thêm login token vào bảng login_token
       $dataInsert = [
-         'userId' => $userId,
-         'token' => $loginToken,
-         'createAt' => date('Y-m-d H:i:s'),
-         
+         'user_id' => $user_id,
+         'token' => $login_token,
+         'create_at' => date('Y-m-d H:i:s'),
       ];
-
-      $insertStatus = insert('logintoken', $dataInsert);
+      $insertStatus = insert('login_token', $dataInsert);
       if($insertStatus) {
-         setSession('login_token', $loginToken);
+         setSession('login_token', $login_token);
          setFlashData('msg', 'Đăng nhập thành công');
          setFlashData('msg_type', 'success');
          saveActivity();
-         redirect('?module=users');
+         redirect('admin');
       } else {
          setFlashData('msg', 'Lỗi hệ thống! Vui lòng thử lại sau');
          setFlashData('msg_type', 'danger');
-         redirect('?module=auth&action=login');
+         redirect('admin?module=auth&action=login');
       }
 
    } else {
@@ -80,7 +77,7 @@ if(isPost()) {
       setFlashData('old', getBody());
       setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
       setFlashData('msg_type', 'danger');
-      redirect('?module=auth&action=login');
+      redirect('admin?module=auth&action=login');
    }
 }
 
@@ -89,8 +86,7 @@ $old = getFlashData('old');
 $msg = getFlashData('msg');
 $msgType = getFlashData('msg_type');
 
-
- ?>
+?>
 
 <div class="row">
    <div class="col-6" style="margin: 20px auto;">
@@ -111,11 +107,10 @@ $msgType = getFlashData('msg_type');
          <button class="btn btn-primary btn-block" type="submit">Đăng nhập</button>
          <hr>
          <p class="text-center"><a href="?module=auth&action=forgot">Quên mật khẩu</a></p>
-         <!-- <p class="text-center"><a href="?module=auth&action=register">Đăng ký tài khoản</a></p> -->
       </form>
    </div>
 </div>
 
 <?php
-  layout('footer-login');
+  layout('footer-login', 'admin');
  ?>

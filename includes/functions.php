@@ -9,7 +9,7 @@ use PHPMailer\PHPMailer\SMTP;
 use PHPMailer\PHPMailer\Exception;
 
 //Hàm để reqired các layout
- function layout($layoutName = 'header',$dir, $data = []) {
+ function layout($layoutName = 'header',$dir='', $data = []) {
   if(!empty($dir)) {
     $dir = '/'.$dir;
   }
@@ -185,14 +185,15 @@ function old($fieldName, $oldData, $default = null) {
 }
 
 function redirect($path = 'index.php') {
-  header("location: $path");
+  $url = _WEB_HOST_ROOT.'/'.$path;
+  header("location: $url");
   exit;
 }
 
 function isLogin() {
   if(!empty(getSession('login_token'))) {
     $loginToken = getSession('login_token');
-    $queryLoginToken = firstRaw("SELECT id, userId FROM logintoken WHERE token = '$loginToken'");
+    $queryLoginToken = firstRaw("SELECT id, user_id FROM login_token WHERE token = '$loginToken'");
     if(!empty($queryLoginToken)) {
       return $queryLoginToken;
     } else {
@@ -205,17 +206,17 @@ function isLogin() {
 
 //Lưu lại thời gian cuối cùng hoạt động
 function saveActivity() {
-  $userId = isLogin()['userId'];
-  update('users', ['lastActivity' => date('Y-m-d H:i:s')], 'id='.$userId);
-  setcookie('userId', $userId, time() + 60*_TIME_OUT_LOGIN, '/');
+  $user_id = isLogin()['user_id'];
+  update('users', ['last_activity' => date('Y-m-d H:i:s')], 'id='.$user_id);
+  setcookie('user_id', $user_id, time() + 60*_TIME_OUT_LOGIN, '/');
 }
 
 //Tự động xóa token khi người dùng không hoạt động _TIME_OUT_LOGIN phút hoặc thoát trình duyệt quá thời gian đó, nếu trong thời gian đó người dùng quay lại trang web thì sẽ tự động đăng nhập
 function autoLogin() {
-  if(!empty($_COOKIE['userId'])) {
-    $cookie_user = $_COOKIE['userId'];
+  if(!empty($_COOKIE['user_id'])) {
+    $cookie_user = $_COOKIE['user_id'];
     if(!empty($cookie_user)) {
-      $queryLoginToken = firstRaw("SELECT * FROM logintoken WHERE userId = '$cookie_user'");
+      $queryLoginToken = firstRaw("SELECT * FROM login_token WHERE user_id = '$cookie_user'");
       if(!empty($queryLoginToken)) {
           setSession('login_token', $queryLoginToken['token']);
       }
@@ -223,17 +224,17 @@ function autoLogin() {
   }
 }
 
-//Tự động xóa logintoken sau một khoản thời gian không hoạt động
+//Tự động xóa login_token sau một khoản thời gian không hoạt động
 function autoRemoveLoginToken() {
-  $userId = isLogin()['userId'];
-  $queryUser = firstRaw("SELECT lastActivity FROM users WHERE id = $userId");
-  $lastActivity = $queryUser['lastActivity'];
+  $user_id = isLogin()['user_id'];
+  $queryUser = firstRaw("SELECT last_activity FROM users WHERE id = $user_id");
+  $last_activity = $queryUser['last_activity'];
   $now = date('Y-m-d H:i:s');
-  $diff = strtotime($now) - strtotime($lastActivity);
+  $diff = strtotime($now) - strtotime($last_activity);
   $diff = floor($diff/60);
   if($diff >= _TIME_OUT_LOGIN) {
-    delete('logintoken', "userId=$userId");
-    setcookie('userId', $userId, time()-60);
+    delete('login_token', "user_id=$user_id");
+    setcookie('user_id', $user_id, time()-60);
     return true;
   }
   return false;

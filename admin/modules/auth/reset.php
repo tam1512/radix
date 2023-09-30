@@ -7,11 +7,11 @@ $data = [
    'title' => 'Đặt lại mật khẩu mới'
 ];
 
-layout('header-login', $data);
+layout('header-login','admin', $data);
 
 
 if(isLogin()) {
-   redirect('?module=users');
+   redirect('admin');
 }
 
 
@@ -19,7 +19,7 @@ if(isLogin()) {
 $token = getBody()['token'];
 
 if(!empty($token)) {
-   $queryToken = firstRaw("SELECT id, fullname, email FROM users WHERE forgotToken ='$token'");
+   $queryToken = firstRaw("SELECT id, fullname, email FROM users WHERE forget_token ='$token'");
 
    if(!empty($queryToken)) {
       if(isPost()) {
@@ -43,7 +43,7 @@ if(!empty($token)) {
             setFlashData('errors', $errors);
             setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
             setFlashData('msg_type', 'danger');
-            redirect('?module=auth&action=reset&token='.$token);
+            redirect('admin?module=auth&action=reset&token='.$token);
          } else {
             $userId = $queryToken['id'];
             $fullname = $queryToken['fullname'];
@@ -54,8 +54,8 @@ if(!empty($token)) {
             //dữ liệu update
             $dataUpdate = [
                'password' => $hashPassword,
-               'updateAt' => date('Y-m-d H:i:s'),
-               'forgotToken' => null
+               'update_at' => date('Y-m-d H:i:s'),
+               'forget_token' => null
             ];
 
             $updateStatus = update('users', $dataUpdate, "id = $userId");
@@ -65,7 +65,7 @@ if(!empty($token)) {
                $subject = 'Thông báo đổi mật khẩu thành công';
                $content = "Chúc mừng $fullname đã đổi mật khẩu thành công. <br><br>";
                $content .= "Bạn có thể đăng nhập ngay với đường link sau: <br><br>";
-               $content .= _WEB_HOST_ROOT."?module=auth&action=login<br><br>";
+               $content .= _WEB_HOST_ROOT."admin?module=auth&action=login<br><br>";
                $content .= 'Trân trọng';
 
                $sendMail = sendMail($email, $subject, $content);
@@ -73,16 +73,16 @@ if(!empty($token)) {
                if($sendMail) {
                   setFlashData('msg', 'Thay đổi mật khẩu thành công');
                   setFlashData('msg_type', 'success');
-                  redirect('?module=auth&action=login');
+                  redirect('admin?module=auth&action=login');
                } else {
                   setFlashData('msg', 'Lỗi hệ thống. Bạn không thể đổi mật khẩu');
                   setFlashData('msg_type', 'danger');
-                  redirect('?module=auth&action=reset&token='.$token);
+                  redirect('admin?module=auth&action=reset&token='.$token);
                }
             } else {
                setFlashData('msg', 'Lỗi hệ thống. Bạn không thể đổi mật khẩu');
                setFlashData('msg_type', 'danger');
-               redirect('?module=auth&action=reset&token='.$token);
+               redirect('admin?module=auth&action=reset&token='.$token);
             }
          }
       }
@@ -123,12 +123,11 @@ $msgType = getFlashData('msg_type');
          <button class="btn btn-primary btn-block" type="submit">Xác nhận</button>
          <hr>
          <p class="text-center"><a href="?module=auth&action=login">Đăng nhập</a></p>
-         <p class="text-center"><a href="?module=auth&action=register">Đăng ký tài khoản</a></p>
          <input type="hidden" name="token" value="<?php echo $token; ?>">
       </form>
    </div>
 </div>
 
 <?php
-  layout('footer-login');
+  layout('footer-login', 'admin');
  ?>
