@@ -127,11 +127,11 @@ if(!empty($queryToken)) {
                </a>
                <div class="dropdown-menu dropdown-menu-lg dropdown-menu-right">
                   <div class="dropdown-divider"></div>
-                  <a href="<?php echo getLinkAdmin('users', 'infor',['id'=>$id]) ?>" class="dropdown-item">
+                  <a href="<?php echo getLinkAdmin('users', 'profile') ?>" class="dropdown-item">
                      <i class="fa fa-info-circle mr-2"></i> Thông tin cá nhân
                   </a>
                   <div class="dropdown-divider"></div>
-                  <a href="<?php echo getLinkAdmin('users', 'edit_pass',['id'=>$id]) ?>" class="dropdown-item">
+                  <a href="<?php echo getLinkAdmin('users', 'edit_pass') ?>" class="dropdown-item">
                      <i class="fa fa-cog mr-2"></i> Đổi mật khẩu
                   </a>
                   <div class="dropdown-divider"></div>

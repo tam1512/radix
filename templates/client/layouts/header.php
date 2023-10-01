@@ -60,7 +60,7 @@ if(!defined('_INCODE')) die('Access denied...');
                         Chào <?php echo $fullname ?>
                      </a>
                      <div class="dropdown-menu">
-                        <a class="dropdown-item" href="?module=users&action=infor&id=<?php echo $id ?>">Thông tin cá
+                        <a class="dropdown-item" href="<?php echo getLinkAdmin('users', 'profile') ?>">Thông tin cá
                            nhân</a>
                         <div class="dropdown-divider"></div>
                         <a class="dropdown-item" href="?module=users&action=edit_pass&id=<?php echo $id ?>">Đổi mật

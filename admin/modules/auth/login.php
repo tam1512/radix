@@ -85,7 +85,6 @@ $errors = getFlashData('errors');
 $old = getFlashData('old');
 $msg = getFlashData('msg');
 $msgType = getFlashData('msg_type');
-
 ?>
 
 <div class="row">

@@ -1,3 +1,8 @@
+<?php 
+$userId = isLogin()["user_id"];
+$userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
+?>
+
 <!-- Main Sidebar Container -->
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
    <!-- Brand Logo -->
@@ -16,7 +21,8 @@
                class="img-circle elevation-2" alt="User Image">
          </div>
          <div class="info">
-            <a href="#" class="d-block">Alexander Pierce</a>
+            <a href="<?php echo getLinkAdmin('users', 'profile') ?>"
+               class="d-block"><?php echo $userDetail['fullname'] ?></a>
          </div>
       </div>
 

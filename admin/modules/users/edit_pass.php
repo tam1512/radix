@@ -1,4 +1,5 @@
 <?php
+ob_start();
 if(!defined('_INCODE')) die('Access denied...');
 /**
  * Chứa chức năng chỉnh sửa mật khẩu của người dùng đang đăng nhập
@@ -9,19 +10,15 @@ $data = [
 
  layout('header','admin',$data);
  layout('sidebar','admin');
+ layout('breadcrumb', 'admin', $data);
 
  // Xử lý đăng ký
 
-if(isGet()) {
-   $userId = trim(getBody()['id']);
-   if(!empty($userId)) {
-      $queryUser = firstRaw("SELECT password FROM users WHERE id = '$userId'");
-      setFlashData('queryUser', $queryUser);
-   } else {
-      redirect("admin");
-   }
-}
-
+ $userId = isLogin()["user_id"];
+ $queryUser = firstRaw("SELECT password, fullname, email FROM users WHERE id = $userId");
+ $pass_old = $queryUser['password'];
+ $fullname = $queryUser['fullname'];
+ $email = $queryUser['email'];
  if(isPost()) {
    //Validate form
    $body = getBody(); //lấy tất cả dữ liệu trong form
@@ -32,13 +29,11 @@ if(isGet()) {
    $password_old = trim($body['password_old']);
    $password = trim($body['password']);
    $confirm_password = trim($body['confirm_password']);
-   $userId = trim($body['id']);
 
    // validate password old
    if(empty($password_old)) {
       $errors['password_old']['empty'] = 'Mật khẩu củ không được để trống';
    } else {
-      $pass_old = getFlashData('queryUser')['password'];
       if(!password_verify($password_old, $pass_old)) {
          $errors['password_old']['match'] = 'Mật khẩu không đúng.';
       }
@@ -68,20 +63,31 @@ if(isGet()) {
 
       $updateStatus = update('users', $dataUpdate, "id=$userId");
       if($updateStatus) {
-            setFlashData('msg', 'Đổi mật khẩu thành công.');
+           
+
+            //send Mail 
+            $subject = 'Chúc mừng '.$fullname. ' đổi mật khẩu thành công<br> <br>';
+            $content= 'Chúc mừng bạn đã đổi mật khẩu thành công. Hiện tại bạn có thể đăng nhập với mật khẩu mới.<br> <br>';
+            $content.= 'Nếu không phải bạn thay đổi, vui lòng liên hệ ngay với chúng tôi.<br> <br>';
+            $content.= 'Trân trọng';
+
+            //Gửi mail
+            $sendMail = sendMail($email, $subject, $content);
+            
+            setFlashData('msg', 'Đổi mật khẩu thành công. Giờ bạn có thể đăng nhập với mật khẩu mới');
             setFlashData('msg_type', 'success');
       } else {
          setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
          setFlashData('msg_type', 'danger');
       }
-      redirect('admin');
-      
+      redirect('admin/?module=auth&action=logout');
    } else {
       setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
       setFlashData('msg_type', 'danger');
       setFlashData('errors', $errors);
-      redirect("admin/?module=users&action=edit_pass&id=$userId");
+      redirect("admin/?module=users&action=edit_pass");
    }
+   ob_end_flush();
 }
 
 $message = getFlashData('msg');
@@ -92,8 +98,6 @@ $errors = getFlashData('errors');
 <div class="container">
    <div class="row">
       <div class="col" style="margin: 20px auto;">
-         <h3 class="text-center text-uppercase">Đổi mật khẩu</h3>
-
          <?php 
             getMsg($message, $msgType);
          ?>
@@ -119,11 +123,9 @@ $errors = getFlashData('errors');
                         placeholder="Nhập lại mật khẩu">
                      <?php echo form_error('confirm_password', $errors, '<span class="error">', '</span>') ?>
                   </div>
-                  <input type="hidden" name="id" value="<?php echo $userId ?>">
                </div>
             </div>
             <button class="btn btn-primary" type="submit">Cập nhật</button>
-            <a href="<?php echo getLinkAdmin(''); ?>" class="btn btn-success" type="submit">Quay lại</a>
             <hr>
          </form>
       </div>
