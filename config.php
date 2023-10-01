@@ -38,6 +38,7 @@ const _DRIVER = 'mysql';
 
 //Phân trang
 const _USER_ON_PAGE = 2;
+const _GROUP_ON_PAGE = 3;
 const _LIMIT_PAGINATION = 10;
 
 //Thời gian hủy phiên đăng nhập

@@ -75,6 +75,32 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                   </li>
                </ul>
             </li>
+            <li class="nav-item has-treeview <?php echo activeMenuSidebar('groups', '', true) ? 'menu-open' : false ?>">
+               <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups" ?>"
+                  class="nav-link <?php echo activeMenuSidebar('groups', '', true) ? 'active' : false ?>">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                     Nhóm người dùng
+                     <i class="right fas fa-angle-left"></i>
+                  </p>
+               </a>
+               <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('groups') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách</p>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('groups', 'add') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm mới</p>
+                     </a>
+                  </li>
+               </ul>
+            </li>
             <li class="nav-item has-treeview">
                <a href="#" class="nav-link">
                   <i class="nav-icon fas fa-copy"></i>

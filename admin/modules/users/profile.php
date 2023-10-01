@@ -1,5 +1,4 @@
 <?php
-ob_start();
 if(!defined('_INCODE')) die('Access denied...');
 /**
  * Chứa chức năng hiển thị thông tin người dùng
@@ -66,7 +65,6 @@ if(isPost()) {
       setFlashData('old', $body);
       redirect('admin/?module=users&action=profile');
    }
-   ob_end_flush();
 }
 
 $message = getFlashData('msg');

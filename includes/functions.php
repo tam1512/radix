@@ -283,3 +283,11 @@ function getLinkAdmin($module, $action = "", $params = []) {
   }
   return $url;
 }
+
+function getDateFormat($dateStr, $format) {
+  $dateObject = date_create($dateStr);
+  if(!empty($dateObject)) {
+    return date_format($dateObject, $format);
+  }
+  return false;
+}

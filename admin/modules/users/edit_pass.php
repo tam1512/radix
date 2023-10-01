@@ -1,5 +1,4 @@
 <?php
-ob_start();
 if(!defined('_INCODE')) die('Access denied...');
 /**
  * Chứa chức năng chỉnh sửa mật khẩu của người dùng đang đăng nhập
@@ -87,7 +86,6 @@ $data = [
       setFlashData('errors', $errors);
       redirect("admin/?module=users&action=edit_pass");
    }
-   ob_end_flush();
 }
 
 $message = getFlashData('msg');
