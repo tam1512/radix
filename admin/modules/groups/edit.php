@@ -105,6 +105,7 @@ if(!empty($defaultGroup)) {
                </div>
             </div>
             <button class="btn btn-primary" type="submit">Sửa</button>
+            <a href="<?php echo getLinkAdmin('groups') ?>" class="btn btn-success" type="submit">Quay lại</a>
             <hr>
          </form>
       </div>

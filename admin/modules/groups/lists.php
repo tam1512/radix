@@ -130,7 +130,7 @@ $msgType = getFlashData('msg_type');
          </tbody>
       </table>
       <nav aria-label="Page navigation users">
-         <ul class="pagination">
+         <ul class="pagination pagination-sm justify-content-end">
             <li class="page-item <?php echo ($page <= 1) ? 'disabled' : '' ?>">
                <a class="page-link" href="
             <?php     
