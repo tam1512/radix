@@ -215,12 +215,10 @@ function saveActivity() {
 function autoLogin() {
   if(!empty($_COOKIE['user_id'])) {
     $cookie_user = $_COOKIE['user_id'];
-    if(!empty($cookie_user)) {
       $queryLoginToken = firstRaw("SELECT * FROM login_token WHERE user_id = '$cookie_user'");
       if(!empty($queryLoginToken)) {
           setSession('login_token', $queryLoginToken['token']);
       }
-    }
   }
 }
 
@@ -234,7 +232,7 @@ function autoRemoveLoginToken() {
   $diff = floor($diff/60);
   if($diff >= _TIME_OUT_LOGIN) {
     delete('login_token', "user_id=$user_id");
-    setcookie('user_id', $user_id, time()-60);
+    setcookie('user_id', $user_id, time()-60, '/');
     return true;
   }
   return false;
