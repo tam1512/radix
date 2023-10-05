@@ -4,23 +4,24 @@ if(!defined('_INCODE')) die('Access denied...');
  * Hiển thị danh sách người dùng, phân trang, tìm kiếm
  */
  if(!isLogin()) {
-   redirect("?module=auth&action=login");
+   redirect("admin/?module=auth&action=login");
  }
 
  $data = [
   'title' => 'Quản lý người dùng'
  ];
 
- layout('header', $data);
+ layout('header', 'admin', $data);
+ layout('sidebar', 'admin', $data);
+ layout('breadcrumb', 'admin', $data);
  
- // lấy ra userId
- $userId = $_COOKIE['userId'];
- $permisstion_id = firstRaw("SELECT per_id FROM users WHERE id = $userId")['per_id'];
+ // lấy ra user_id
+ $user_id = $_COOKIE['user_id'];
 
  echo '<div class="container"> <br>'; 
 
-$listAllUsers = getRaw("SELECT * FROM users ORDER BY createAt");
-
+$listAllUsers = getRaw("SELECT id, fullname, email, group_id FROM users ORDER BY create_at DESC");
+$listAllGroups = getRaw("SELECT id, name FROM groups");
 // Xử lý tìm kiếm
 $filter = '';
 if(isGet()) {
@@ -32,6 +33,18 @@ if(isGet()) {
          $statusSql = $status;
       }
       $filter .= "WHERE status = $statusSql";
+   }
+
+   if(!empty(getBody()["groups"])) {
+      $groups = getBody()["groups"];
+
+      if(!empty($filter) && strpos($filter, "WHERE") >= 0) {
+         $operator = 'AND';
+      } else {
+         $operator = 'WHERE';
+      }
+
+      $filter .= " $operator group_id = $groups";
    }
 
    if(!empty(getBody()["keyword"])) {
@@ -76,7 +89,7 @@ $limitPagination = _LIMIT_PAGINATION;
  * page = 3 => offset = 6
  */
 $offset = ($page - 1) * $userOnPage;
-$listUsersOnPage = getRaw("SELECT id,fullname, email, phone, status, per_id FROM users $filter LIMIT $offset, $userOnPage");
+$listUsersOnPage = getRaw("SELECT id,fullname, email, status, group_id FROM users $filter LIMIT $offset, $userOnPage");
 
 //Xử lý query String
 $queryStr = null;
@@ -89,53 +102,17 @@ if(!empty($_SERVER["QUERY_STRING"])) {
       $queryStr = '&'.$queryStr;
    }
 } 
-$message = getFlashData('message');
+$msg = getFlashData('msg');
 $msgType = getFlashData('msg_type');
-
-// lấy ra các quền của tài khoản
-$isAdd = firstRaw("SELECT * FROM permission WHERE id = $permisstion_id")['add'];
-$isUpdate = firstRaw("SELECT * FROM permission WHERE id = $permisstion_id")['update'];
-$isDelete = firstRaw("SELECT * FROM permission WHERE id = $permisstion_id")['delete'];
-
-// được add và delete là cao hơn dù cho có 1 hay nhiều quyền 
-/**
- * 1 => add and delete => [1, 2, 3, 4]
- * 2 => delete => [1, 2, 3]
- * 3 => add => [1, 2, 3, 4]
- * 4 => update => [1, 3]
- * 5 => read only 
- *
- */
-
- if(!empty($isAdd) && !empty($isDelete)) {
-   $level = 1;
- } else if(!empty($isDelete)) {
-   $level = 2;
- } else if(!empty($isAdd)) {
-   $level = 3;
- } else if(!empty($isUpdate)) {
-   $level = 4;
- } else {
-   $level = 5;
- }
- setcookie('level', $level, time()+3600, '/');
 ?>
 
 <hr />
 <?php 
-   getMsg($message, $msgType);
-?>
-<h3>Quản lý người dùng</h3>
-<?php 
-   if(!empty($isAdd)) {
-      echo "<p>";
-      echo '<a href="?module=users&action=add" class="btn btn-success btn-sm">Thêm người dùng <i class="fa fa-plus"> </i></a>';
-      echo "</p>";
-   }
+   getMsg($msg, $msgType);
 ?>
 <form action="" method="get">
    <div class="row">
-      <div class="col">
+      <div class="col-2">
          <div class="form-group">
             <select name="status" class="form-control">
                <option value="0">Chọn trạng thái</option>
@@ -145,11 +122,29 @@ $isDelete = firstRaw("SELECT * FROM permission WHERE id = $permisstion_id")['del
             </select>
          </div>
       </div>
+      <div class="col-2">
+         <div class="form-group">
+            <select name="groups" class="form-control">
+               <option value="0">Chọn nhóm</option>
+               <?php 
+                  if(!empty($listAllGroups)):
+                     foreach($listAllGroups as $group):
+               ?>
+               <option value="<?php echo $group['id'] ?>"
+                  <?php echo (!empty($groups) && $groups==$group['id'])? 'selected' : false ?>>
+                  <?php echo $group['name'] ?></option>
+               <?php 
+                  endforeach;
+               endif;
+               ?>
+            </select>
+         </div>
+      </div>
       <div class="col-6">
          <input type="text" class="form-control" name="keyword" placeholder="Từ khóa tìm kiếm..."
             value="<?php echo !empty($keyword) ? $keyword : false ?>">
       </div>
-      <div class="col-3">
+      <div class="col-2">
          <button type="submit" class="btn btn-primary">Tìm kiếm</button>
       </div>
    </div>
@@ -162,7 +157,7 @@ $isDelete = firstRaw("SELECT * FROM permission WHERE id = $permisstion_id")['del
          <th width="5%">STT</th>
          <th>Họ Tên</th>
          <th>Email</th>
-         <th>Số Điện Thoại</th>
+         <th>Nhóm người dùng</th>
          <th>Trạng Thái</th>
          <th width="5%">Sửa</th>
          <th width="5%">Xóa</th>
@@ -173,49 +168,34 @@ $isDelete = firstRaw("SELECT * FROM permission WHERE id = $permisstion_id")['del
          if(!empty($listUsersOnPage)):
             $count = 0;
             foreach($listUsersOnPage as $user):
-               $per_id = $user['per_id'];
-               // lấy ra các quền của tài khoản
-               $isAddUser = firstRaw("SELECT * FROM permission WHERE id = $per_id")['add'];
-               $isUpdateUser = firstRaw("SELECT * FROM permission WHERE id = $per_id")['update'];
-               $isDeleteUser = firstRaw("SELECT * FROM permission WHERE id = $per_id")['delete'];
-
-
-               if(!empty($isAddUser) && !empty($isDeleteUser)) {
-                  $levelUser = 1;
-               } else if(!empty($isDeleteUser)) {
-                  $levelUser = 2;
-               } else if(!empty($isAddUser)) {
-                  $levelUser = 3;
-               } else if(!empty($isUpdateUser)) {
-                  $levelUser = 4;
-               } else {
-                  $levelUser = 5;
-               }
-               
-               // Nếu quyền thấp hơn thì không được update và delete
-               $isUpdateTable = $isUpdate;
-               $isDeleteTable = $isDelete;
-               if($level >= $levelUser) {
-                  $isUpdateTable = 0;
-                  $isDeleteTable = 0;
-               } 
-               
                $count++;
       ?>
       <tr>
          <td><?php echo $count ?></td>
-         <td><?php echo $user['fullname'] ?></td>
+         <td><a
+               href="<?php echo getLinkAdmin('users', 'edit', ['id' => $user['id']])?>"><?php echo $user['fullname'] ?></a>
+         </td>
          <td><?php echo $user['email'] ?></td>
-         <td><?php echo $user['phone'] ?></td>
+         <td>
+            <?php 
+               foreach($listAllGroups as $group) {
+                  echo $group['id'] == $user['group_id'] ? $group['name'] : false;
+               }
+            ?>
+         </td>
          <td>
             <?php echo $user['status'] == 1 ? '<button type="button" class="btn btn-success btn-sm">Kích hoạt</button>' : '<button type="button" class="btn btn-warning btn-sm">Chưa kích hoạt</button>' ?>
          </td>
-         <td><a href="?module=users&action=edit&id=<?php echo  $user['id']?>"
-               class="btn btn-warning btn-sm <?php echo empty($isUpdateTable) ? 'disabled' : null ?>"><i
-                  class="fa fa-edit"></i></a></td>
-         <td><a href="<?php echo _WEB_HOST_ROOT."?module=users&action=delete&id=".$user["id"] ?>"
-               class="btn btn-danger btn-sm <?php echo empty($isDeleteTable) ? 'disabled' : null ?>"
-               onclick="return confirm('Are you sure?')"><i class="fa fa-trash-o"></i></a>
+         <td>
+            <a href="<?php echo getLinkAdmin('users', 'edit', ['id'=> $user['id']]) ?>" class="btn btn-warning btn-sm">
+               <i class="fa fa-edit"></i>
+            </a>
+         </td>
+         <td>
+            <a href="<?php echo getLinkAdmin('users', 'delete', ['id'=>$user['id']]) ?>" class="btn btn-danger btn-sm"
+               onclick="return confirm('Bạn có chắc chắn muốn xóa?')">
+               <i class="fa fa-trash"></i>
+            </a>
          </td>
       </tr>
       <?php endforeach; else: ?>
@@ -303,5 +283,5 @@ $isDelete = firstRaw("SELECT * FROM permission WHERE id = $permisstion_id")['del
 <hr>
 <?php
 echo "</div>";
-layout('footer');
+layout('footer', 'admin');
 ?>

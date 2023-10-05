@@ -265,8 +265,15 @@ function autoRemoveLoginToken() {
   return false;
 }
 
-//Action menu sidebar (active and menu-open)
-function activeMenuSidebar($module, $action='', $sub = false) { 
+//Action menu sidebar (active and menu-open) 
+/**
+ * kiểu tra với đường dẫn phương thức GET
+ * 1. module đúng sẽ active child đầu tiên
+ * 2. module và action đúng sẽ active child của action đó
+ * 3. nếu không có module sẽ active mặc định
+ * 4. nếu child có sub, truyền vào tham số sub là mảng, các action = với một trong các tham số sẽ được tính là đúng
+ */
+function activeMenuSidebar($module, $action='', $sub = false) { //service add
   if(empty(getBody()['module'])) {
     if(empty($module)) {
       return true;
@@ -276,8 +283,15 @@ function activeMenuSidebar($module, $action='', $sub = false) {
       if(getBody()["module"] == $module && getBody()["action"] == $action) {
         return true;
       }
-      if(getBody()["module"] == $module && $sub) {
+      if(getBody()["module"] == $module && $sub && !is_array($sub)) {
         return true;
+      }
+      if(!empty($sub) && is_array($sub)) {
+        foreach($sub as $item) {
+          if(getBody()["module"] == $module && getBody()["action"] == $item) {
+            return true;
+          }
+        }
       }
     } else {
       if(getBody()["module"] == $module && empty($action)) {
@@ -311,10 +325,44 @@ function getLinkAdmin($module, $action = "", $params = []) {
   return $url;
 }
 
+//Format date
 function getDateFormat($dateStr, $format) {
   $dateObject = date_create($dateStr);
   if(!empty($dateObject)) {
     return date_format($dateObject, $format);
+  }
+  return false;
+}
+
+//Check icon
+function isIcon($input) {
+  if(strpos($input, '<i class="') != false) {
+    return true;
+  }
+  return false;
+}
+
+function getNameUserUniqueOrId($listUser, $input) {
+  if(!empty($listUser)) {
+    foreach($listUser as $user) {
+      if(!empty($input)) {
+        if(isNumberInt($input)) {
+          if($user['id'] == $input) {
+            $fullname = $user['fullname'];
+            $email = $user['email'];
+            return $fullname."($email)";
+          }
+        } else if(is_string($input)) {
+          $input = rtrim($input, ")");
+          $inputArray = explode('(', $input);
+          $fullname = $inputArray[0];
+          $email = $inputArray[1];
+          if($user['fullname'] == $fullname && $user['email'] == $email) {
+            return $user['id'];
+          }
+        }
+      }
+    }
   }
   return false;
 }

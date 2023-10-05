@@ -40,14 +40,84 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                   </p>
                </a>
             </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-th"></i>
+            <li class="nav-item has-treeview <?php echo activeMenuSidebar('groups', '', true) ? 'menu-open' : false ?>">
+               <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups" ?>"
+                  class="nav-link <?php echo activeMenuSidebar('groups', '', true) ? 'active' : false ?>">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
                   <p>
-                     Widgets
-                     <span class="right badge badge-danger">New</span>
+                     Nhóm người dùng
+                     <i class="right fas fa-angle-left"></i>
                   </p>
                </a>
+               <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('groups', '', ['edit', 'delete']) ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách</p>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('groups', 'add') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm mới</p>
+                     </a>
+                  </li>
+               </ul>
+            </li>
+            <li class="nav-item has-treeview <?php echo activeMenuSidebar('users', '', true) ? 'menu-open' : false ?>">
+               <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=users" ?>"
+                  class="nav-link <?php echo activeMenuSidebar('users', '', true) ? 'active' : false ?>">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                     Quản lý người dùng
+                     <i class="right fas fa-angle-left"></i>
+                  </p>
+               </a>
+               <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=users" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('users', '', ['edit', 'delete']) ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách</p>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=users&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('users', 'add') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm mới</p>
+                     </a>
+                  </li>
+               </ul>
+            </li>
+            <li
+               class="nav-item has-treeview <?php echo activeMenuSidebar('services', '', true) ? 'menu-open' : false ?>">
+               <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=services" ?>"
+                  class="nav-link <?php echo activeMenuSidebar('services', '', true) ? 'active' : false ?>">
+                  <i class="nav-icon fas fa-tachometer-alt"></i>
+                  <p>
+                     Quản lý dịch vụ
+                     <i class="right fas fa-angle-left"></i>
+                  </p>
+               </a>
+               <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=services" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('services', '', ['edit', 'delete']) ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách</p>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=services&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('services', 'add') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm mới</p>
+                     </a>
+                  </li>
+               </ul>
             </li>
             <li class="nav-item has-treeview <?php echo activeMenuSidebar('blog', '', true) ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blog" ?>"
@@ -61,7 +131,7 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                <ul class="nav nav-treeview">
                   <li class="nav-item">
                      <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blog" ?>"
-                        class="nav-link <?php echo activeMenuSidebar('blog') ? 'active' : false ?>">
+                        class="nav-link <?php echo activeMenuSidebar('blog', '', ['edit', 'delete']) ? 'active' : false ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Danh sách</p>
                      </a>
@@ -69,32 +139,6 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                   <li class="nav-item">
                      <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blog&action=add" ?>"
                         class="nav-link <?php echo activeMenuSidebar('blog', 'add') ? 'active' : false ?>">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Thêm mới</p>
-                     </a>
-                  </li>
-               </ul>
-            </li>
-            <li class="nav-item has-treeview <?php echo activeMenuSidebar('groups', '', true) ? 'menu-open' : false ?>">
-               <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups" ?>"
-                  class="nav-link <?php echo activeMenuSidebar('groups', '', true) ? 'active' : false ?>">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
-                  <p>
-                     Nhóm người dùng
-                     <i class="right fas fa-angle-left"></i>
-                  </p>
-               </a>
-               <ul class="nav nav-treeview">
-                  <li class="nav-item">
-                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups" ?>"
-                        class="nav-link <?php echo activeMenuSidebar('groups') ? 'active' : false ?>">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách</p>
-                     </a>
-                  </li>
-                  <li class="nav-item">
-                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups&action=add" ?>"
-                        class="nav-link <?php echo activeMenuSidebar('groups', 'add') ? 'active' : false ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Thêm mới</p>
                      </a>
@@ -126,7 +170,15 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
 
                </ul>
             </li>
-
+            <li class="nav-item">
+               <a href="#" class="nav-link">
+                  <i class="nav-icon fas fa-th"></i>
+                  <p>
+                     Widgets
+                     <span class="right badge badge-danger">New</span>
+                  </p>
+               </a>
+            </li>
             <li class="nav-header">EXAMPLES</li>
             <li class="nav-item">
                <a href="#" class="nav-link">

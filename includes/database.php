@@ -6,6 +6,7 @@ if(!defined('_INCODE')) die('Access denied...');
 function query($sql, $data=[], $statementStatus = false) {
    global $conn;
    $query = false;
+   // echo $sql;
    try{
       $statement = $conn->prepare($sql);
       if(empty($data)) {

@@ -4,7 +4,7 @@ if(!defined('_INCODE')) die('Access denied...');
  * Chứa chức năng hiển thị thông tin người dùng
  */
 $data = [
-   'title' => 'Thêm người dùng'
+   'title' => 'Chỉnh sửa thông tin người dùng'
 ];
 
  layout('header', 'admin', $data);
@@ -12,6 +12,12 @@ $data = [
  layout('breadcrumb', 'admin', $data);
 
 $listAllGroups = getRaw("SELECT id, name FROM groups");
+
+if(isGet()) {
+   $userId = getBody()['id'];
+   $userDetailt = firstRaw("SELECT * FROM users WHERE id = $userId");
+   setFlashData('userDetailt', $userDetailt); 
+}
 
 if(isPost()) {
    $errors = [];
@@ -28,6 +34,7 @@ if(isPost()) {
    $contactLinkedin = trim($body['contact_linkedin']);
    $contactPrinterest = trim($body['contact_printerest']);
 
+   $userId = trim($body['id']);
 
    if(empty($fullname)) {
       $errors['fullname']['required'] = 'Họ tên không được để trống';
@@ -41,27 +48,15 @@ if(isPost()) {
       }
    }
 
-   if(empty($password)) {
-      $errors['password']['required'] = 'Mật khẩu không được để trống';
-   } else {
-      if(strlen($password) < 8) {
-         $errors['password']['min'] = 'Mật khẩu phải dài hơn 8 ký tự';
-      }
-   }
-
    if(!empty($password)) {
-      if(empty($confirmPassword)) {
-         $errors['confirm_password']['required'] = 'Nhập lại mật khẩu không được để trống';
-      } else {
-         if($password != $confirmPassword) {
-            $errors['confirm_password']['match'] = 'Mật khẩu không trùng khớp';
-         }
+      if($password != $confirmPassword) {
+         $errors['confirm_password']['match'] = 'Mật khẩu không trùng khớp';
       }
    }
 
 
    if(empty($errors)) {
-      $dataInsert = [
+      $dataUpdate = [
          'fullname' => $fullname,
          'email' => $email,
          'status' => $status,
@@ -75,12 +70,12 @@ if(isPost()) {
       ];
 
       if(!empty($password)) {
-         $dataInsert['password'] = password_hash($password, PASSWORD_DEFAULT);
+         $dataUpdate['password'] = password_hash($password, PASSWORD_DEFAULT);
       }
 
-      $insertStatus = insert('users', $dataInsert);
-      if($insertStatus) {
-         setFlashData('msg', 'Thêm tài khoản thành công.');
+      $updateStatus = update('users', $dataUpdate, "id = $userId");
+      if($updateStatus) {
+         setFlashData('msg', 'Chỉnh sửa thông tin tài khoản thành công.');
          setFlashData('msg_type', 'success');
       } else {
          setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
@@ -92,7 +87,7 @@ if(isPost()) {
       setFlashData('msg_type', 'danger');
       setFlashData('errors', $errors);
       setFlashData('old', $body);
-      redirect('admin/?module=users&action=add');
+      redirect('admin/?module=users&action=edit&id='.$userId);
    }
 }
 
@@ -100,6 +95,10 @@ $message = getFlashData('msg');
 $msgType = getFlashData('msg_type');
 $errors = getFlashData('errors');
 $old = getFlashData('old');
+$infor = getFlashData('userDetailt');
+if(!empty($old)) {
+   $infor = $old;
+} 
 ?>
 <hr>
 <div class="container">
@@ -110,7 +109,7 @@ $old = getFlashData('old');
             <div class="form-group">
                <label for="fullname">Họ tên:</label>
                <input type="text" id="fullname" name="fullname" class="form-control" placeholder="Họ tên..."
-                  value="<?php echo form_infor('fullname', $old) ?>">
+                  value="<?php echo form_infor('fullname', $infor) ?>">
                <?php echo form_error('fullname', $errors, '<span class="error">', '</span>') ?>
             </div>
          </div>
@@ -118,7 +117,7 @@ $old = getFlashData('old');
             <div class="form-group">
                <label for="email">Email:</label>
                <input type="text" id="email" name="email" class="form-control" placeholder="Email..."
-                  value="<?php echo form_infor('email', $old) ?>">
+                  value="<?php echo form_infor('email', $infor) ?>">
                <?php echo form_error('email', $errors, '<span class="error">', '</span>') ?>
             </div>
          </div>
@@ -126,9 +125,9 @@ $old = getFlashData('old');
             <div class="form-group">
                <label for="status">Trạng thái</label>
                <select name="status" class="form-control">
-                  <option value="0" <?php echo (!empty($old['status']) && $old['status']==0)? 'selected' : false ?>>
+                  <option value="0" <?php echo (!empty($infor['status']) && $infor['status']==0)? 'selected' : false ?>>
                      Chưa kích hoạt
-                  <option value="1" <?php echo (!empty($old['status']) && $old['status']==1)? 'selected' : false ?>>
+                  <option value="1" <?php echo (!empty($infor['status']) && $infor['status']==1)? 'selected' : false ?>>
                      Kích hoạt</option>
                   </option>
                </select>
@@ -143,7 +142,7 @@ $old = getFlashData('old');
                      foreach($listAllGroups as $group):
                ?>
                   <option value="<?php echo $group['id'] ?>"
-                     <?php echo (!empty($old['group_id']) && $old['group_id']==$group['id'])? 'selected' : false ?>>
+                     <?php echo (!empty($infor['group_id']) && $infor['group_id']==$group['id'])? 'selected' : false ?>>
                      <?php echo $group['name'] ?></option>
                   <?php 
                   endforeach;
@@ -156,42 +155,41 @@ $old = getFlashData('old');
             <div class="form-group">
                <label for="contact_facebook">Facebook</label>
                <input type="text" id="contact_facebook" name="contact_facebook" class="form-control"
-                  placeholder="Facebook..." value="<?php echo form_infor('contact_facebook', $old) ?>">
+                  placeholder="Facebook..." value="<?php echo form_infor('contact_facebook', $infor) ?>">
             </div>
          </div>
          <div class="col-6">
             <div class="form-group">
                <label for="contact_twitter">Twitter</label>
                <input type="text" id="contact_twitter" name="contact_twitter" class="form-control"
-                  placeholder="Twitter..." value="<?php echo form_infor('contact_twitter', $old) ?>">
+                  placeholder="Twitter..." value="<?php echo form_infor('contact_twitter', $infor) ?>">
             </div>
          </div>
          <div class="col-6">
             <div class="form-group">
                <label for="contact_linkedin">Linkedin</label>
                <input type="text" id="contact_linkedin" name="contact_linkedin" class="form-control"
-                  placeholder="Linkedin..." value="<?php echo form_infor('contact_linkedin', $old) ?>">
+                  placeholder="Linkedin..." value="<?php echo form_infor('contact_linkedin', $infor) ?>">
             </div>
          </div>
          <div class="col-6">
             <div class="form-group">
                <label for="contact_printerest">Printerest</label>
                <input type="text" id="contact_printerest" name="contact_printerest" class="form-control"
-                  placeholder="Printerest..." value="<?php echo form_infor('contact_printerest', $old) ?>">
+                  placeholder="Printerest..." value="<?php echo form_infor('contact_printerest', $infor) ?>">
             </div>
          </div>
          <div class="col-6">
             <div class="form-group">
                <label for="password">Mật khẩu</label>
-               <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu...">
-               <?php echo form_error('password', $errors, '<span class="error">', '</span>') ?>
+               <input type="password" id="password" name="password" class="form-control" placeholder="Mật khẩu mới...">
             </div>
          </div>
          <div class="col-6">
             <div class="form-group">
                <label for="confirm_password">Nhập lại mật khẩu</label>
                <input type="password" id="confirm_password" name="confirm_password" class="form-control"
-                  placeholder="Nhập lại mật khẩu...">
+                  placeholder="Nhập lại mật khẩu mới...">
                <?php echo form_error('confirm_password', $errors, '<span class="error">', '</span>') ?>
             </div>
          </div>
@@ -199,11 +197,13 @@ $old = getFlashData('old');
             <div class="form-group">
                <label for="about_content">Nội dung giới thiệu</label>
                <textarea name="about_content" id="about_content" class="form-control"
-                  placeholder="Nội dung giới thiệu..."><?php echo form_infor('about_content', $old) ?></textarea>
+                  placeholder="Nội dung giới thiệu..."><?php echo form_infor('about_content', $infor) ?></textarea>
             </div>
          </div>
       </div>
-      <button type="submit" class="btn btn-primary btn-lg">Thêm</a>
+      <input type="hidden" name='id' value="<?php echo $userId ?>">
+      <button type="submit" class="btn btn-primary btn-sm">Chỉnh sửa</button>
+      <a href="<?php echo getLinkAdmin('users')?>" type="submit" class="btn btn-success btn-sm">Quay lại</a>
    </form>
 </div>
 <hr>

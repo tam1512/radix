@@ -9,7 +9,7 @@ if(isGet()) {
       $userId = $body['id'];
       $userDetailRows = getRows("SELECT id FROM users WHERE id = $userId");
       if($userDetailRows > 0) {
-         $deleteToken = delete('logintoken', "userId = $userId");
+         $deleteToken = delete('login_token', "user_id = $userId");
          if($deleteToken) {
             $deleteUser = delete('users', "id = $userId");
             if($deleteUser) {
@@ -32,4 +32,4 @@ if(isGet()) {
       setFlashData('msg_type', 'danger');
    }
 }
-redirect('?module=users');
+redirect('admin/?module=users');

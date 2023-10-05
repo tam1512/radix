@@ -22,6 +22,8 @@ if(!defined('_INCODE')) die('Access denied...');
 <!-- ./wrapper -->
 
 <!-- jQuery -->
+
+
 <script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>plugins/jquery/jquery.min.js"></script>
 <!-- jQuery UI 1.11.4 -->
 <script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>plugins/jquery-ui/jquery-ui.min.js"></script>
