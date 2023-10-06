@@ -91,6 +91,7 @@ $old = getFlashData('old');
                      <input type="text" id="slug" name="slug" class="form-control" placeholder="Phân quyền..."
                         value="<?php echo old('slug', $old) ?>">
                      <?php echo form_error('slug', $errors, '<span class="error">', '</span>') ?>
+                     <p class="render-link"><b>Link: </b><span></span></p>
                   </div>
                   <div class="form-group">
                      <label for="icon">Icon</label>

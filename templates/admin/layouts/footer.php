@@ -61,6 +61,22 @@ $.widget.bridge('uibutton', $.ui.button)
 <script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/demo.js"></script>
+<!-- Lấy ra web host root và prefix link để hiển thị link ở slug -->
+<?php 
+   $body = getBody();
+   $module = null;
+   if(!empty($body['module'])) {
+      $module = $body['module'];
+   }
+?>
+
+<script type="text/javascript">
+let rootUrlAdmin = "<?php echo _WEB_HOST_ROOT_ADMIN.'/' ?>";
+let prefixLink = "<?php echo getPrefixLink($module) ?>"
+</script>
+
+<!-- custom.js for me -->
+<script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/custom.js"></script>
 </body>
 
 </html>
