@@ -63,7 +63,9 @@ if(!empty($queryToken)) {
       href="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets'; ?>/css/style.css?ver=<?php echo rand(); ?>">
    <!-- Google Font: Source Sans Pro -->
    <link href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,400i,700" rel="stylesheet">
-   <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+   <script type="text/javascript" src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/'?>ckeditor/ckeditor.js"></script>
+   <script type="text/javascript" src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/'?>ckfinder/ckfinder.js"></script>
 </head>
 
 <body class="hold-transition sidebar-mini layout-fixed">

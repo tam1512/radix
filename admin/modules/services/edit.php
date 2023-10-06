@@ -4,7 +4,7 @@ if(!defined('_INCODE')) die('Access denied...');
  * Chứa chức năng chỉnh sửa người dùng
  */
 $data = [
-   'title' => 'Chỉnh sửa tài khoản'
+   'title' => 'Chỉnh sửa dịch vụ'
 ];
 
    layout('header', 'admin', $data);
@@ -14,13 +14,13 @@ $data = [
  // Xử lý đăng ký
 
 if(isGet()) {
-   $groupId = trim(getBody()['id']);
+   $serviceId = trim(getBody()['id']);
    
-   if(!empty($groupId)) {
-      $defaultGroup = firstRaw("SELECT name, permission FROM groups WHERE id = '$groupId'");
-      setFlashData('defaultGroup', $defaultGroup);
+   if(!empty($serviceId)) {
+      $defaultService = firstRaw("SELECT name, slug, icon, description, content FROM services WHERE id = '$serviceId'");
+      setFlashData('defaultService', $defaultService);
    } else {
-      redirect("admin/?module=groups");
+      redirect("admin/?module=services");
    }
 }
 
@@ -32,40 +32,55 @@ if(isGet()) {
 
    // Lọc giá trị ban đầu
    $name = trim($body['name']);
-   $permission = trim($body['permission']);
-   $groupId = trim($body['id']);
+   $slug = trim($body['slug']);
+   $icon = trim($body['icon']);
+   $description = trim($body['description']);
+   $content = trim($body['content']);
+   $serviceId = trim($body['id']);
+   
    if(empty($name)) {
-      $errors['name']['required'] = 'Nhóm người dùng không được để trống';
+      $errors['name']['required'] = 'Tên nhóm không được để trống';
    }
 
-   if(empty($permission)) {
-      $errors['permission']['required'] = 'Phân quyền không được để trống';
+   if(empty($slug)) {
+      $errors['slug']['required'] = 'Đường dẫn tĩnh không được để trống';
    }
+
+   if(empty($icon)) {
+      $errors['icon']['required'] = 'Icon không được để trống';
+   } 
+
+   if(empty($content)) {
+      $errors['content']['required'] = 'Nội dung không được để trống';
+   } 
    
    if(empty($errors)) {
       // Không có lỗi xảy ra
       $dataUpdate = [
          'name' => $name,
-         'permission' => $permission,
+         'slug' => $slug,
+         'icon' => $icon,
+         'description' => $description,
+         'content' => $content,
          'update_at' => date('Y-m-d H:i:s'),
       ];
 
-      $updateStatus = update('groups', $dataUpdate, "id=$groupId");
+      $updateStatus = update('services', $dataUpdate, "id=$serviceId");
       if($updateStatus) {
-            setFlashData('msg', 'Chỉnh sửa nhóm người dùng thành công.');
+            setFlashData('msg', 'Chỉnh sửa dịch vụ thành công.');
             setFlashData('msg_type', 'success');
       } else {
          setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
          setFlashData('msg_type', 'danger');
       }
-      redirect('admin/?module=groups');
+      redirect('admin/?module=services');
       
    } else {
       setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
       setFlashData('msg_type', 'danger');
       setFlashData('errors', $errors);
       setFlashData('old', $body);
-      redirect("admin/?module=groups&action=edit&id=$groupId");
+      redirect("admin/?module=services&action=edit&id=$serviceId");
    }
 }
 
@@ -73,9 +88,9 @@ $msg = getFlashData('msg');
 $msgType = getFlashData('msg_type');
 $errors = getFlashData('errors');
 $old = getFlashData('old');
-$defaultGroup = getFlashData('defaultGroup');
-if(!empty($defaultGroup)) {
-   $old = $defaultGroup;
+$defaultService = getFlashData('defaultService');
+if(!empty($defaultService)) {
+   $old = $defaultService;
 }
  ?>
 
@@ -89,23 +104,49 @@ if(!empty($defaultGroup)) {
          <form action="" method="post">
             <div class="row">
                <div class="col">
-                  <div class="form-group">
-                     <label for="name">Tên nhóm người dùng</label>
-                     <input type="text" id="name" name="name" class="form-control" placeholder="Tên nhóm người dùng..."
+                  <div class="form-service">
+                     <label for="name">Tên dịch vụ</label>
+                     <input type="text" id="name" name="name" class="form-control" placeholder="Tên dịch vụ..."
                         value="<?php echo old('name', $old) ?>">
                      <?php echo form_error('name', $errors, '<span class="error">', '</span>') ?>
                   </div>
-                  <div class="form-group">
-                     <label for="permission">Phân quyền</label>
-                     <input type="text" id="permission" name="permission" class="form-control"
-                        placeholder="Phân quyền..." value="<?php echo old('permission', $old) ?>">
-                     <?php echo form_error('permission', $errors, '<span class="error">', '</span>') ?>
+                  <div class="form-service">
+                     <label for="slug">Đường dẫn tĩnh</label>
+                     <input type="text" id="slug" name="slug" class="form-control" placeholder="Phân quyền..."
+                        value="<?php echo old('slug', $old) ?>">
+                     <?php echo form_error('slug', $errors, '<span class="error">', '</span>') ?>
+                     <p class="render-link"><b>Link: </b><span></span></p>
                   </div>
-                  <input type="hidden" name="id" value="<?php echo $groupId ?>">
+                  <div class="form-service">
+                     <label for="icon">Icon</label>
+                     <div class="row ckfinder-service">
+                        <div class="col-9">
+                           <input type="text" id="icon" name="icon" class="form-control image-link"
+                              placeholder="Đường dẫn ảnh hoặc mã icon..." value="<?php echo old('icon', $old) ?>">
+                           <?php echo form_error('icon', $errors, '<span class="error">', '</span>') ?>
+                        </div>
+                        <div class="col-3">
+                           <button type="button" class="btn btn-success btn-block ckfinder-choose-image">Chọn
+                              ảnh</button>
+                        </div>
+                     </div>
+                  </div>
+                  <div class="form-service">
+                     <label for="description">Mô tả ngắn</label>
+                     <textarea name="description" id="description" placeholder="Mô tả ngắn..."
+                        class="form-control"><?php echo old('description', $old) ?></textarea>
+                     <?php echo form_error('description', $errors, '<span class="error">', '</span>') ?>
+                  </div>
+                  <div class="form-service">
+                     <label for="">Nội dung</label>
+                     <textarea name="content" class="form-control editor"><?php echo old('content', $old) ?></textarea>
+                     <?php echo form_error('content', $errors, '<span class="error">', '</span>') ?>
+                  </div>
+                  <input type="hidden" name="id" value="<?php echo $serviceId ?>">
                </div>
             </div>
             <button class="btn btn-primary" type="submit">Sửa</button>
-            <a href="<?php echo getLinkAdmin('groups') ?>" class="btn btn-success" type="submit">Quay lại</a>
+            <a href="<?php echo getLinkAdmin('services') ?>" class="btn btn-success" type="submit">Quay lại</a>
             <hr>
          </form>
       </div>

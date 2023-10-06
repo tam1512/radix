@@ -13,6 +13,8 @@ $data = [
 
  // Xử lý đăng ký
 
+ $userId = isLogin()['user_id'];
+
  if(isPost()) {
 
    //Validate form
@@ -31,34 +33,46 @@ $data = [
       $errors['name']['required'] = 'Tên nhóm không được để trống';
    }
 
-   if(empty($permission)) {
-      $errors['permission']['required'] = 'Phân quyền không được để trống';
+   if(empty($slug)) {
+      $errors['slug']['required'] = 'Đường dẫn tĩnh không được để trống';
+   }
+
+   if(empty($icon)) {
+      $errors['icon']['required'] = 'Icon không được để trống';
+   } 
+
+   if(empty($content)) {
+      $errors['content']['required'] = 'Nội dung không được để trống';
    } 
 
    if(empty($errors)) {
       // Không có lỗi xảy ra
       $dataInsert = [
          'name' => $name,
-         'permission' => $permission,
+         'slug' => $slug,
+         'icon' => $icon,
+         'description' => $description,
+         'content' => $content,
+         'user_id' => $userId,
          'create_at' => date('Y-m-d H:i:s'),
       ];
 
-      $insertStatus = insert('groups', $dataInsert);
+      $insertStatus = insert('services', $dataInsert);
       if($insertStatus) {
-            setFlashData('msg', 'Thêm nhóm tài khoản thành công.');
+            setFlashData('msg', 'Thêm dịch vụ thành công.');
             setFlashData('msg_type', 'success');
       } else {
         setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
          setFlashData('msg_type', 'danger'); 
       }
-      redirect('admin/?module=groups');
+      redirect('admin/?module=services');
       
    } else {
       setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
       setFlashData('msg_type', 'danger');
       setFlashData('errors', $errors);
       setFlashData('old', $body);
-      redirect('admin/?module=groups&action=add');
+      redirect('admin/?module=services&action=add');
    }
 }
 
@@ -95,25 +109,28 @@ $old = getFlashData('old');
                   </div>
                   <div class="form-group">
                      <label for="icon">Icon</label>
-                     <div class="row">
+                     <div class="row ckfinder-group">
                         <div class="col-9">
-                           <input type="text" id="icon" name="icon" class="form-control"
+                           <input type="text" id="icon" name="icon" class="form-control image-link"
                               placeholder="Đường dẫn ảnh hoặc mã icon..." value="<?php echo old('icon', $old) ?>">
                            <?php echo form_error('icon', $errors, '<span class="error">', '</span>') ?>
                         </div>
                         <div class="col-3">
-                           <button type="button" class="btn btn-success btn-block">Chọn ảnh</button>
+                           <button type="button" class="btn btn-success btn-block ckfinder-choose-image">Chọn
+                              ảnh</button>
                         </div>
                      </div>
                   </div>
                   <div class="form-group">
                      <label for="description">Mô tả ngắn</label>
                      <textarea name="description" id="description" placeholder="Mô tả ngắn..."
-                        class="form-control"></textarea>
+                        class="form-control"><?php echo old('description', $old) ?></textarea>
+                     <?php echo form_error('description', $errors, '<span class="error">', '</span>') ?>
                   </div>
                   <div class="form-group">
-                     <label for="content">Nội dung</label>
-                     <textarea name="content" id="content" class="form-control"></textarea>
+                     <label for="">Nội dung</label>
+                     <textarea name="content" class="form-control editor"><?php echo old('content', $old) ?></textarea>
+                     <?php echo form_error('content', $errors, '<span class="error">', '</span>') ?>
                   </div>
                </div>
             </div>

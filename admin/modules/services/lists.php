@@ -198,8 +198,8 @@ $msgType = getFlashData('msg_type');
             <tr>
                <th width="5%">STT</th>
                <th width="10%">Ảnh</th>
-               <th width="20%">Tên dịch vụ</th>
-               <th width="20%">Đăng bởi</th>
+               <th width="25%">Tên dịch vụ</th>
+               <th width="15%">Đăng bởi</th>
                <th width="15%">Thời gian</th>
                <th width="10%">Xem</th>
                <th width="10%">Sửa</th>
@@ -220,7 +220,15 @@ $msgType = getFlashData('msg_type');
                    echo isIcon($service['icon']) ? $service['icon'] : '<img src="'.$service['icon'].'" alt="img_service" width="80%">' 
                    ?>
                </td>
-               <td><?php echo $service['name'] ?></td>
+               <td class="d-flex">
+                  <div>
+                     <?php echo $service['name'] ?>
+                  </div>
+                  <div class="d-flex justify-content-end">
+                     <a href="<?php echo getLinkAdmin('services', 'duplicate', ['id' => $service['id']]) ?>"
+                        class="btn btn-danger btn-sm btn-duplicate ml-2">Nhân bản</a>
+                  </div>
+               </td>
                <td><a
                      href="<?php echo getLinkAdmin('services', "", ['user_id'=>$service['user_id']])?>"><?php echo $service['fullname']  ?></a>
                </td>
@@ -318,8 +326,6 @@ $msgType = getFlashData('msg_type');
       </nav>
    </div><!-- /.container-fluid -->
 </section>
-<script src="<?php echo _WEB_HOST_ROOT.'/templates/admin/assets/js/services/hidden_select.js' ?>"></script>
-<script src="<?php echo _WEB_HOST_ROOT.'/templates/admin/assets/js/services/modal_search.js' ?>"></script>
 <?php
    layout('footer', 'admin', $data);
 ?>

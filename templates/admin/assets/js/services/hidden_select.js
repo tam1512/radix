@@ -1,3 +1,3 @@
 var select = document.getElementById("select");
 var userId = document.getElementById("user_id");
-userId.value = select.value;
+if (select !== null && userId !== null) userId.value = select.value;

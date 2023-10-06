@@ -61,6 +61,15 @@ $.widget.bridge('uibutton', $.ui.button)
 <script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/pages/dashboard.js"></script>
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/demo.js"></script>
+
+<!-- Xử lý service modal search -->
+<script
+   src="<?php echo _WEB_HOST_ROOT.'/templates/admin/assets/js/services/hidden_select.js?ver=<?php echo rand() ?>' ?>">
+</script>
+<script
+   src="<?php echo _WEB_HOST_ROOT.'/templates/admin/assets/js/services/modal_search.js?ver=<?php echo rand() ?>' ?>">
+</script>
+
 <!-- Lấy ra web host root và prefix link để hiển thị link ở slug -->
 <?php 
    $body = getBody();
@@ -76,7 +85,7 @@ let prefixLink = "<?php echo getPrefixLink($module) ?>"
 </script>
 
 <!-- custom.js for me -->
-<script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/custom.js"></script>
+<script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/custom.js?ver=<?php echo rand() ?>"></script>
 </body>
 
 </html>

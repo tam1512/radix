@@ -1,7 +1,7 @@
 <?php
 if(!defined('_INCODE')) die('Access denied...');
 /**
- * Chứa chức năng xóa người dùng
+ * Chứa chức năng xóa dịch
  */
 if(isGet()) {
    $body = getBody();
@@ -18,7 +18,7 @@ if(isGet()) {
             setFlashData('msg_type', 'danger');
          }
       } else {
-         setFlashData('msg','Lỗi hệ thông. Vui lòng thử lại sau.');
+         setFlashData('msg','Dịch vụ không tồn tại');
          setFlashData('msg_type', 'danger');
       } 
    } else {

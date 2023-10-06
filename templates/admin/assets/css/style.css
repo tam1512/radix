@@ -13,3 +13,8 @@
 .profile {
   margin-left: auto;
 }
+
+.btn-duplicate {
+  padding: 0 4px;
+  min-width: 20px;
+}
