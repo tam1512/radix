@@ -1,6 +1,6 @@
 <?php 
    $data = [
-      'title' => 'Danh sách dịch vụ'
+      'title' => 'Danh sách trang'
    ];
 
    layout('header', 'admin', $data);
@@ -15,7 +15,7 @@ $filter = '';
 if(isGet()) {
    if(!empty(getBody()["keyword"])) {
       $keyword = trim(getBody()["keyword"]);
-      $filter .= " WHERE name LIKE '%$keyword%'";   
+      $filter .= " WHERE title LIKE '%$keyword%'";   
    }
 
    if(!empty(getBody()["user_id"])) {
@@ -31,14 +31,14 @@ if(isGet()) {
 
 // Xử lý phân trang
 
-// Số lượng dịch vụ
-$countRowServices = getRows("SELECT id FROM services $filter");
+// Số lượng trang
+$countRowPages = getRows("SELECT id FROM pages $filter");
 
-// Số lượng người dùng muốn hiển thị trên 1 trang
-$serviceOnPage = _SERVICE_ON_PAGE;
+// Số lượng trang muốn hiển thị trên 1 trang
+$pageOnPage = _PAGE_ON_PAGE;
 
 // Số lượng phân trang
-$numPage = ceil($countRowServices/$serviceOnPage);
+$numPage = ceil($countRowPages/$pageOnPage);
 
 // Giới hạn số lượng phân trang
 $limitPagination = _LIMIT_PAGINATION;
@@ -51,13 +51,13 @@ $limitPagination = _LIMIT_PAGINATION;
    } 
  }
 
-/** Thuật toán phân trang (page - 1) * serviceOnPage
+/** Thuật toán phân trang (page - 1) * pageOnPage
  * page = 1 => offset = 0
  * page = 2 => offset = 3
  * page = 3 => offset = 6
  */
-$offset = ($page - 1) * $serviceOnPage;
-$listserviceOnPage = getRaw("SELECT services.id, name, icon, users.fullname, services.create_at, user_id FROM services INNER JOIN users ON services.user_id = users.id $filter ORDER BY services.create_at DESC LIMIT $offset, $serviceOnPage");
+$offset = ($page - 1) * $pageOnPage;
+$listpageOnPage = getRaw("SELECT pages.id, title, users.fullname, pages.create_at, user_id FROM pages INNER JOIN users ON pages.user_id = users.id $filter ORDER BY pages.create_at DESC LIMIT $offset, $pageOnPage");
 
 
 
@@ -65,7 +65,7 @@ $listserviceOnPage = getRaw("SELECT services.id, name, icon, users.fullname, ser
 $queryStr = null;
 if(!empty($_SERVER["QUERY_STRING"])) {
    $queryStr = $_SERVER["QUERY_STRING"];
-   $queryStr = str_replace('module=services', '', $queryStr);
+   $queryStr = str_replace('module=pages', '', $queryStr);
    $queryStr = str_replace('page='.$page, '', $queryStr);
    $queryStr = trim($queryStr, '&');
    if(!empty($queryStr)) {
@@ -160,7 +160,7 @@ $msgType = getFlashData('msg_type');
                                     <td><?php echo $user['email'] ?></td>
                                     <td class="text-center">
                                        <a class="btn btn-success"
-                                          href="<?php echo !empty($keyword) ? getLinkAdmin('services', '', ['keyword'=>$keyword, 'user_id'=>$user["id"]]) : getLinkAdmin('services', '', ['user_id'=>$user["id"]]) ?>">Chọn</a>
+                                          href="<?php echo !empty($keyword) ? getLinkAdmin('pages', '', ['keyword'=>$keyword, 'user_id'=>$user["id"]]) : getLinkAdmin('pages', '', ['user_id'=>$user["id"]]) ?>">Chọn</a>
                                     </td>
                                  </tr>
                                  <?php 
@@ -175,7 +175,7 @@ $msgType = getFlashData('msg_type');
                         </div>
                         <div class="modal-footer">
                            <button type="button" class="btn btn-primary" data-dismiss="modal">Thoát</button>
-                           <a href="<?php echo getLinkAdmin('services') ?>" type="button" class="btn btn-danger">Hủy
+                           <a href="<?php echo getLinkAdmin('pages') ?>" type="button" class="btn btn-danger">Hủy
                               chọn</a>
                         </div>
                      </div>
@@ -190,15 +190,14 @@ $msgType = getFlashData('msg_type');
                <button type="submit" class="btn btn-primary">Tìm kiếm</button>
             </div>
          </div>
-         <input type="hidden" name="module" value="services">
+         <input type="hidden" name="module" value="pages">
       </form>
       <br>
       <table class="table table-bordered">
          <thead>
             <tr>
                <th width="5%">STT</th>
-               <th width="10%">Ảnh</th>
-               <th width="25%">Tên dịch vụ</th>
+               <th width="35%">Tiêu đề</th>
                <th width="15%">Đăng bởi</th>
                <th width="15%">Thời gian</th>
                <th width="10%">Xem</th>
@@ -208,42 +207,37 @@ $msgType = getFlashData('msg_type');
          </thead>
          <tbody>
             <?php 
-               if(!empty($listserviceOnPage)):
+               if(!empty($listpageOnPage)):
                   $count = 0;
-                  foreach($listserviceOnPage as $service):
+                  foreach($listpageOnPage as $pageItem):
                      $count++;
             ?>
             <tr>
                <td><?php echo $count ?></td>
                <td>
-                  <?php
-                   echo isIcon($service['icon']) ? $service['icon'] : '<img src="'.$service['icon'].'" alt="img_service" width="80%">' 
-                   ?>
-               </td>
-               <td>
-                  <?php echo $service['name'] ?>
-                  <a href="<?php echo getLinkAdmin('services', 'duplicate', ['id' => $service['id']]) ?>"
+                  <?php echo $pageItem['title'] ?>
+                  <a href="<?php echo getLinkAdmin('pages', 'duplicate', ['id' => $pageItem['id']]) ?>"
                      class="btn btn-danger btn-sm btn-duplicate ml-2">Nhân bản</a>
                </td>
                <td><a
-                     href="<?php echo getLinkAdmin('services', "", ['user_id'=>$service['user_id']])?>"><?php echo $service['fullname']  ?></a>
+                     href="<?php echo getLinkAdmin('pages', "", ['user_id'=>$pageItem['user_id']])?>"><?php echo $pageItem['fullname']  ?></a>
                </td>
-               <td><?php echo getDateFormat($service["create_at"], 'd/m/Y H:i:s') ?></td>
+               <td><?php echo getDateFormat($pageItem["create_at"], 'd/m/Y H:i:s') ?></td>
                <td class="text-center"><a class="btn btn-success" href="#">Xem</a></td>
                <td class="text-center">
                   <a class="btn btn-warning"
-                     href="<?php echo getLinkAdmin('services', 'edit', ['id' => $service['id']]) ?>">Sửa</a>
+                     href="<?php echo getLinkAdmin('pages', 'edit', ['id' => $pageItem['id']]) ?>">Sửa</a>
                </td>
                <td class="text-center">
                   <a class="btn btn-danger" onclick="return confirm('Bạn có chắc chắn muốn xóa?')"
-                     href="<?php echo getLinkAdmin('services', 'delete', ['id' => $service['id']]) ?>">Xóa</a>
+                     href="<?php echo getLinkAdmin('pages', 'delete', ['id' => $pageItem['id']]) ?>">Xóa</a>
                </td>
             </tr>
             <?php 
                endforeach; else:
             ?>
             <tr>
-               <td colspan="8" class="text-center alert alert-danger">Không có dịch vụ</td>
+               <td colspan="8" class="text-center alert alert-danger">Không có trang</td>
             </tr>
             <?php endif; ?>
          </tbody>
@@ -258,7 +252,7 @@ $msgType = getFlashData('msg_type');
                } else {
                   $prevPage = $page - 1;
                }
-               echo _WEB_HOST_ROOT_ADMIN.'?module=services'.$queryStr.'&page='.$prevPage;
+               echo _WEB_HOST_ROOT_ADMIN.'?module=pages'.$queryStr.'&page='.$prevPage;
             ?>">
                   Trước
                </a>
@@ -280,17 +274,17 @@ $msgType = getFlashData('msg_type');
             if($numPage <= $limitPagination) {
                for($i = 1; $i <= $numPage; $i++) {
                   if($page == $i) {
-                     echo '<li class="page-item active"><a class="page-link" href="'._WEB_HOST_ROOT_ADMIN.'?module=services'.$queryStr.'&page='.$i.'">'.$i.'</a></li>';
+                     echo '<li class="page-item active"><a class="page-link" href="'._WEB_HOST_ROOT_ADMIN.'?module=pages'.$queryStr.'&page='.$i.'">'.$i.'</a></li>';
                   } else {
-                     echo '<li class="page-item"><a class="page-link" href="'._WEB_HOST_ROOT_ADMIN.'?module=services'.$queryStr.'&page='.$i.'">'.$i.'</a></li>';
+                     echo '<li class="page-item"><a class="page-link" href="'._WEB_HOST_ROOT_ADMIN.'?module=pages'.$queryStr.'&page='.$i.'">'.$i.'</a></li>';
                   }
                }
             } else {
                for($i = $begin; $i <= $end; $i++) {
                   if($page == $i) {
-                     echo '<li class="page-item active"><a class="page-link" href="'._WEB_HOST_ROOT_ADMIN.'?module=services'.$queryStr.'&page='.$i.'">'.$i.'</a></li>';
+                     echo '<li class="page-item active"><a class="page-link" href="'._WEB_HOST_ROOT_ADMIN.'?module=pages'.$queryStr.'&page='.$i.'">'.$i.'</a></li>';
                   } else {
-                     echo '<li class="page-item"><a class="page-link" href="'._WEB_HOST_ROOT_ADMIN.'?module=services'.$queryStr.'&page='.$i.'">'.$i.'</a></li>';
+                     echo '<li class="page-item"><a class="page-link" href="'._WEB_HOST_ROOT_ADMIN.'?module=pages'.$queryStr.'&page='.$i.'">'.$i.'</a></li>';
                   }
                }
             }
@@ -305,7 +299,7 @@ $msgType = getFlashData('msg_type');
             } else {
                $nextPage = $page + 1;
             }
-            echo _WEB_HOST_ROOT_ADMIN.'?module=services'.$queryStr.'&page='.$nextPage;
+            echo _WEB_HOST_ROOT_ADMIN.'?module=pages'.$queryStr.'&page='.$nextPage;
          ?>">
                   Sau
                </a>
@@ -313,7 +307,7 @@ $msgType = getFlashData('msg_type');
             <li class="page-item">
                <a class="page-link <?php echo ($page == $numPage) ? 'disabled' : '' ?>" href="
          <?php 
-               echo _WEB_HOST_ROOT_ADMIN.'?module=services'.$queryStr.'&page='.$numPage;
+               echo _WEB_HOST_ROOT_ADMIN.'?module=pages'.$queryStr.'&page='.$numPage;
             ?>">
                   Trang cuối
                </a>

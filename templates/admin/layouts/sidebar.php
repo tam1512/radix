@@ -119,6 +119,32 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                   </li>
                </ul>
             </li>
+            <li class="nav-item has-treeview <?php echo activeMenuSidebar('pages', '', true) ? 'menu-open' : false ?>">
+               <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=pages" ?>"
+                  class="nav-link <?php echo activeMenuSidebar('pages', '', true) ? 'active' : false ?>">
+                  <i class="nav-icon fa fa-file"></i>
+                  <p>
+                     Quản lý trang
+                     <i class="right fas fa-angle-left"></i>
+                  </p>
+               </a>
+               <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=pages" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('pages', '', ['edit', 'delete']) ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách</p>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=pages&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('pages', 'add') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm mới</p>
+                     </a>
+                  </li>
+               </ul>
+            </li>
             <li class="nav-item has-treeview <?php echo activeMenuSidebar('blog', '', true) ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blog" ?>"
                   class="nav-link <?php echo activeMenuSidebar('blog', '', true) ? 'active' : false ?>">

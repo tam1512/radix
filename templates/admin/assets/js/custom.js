@@ -31,7 +31,7 @@ function toSlug(str) {
 function getLinkSlug(renderLink, slug) {
   renderLink.querySelector(
     "span"
-  ).innerHTML = `<a href="${rootUrlAdmin}${slug}" target="_blank">${rootUrlAdmin}${slug}</a>`;
+  ).innerHTML = `<a href="${rootUrlAdmin}${slug}" target="_blank">${rootUrlAdmin}${prefixLink}/${slug}</a>`;
 }
 
 //Xử lý hiển thị đường dẫn đúng sau khi tạo thành công
