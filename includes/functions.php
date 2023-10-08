@@ -272,30 +272,38 @@ function autoRemoveLoginToken() {
  * 2. module và action đúng sẽ active child của action đó
  * 3. nếu không có module sẽ active mặc định
  * 4. nếu child có sub, truyền vào tham số sub là mảng, các action = với một trong các tham số sẽ được tính là đúng
+ * 5. nếu một module nằm trong 1 module khác sử dụng biến $moduleSub để kích hoạt
  */
-function activeMenuSidebar($module, $action='', $sub = false) { //service add
-  if(empty(getBody()['module'])) {
-    if(empty($module)) {
-      return true;
-    }
+function activeMenuSidebar($module, $action='', $sub = false, $moduleSub = '') { //service add
+  if(empty(getBody()['module']) && empty($module)) {
+    return true;
   } else {
     if(!empty(getBody()['action'])) {
-      if(getBody()["module"] == $module && getBody()["action"] == $action) {
-        return true;
-      }
-      if(getBody()["module"] == $module && $sub && !is_array($sub)) {
-        return true;
-      }
-      if(!empty($sub) && is_array($sub)) {
-        foreach($sub as $item) {
-          if(getBody()["module"] == $module && getBody()["action"] == $item) {
-            return true;
+      if(!empty($module)) {
+        if(strpos(getBody()['module'], $module) !== false && getBody()["action"] == $action) {
+          return true;
+        }
+        if(strpos(getBody()['module'], $module) !== false && $sub && !is_array($sub)) {
+          return true;
+        }
+        if(!empty($sub) && is_array($sub)) {
+          foreach($sub as $item) {
+            if(strpos(getBody()['module'], $module) !== false && getBody()["action"] == $item) {
+              return true;
+            }
           }
         }
       }
     } else {
-      if(getBody()["module"] == $module && empty($action)) {
-        return true;
+      if(!empty(getBody()['module']) && !empty($module)) {
+        if(strpos(getBody()['module'], $module) !== false && empty($action)) {
+          return true;
+        }
+      }
+      if(!empty(getBody()["module"])) {
+        if(getBody()['module'] == $moduleSub) {
+          return true;
+        }
       }
     }
   }

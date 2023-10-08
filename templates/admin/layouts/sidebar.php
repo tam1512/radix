@@ -145,6 +145,40 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                   </li>
                </ul>
             </li>
+            <li
+               class="nav-item has-treeview <?php echo activeMenuSidebar('portfolios', '', true, 'portfolio_categories') ? 'menu-open' : false ?>">
+               <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=portfolios" ?>"
+                  class="nav-link <?php echo activeMenuSidebar('portfolios', '', true, 'portfolio_categories') ? 'active' : false ?>">
+                  <i class="nav-icon fa fa-file"></i>
+                  <p>
+                     Quản lý dự án
+                     <i class="right fas fa-angle-left"></i>
+                  </p>
+               </a>
+               <ul class="nav nav-treeview">
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=portfolios" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('portfolios', '', ['edit', 'delete']) ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh sách</p>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=portfolios&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('portfolios', 'add') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm mới</p>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=portfolio_categories" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('portfolio_categories') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Danh mục sản phẩm</p>
+                     </a>
+                  </li>
+               </ul>
+            </li>
             <li class="nav-item has-treeview <?php echo activeMenuSidebar('blog', '', true) ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blog" ?>"
                   class="nav-link <?php echo activeMenuSidebar('blog', '', true) ? 'active' : false ?>">
