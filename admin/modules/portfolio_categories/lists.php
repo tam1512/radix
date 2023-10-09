@@ -9,12 +9,20 @@
 
 // Xử lý tìm kiếm
 $filter = '';
-if(isGet()) {
-   if(!empty(getBody()["keyword"])) {
-      $keyword = trim(getBody()["keyword"]);
-      $filter .= " WHERE name LIKE '%$keyword%'";   
-   }
+$body = getBody('get');
+if(!empty($body["keyword"])) {
+   $keyword = trim($body["keyword"]);
+   $filter .= " WHERE name LIKE '%$keyword%'";   
 }
+
+if(!empty($body["view"])) {
+   $view = $body["view"];
+}
+
+if(!empty($body["id"])) {
+   $id = $body["id"];
+}
+
 
 // Xử lý phân trang
 
@@ -44,7 +52,7 @@ $limitPagination = _LIMIT_PAGINATION;
  * page = 3 => offset = 6
  */
 $offset = ($page - 1) * $categoryOnPage;
-$listcategoryOnPage = getRaw("SELECT id, name, create_at, user_id FROM portfolio_categories $filter ORDER BY create_at DESC LIMIT $offset, $categoryOnPage");
+$listCategoryOnPage = getRaw("SELECT id, name, create_at, user_id, (SELECT count(portfolios.id) FROM portfolios WHERE portfolios.category_id = portfolio_categories.id) as portfolios_count FROM portfolio_categories $filter ORDER BY create_at DESC LIMIT $offset, $categoryOnPage");
 
 
 
@@ -72,13 +80,13 @@ $msgType = getFlashData('msg_type');
       ?>
       <div class="row">
          <div class="col-6">
-            <h4>Thêm danh mục</h4>
-            <form action="">
-               <div class="form-group">
-                  <input type="text" class="form-control" placeholder="Tên danh mục...">
-               </div>
-               <button type="submit" class="btn btn-success">Thêm</button>
-            </form>
+            <?php
+               if(!empty($view) && !empty($id)) {
+                  require_once("$view.php");
+               } else {
+                  require_once('add.php');
+               }  
+            ?>
          </div>
          <div class="col-6">
             <form action="" method="get">
@@ -108,25 +116,26 @@ $msgType = getFlashData('msg_type');
                </thead>
                <tbody>
                   <?php 
-               if(!empty($listcategoryOnPage)):
+               if(!empty($listCategoryOnPage)):
                   $count = 0;
-                  foreach($listcategoryOnPage as $portfolioCategories):
+                  foreach($listCategoryOnPage as $portfolioCategories):
                      $count++;
             ?>
                   <tr>
                      <td><?php echo $count ?></td>
                      <td>
                         <a
-                           href="<?php echo getLinkAdmin('portfolio_categories', 'edit', ['id' => $portfolioCategories['id']]) ?>">
-                           <?php echo $portfolioCategories['name'] ?>
+                           href="<?php echo getLinkAdmin('portfolio_categories', 'lists', ['id' => $portfolioCategories['id'], 'view' => 'edit']) ?>">
+                           <?php echo $portfolioCategories['name']?>
                         </a>
+                        <p><?php echo '('.$portfolioCategories['portfolios_count'].')'?></p>
                         <a href="<?php echo getLinkAdmin('portfolio_categories', 'duplicate', ['id' => $portfolioCategories['id']]) ?>"
                            class="btn btn-danger btn-sm btn-duplicate ml-2">Nhân bản</a>
                      </td>
                      <td><?php echo getDateFormat($portfolioCategories["create_at"], 'd/m/Y H:i:s') ?></td>
                      <td class="text-center">
                         <a class="btn btn-warning"
-                           href="<?php echo getLinkAdmin('portfolio_categories   ', 'edit', ['id' => $portfolioCategories['id']]) ?>"><i
+                           href="<?php echo getLinkAdmin('portfolio_categories', 'lists', ['id' => $portfolioCategories['id'], 'view' => 'edit']) ?>"><i
                               class="fa fa-edit"></i></a>
                      </td>
                      <td class="text-center">
