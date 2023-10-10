@@ -301,6 +301,7 @@ function activeMenuSidebar($module, $action='', $sub = false, $moduleSub = '') {
         }
       }
       if(!empty(getBody()["module"])) {
+        // echo getBody()["module"];
         if(getBody()['module'] == $moduleSub) {
           return true;
         }

@@ -125,7 +125,7 @@ $msgType = getFlashData('msg_type');
                      <td><?php echo $count ?></td>
                      <td>
                         <a
-                           href="<?php echo getLinkAdmin('portfolio_categories', 'lists', ['id' => $portfolioCategories['id'], 'view' => 'edit']) ?>">
+                           href="<?php echo getLinkAdmin('portfolio_categories', '', ['id' => $portfolioCategories['id'], 'view' => 'edit']) ?>">
                            <?php echo $portfolioCategories['name']?>
                         </a>
                         <p><?php echo '('.$portfolioCategories['portfolios_count'].')'?></p>
@@ -135,7 +135,7 @@ $msgType = getFlashData('msg_type');
                      <td><?php echo getDateFormat($portfolioCategories["create_at"], 'd/m/Y H:i:s') ?></td>
                      <td class="text-center">
                         <a class="btn btn-warning"
-                           href="<?php echo getLinkAdmin('portfolio_categories', 'lists', ['id' => $portfolioCategories['id'], 'view' => 'edit']) ?>"><i
+                           href="<?php echo getLinkAdmin('portfolio_categories', '', ['id' => $portfolioCategories['id'], 'view' => 'edit']) ?>"><i
                               class="fa fa-edit"></i></a>
                      </td>
                      <td class="text-center">

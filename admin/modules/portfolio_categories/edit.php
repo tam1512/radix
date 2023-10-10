@@ -76,6 +76,6 @@ if(!empty($defaultCategory)) {
    </div>
    <input type="hidden" name="id" value="<?php echo $categoryId ?>">
    <button class="btn btn-primary" type="submit">Cập nhật</button>
-   <a href="<?php echo getLinkAdmin('pages') ?>" class="btn btn-success" type="submit">Quay lại</a>
+   <a href="<?php echo getLinkAdmin('portfolio_categories') ?>" class="btn btn-success" type="submit">Quay lại</a>
    <hr>
 </form>
