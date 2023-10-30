@@ -7,7 +7,7 @@ if(isGet()) {
    $body = getBody();
    if(!empty($body['id'])) {
       $categoryId = $body['id'];
-      $categoryDetail = firstRaw("SELECT * FROM portfolio_categories WHERE id = $categoryId");
+      $categoryDetail = firstRaw("SELECT * FROM blog_categories WHERE id = $categoryId");
       if(!empty($categoryDetail)) {
          $duplicate = $categoryDetail['duplicate'];
          $duplicate++;
@@ -15,15 +15,16 @@ if(isGet()) {
          $categoryDetail['user_id'] = isLogin()['user_id'];
          $categoryDetail['create_at'] = date('Y-m-d H:i:s');
          $categoryDetail['name'] .="($duplicate)"; 
+         $categoryDetail['slug'] .="$duplicate"; 
 
          unset($categoryDetail['update_at']);
          unset($categoryDetail['id']);
 
-         $insertStatus = insert('portfolio_categories', $categoryDetail);
+         $insertStatus = insert('blog_categories', $categoryDetail);
          if($insertStatus) {
             setFlashData('msg','Nhân bản thành công');
             setFlashData('msg_type', 'success');
-            update('portfolio_categories', [
+            update('blog_categories', [
                'duplicate' => $duplicate
             ], 'id='.$categoryId);
          } else {
@@ -39,4 +40,4 @@ if(isGet()) {
       setFlashData('msg_type', 'danger');
    }
 }
-redirect('admin/?module=portfolio_categories');
+redirect('admin/?module=blog_categories');

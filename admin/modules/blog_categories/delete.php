@@ -7,14 +7,14 @@ if(isGet()) {
    $body = getBody();
    if(!empty($body['id'])) {
       $categoryId = $body['id'];
-      $categoryDetailRows = getRows("SELECT id FROM portfolio_categories WHERE id = $categoryId");
+      $categoryDetailRows = getRows("SELECT id FROM blog_categories WHERE id = $categoryId");
       if($categoryDetailRows > 0) {
-         $portfolioRows = getRows("SELECT id FROM portfolios WHERE category_id = $categoryId");
-         if($portfolioRows > 0) {
-            setFlashData('msg',"Không thể xóa danh mục, còn $portfolioRows dự án trong nhóm này");
+         $blogRows = getRows("SELECT id FROM blogs WHERE category_id = $categoryId");
+         if($blogRows > 0) {
+            setFlashData('msg',"Không thể xóa danh mục, còn $blogRows dự án trong nhóm này");
             setFlashData('msg_type', 'danger');
          } else {
-            $deleteGroup = delete('portfolio_categories', "id = $categoryId");
+            $deleteGroup = delete('blog_categories', "id = $categoryId");
             if($deleteGroup) {
                setFlashData('msg','Xóa thành công');
                setFlashData('msg_type', 'success');
@@ -32,4 +32,4 @@ if(isGet()) {
       setFlashData('msg_type', 'danger');
    }
 }
-redirect('admin/?module=portfolio_categories');
+redirect('admin/?module=blog_categories');

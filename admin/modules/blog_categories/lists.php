@@ -129,6 +129,8 @@ $msgType = getFlashData('msg_type');
                         <p><?php echo '('.$portfolioCategories['blogs_count'].')'?></p>
                         <a href="<?php echo getLinkAdmin('blog_categories', 'duplicate', ['id' => $portfolioCategories['id']]) ?>"
                            class="btn btn-danger btn-sm btn-duplicate ml-2">Nhân bản</a>
+                        <a href="<?php echo getLinkAdmin('blog_categories', 'seen', ['id' => $portfolioCategories['id']]) ?>"
+                           class="btn btn-success btn-sm btn-duplicate ml-2">Xem</a>
                      </td>
                      <td><?php echo getDateFormat($portfolioCategories["create_at"], 'd/m/Y H:i:s') ?></td>
                      <td class="text-center">
