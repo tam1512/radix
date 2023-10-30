@@ -6,32 +6,33 @@ if(!defined('_INCODE')) die('Access denied...');
 if(isGet()) {
    $body = getBody();
    if(!empty($body['id'])) {
-      $serviceId = $body['id'];
-      $serviceDetail = firstRaw("SELECT * FROM services WHERE id = $serviceId");
-      if(!empty($serviceDetail)) {
-         $duplicate = $serviceDetail['duplicate'];
+      $portfolioId = $body['id'];
+      $portfolioDetail = firstRaw("SELECT * FROM portfolios WHERE id = $portfolioId");
+      if(!empty($portfolioDetail)) {
+         $duplicate = $portfolioDetail['duplicate'];
          $duplicate++;
-         $serviceDetail['duplicate'] = 0;
-         $serviceDetail['user_id'] = isLogin()['user_id'];
-         $serviceDetail['create_at'] = date('Y-m-d H:i:s');
-         $serviceDetail['name'] .="($duplicate)"; 
+         $portfolioDetail['duplicate'] = 0;
+         $portfolioDetail['user_id'] = isLogin()['user_id'];
+         $portfolioDetail['create_at'] = date('Y-m-d H:i:s');
+         $portfolioDetail['name'] .="($duplicate)"; 
+         $portfolioDetail['slug'] .="$duplicate"; 
 
-         unset($serviceDetail['update_at']);
-         unset($serviceDetail['id']);
+         unset($portfolioDetail['update_at']);
+         unset($portfolioDetail['id']);
 
-         $insertStatus = insert('services', $serviceDetail);
+         $insertStatus = insert('portfolios', $portfolioDetail);
          if($insertStatus) {
             setFlashData('msg','Nhân bản thành công');
             setFlashData('msg_type', 'success');
-            update('services', [
+            update('portfolios', [
                'duplicate' => $duplicate
-            ], 'id='.$serviceId);
+            ], 'id='.$portfolioId);
          } else {
             setFlashData('msg','Lỗi hệ thống. Vui lòng thử lại sau!');
             setFlashData('msg_type', 'danger');
          }
       } else {
-         setFlashData('msg','Dịch vụ không tồn tại');
+         setFlashData('msg','Dự án không tồn tại');
          setFlashData('msg_type', 'danger');
       }
    } else {
@@ -39,4 +40,4 @@ if(isGet()) {
       setFlashData('msg_type', 'danger');
    }
 }
-redirect('admin/?module=services');
+redirect('admin/?module=portfolios');

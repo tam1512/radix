@@ -88,13 +88,13 @@ $old = getFlashData('old');
                <div class="col">
                   <div class="form-group">
                      <label for="name">Tiêu đề</label>
-                     <input type="text" id="name" name="title" class="form-control" placeholder="Tiêu đề..."
+                     <input type="text" id="name" name="title" class="form-control slug" placeholder="Tiêu đề..."
                         value="<?php echo old('title', $old) ?>">
                      <?php echo form_error('title', $errors, '<span class="error">', '</span>') ?>
                   </div>
                   <div class="form-group">
                      <label for="slug">Đường dẫn tĩnh</label>
-                     <input type="text" id="slug" name="slug" class="form-control" placeholder="Phân quyền..."
+                     <input type="text" id="slug" name="slug" class="form-control" placeholder="Đường dẫn tĩnh..."
                         value="<?php echo old('slug', $old) ?>">
                      <?php echo form_error('slug', $errors, '<span class="error">', '</span>') ?>
                      <p class="render-link"><b>Link: </b><span></span></p>
