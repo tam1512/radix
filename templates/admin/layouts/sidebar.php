@@ -179,82 +179,39 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                   </li>
                </ul>
             </li>
-            <li class="nav-item has-treeview <?php echo activeMenuSidebar('blog', '', true) ? 'menu-open' : false ?>">
-               <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blog" ?>"
-                  class="nav-link <?php echo activeMenuSidebar('blog', '', true) ? 'active' : false ?>">
-                  <i class="nav-icon fas fa-tachometer-alt"></i>
+            <li
+               class="nav-item has-treeview <?php echo activeMenuSidebar('blogs', '', true, 'blog_categories') ? 'menu-open' : false ?>">
+               <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blogs" ?>"
+                  class="nav-link <?php echo activeMenuSidebar('blogs', '', true, 'blog_categories') ? 'active' : false ?>">
+                  <i class="nav-icon fa fa-file"></i>
                   <p>
-                     Danh mục Blog
+                     Quản lý blog
                      <i class="right fas fa-angle-left"></i>
                   </p>
                </a>
                <ul class="nav nav-treeview">
                   <li class="nav-item">
-                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blog" ?>"
-                        class="nav-link <?php echo activeMenuSidebar('blog', '', ['edit', 'delete']) ? 'active' : false ?>">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blogs" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('blogs', '', ['edit', 'delete']) ? 'active' : false ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Danh sách</p>
                      </a>
                   </li>
                   <li class="nav-item">
-                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blog&action=add" ?>"
-                        class="nav-link <?php echo activeMenuSidebar('blog', 'add') ? 'active' : false ?>">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blogs&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('blogs', 'add') ? 'active' : false ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Thêm mới</p>
                      </a>
                   </li>
-               </ul>
-            </li>
-            <li class="nav-item has-treeview">
-               <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-copy"></i>
-                  <p>
-                     Quản lý Blog
-                     <i class="fas fa-angle-left right"></i>
-                     <span class="badge badge-info right">2</span>
-                  </p>
-               </a>
-               <ul class="nav nav-treeview">
                   <li class="nav-item">
-                     <a href="#" class="nav-link">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blog_categories" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('blog_categories') ? 'active' : false ?>">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Danh sách</p>
+                        <p>Danh mục blog</p>
                      </a>
                   </li>
-                  <li class="nav-item">
-                     <a href="#" class="nav-link">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Thêm mới</p>
-                     </a>
-                  </li>
-
                </ul>
-            </li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  <i class="nav-icon fas fa-th"></i>
-                  <p>
-                     Widgets
-                     <span class="right badge badge-danger">New</span>
-                  </p>
-               </a>
-            </li>
-            <li class="nav-header">EXAMPLES</li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  <i class="nav-icon far fa-calendar-alt"></i>
-                  <p>
-                     Calendar
-                  </p>
-               </a>
-            </li>
-
-            <li class="nav-header">LABELS</li>
-            <li class="nav-item">
-               <a href="#" class="nav-link">
-                  <i class="nav-icon far fa-circle text-danger"></i>
-                  <p class="text">Important</p>
-               </a>
             </li>
          </ul>
       </nav>

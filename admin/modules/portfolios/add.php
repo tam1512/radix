@@ -4,7 +4,7 @@ if(!defined('_INCODE')) die('Access denied...');
  * Chứa chức năng thêm người dùng
  */
 $data = [
-   'title' => 'Thêm dịch vụ'
+   'title' => 'Thêm dự án'
 ];
 
    layout('header', 'admin', $data);
@@ -15,19 +15,22 @@ $data = [
 
  $userId = isLogin()['user_id'];
 
+ $listAllCates = getRaw("SELECT id, name FROM portfolio_categories");
  if(isPost()) {
 
    //Validate form
-   $body = getBody(); //lấy tất cả dữ liệu trong form
+   $body = getBody('post'); //lấy tất cả dữ liệu trong form
 
    $errors = []; // mãng lưu trữ các lỗi
 
    // Lọc giá trị ban đầu
    $name = trim($body['name']);
    $slug = trim($body['slug']);
-   $icon = trim($body['icon']);
+   $thumbnail = trim($body['thumbnail']);
    $description = trim($body['description']);
    $content = trim($body['content']);
+   $cateId = trim($body['cate_id']);
+   $video = trim($body['video']);
 
    if(empty($name)) {
       $errors['name']['required'] = 'Tên nhóm không được để trống';
@@ -37,8 +40,16 @@ $data = [
       $errors['slug']['required'] = 'Đường dẫn tĩnh không được để trống';
    }
 
-   if(empty($icon)) {
-      $errors['icon']['required'] = 'Icon không được để trống';
+   if(empty($thumbnail)) {
+      $errors['thumbnail']['required'] = 'Thumbnail không được để trống';
+   }
+
+   if(empty($video)) {
+      $errors['video']['required'] = 'Video không được để trống';
+   }
+
+   if(empty($cateId)) {
+      $errors['cate_id']['required'] = 'Vui lòng chọn danh mục sản phẩm';
    } 
 
    if(empty($content)) {
@@ -50,29 +61,31 @@ $data = [
       $dataInsert = [
          'name' => $name,
          'slug' => $slug,
-         'icon' => $icon,
+         'thumbnail' => $thumbnail,
          'description' => $description,
          'content' => $content,
          'user_id' => $userId,
+         'category_id' => $cateId,
+         'video' => $video,
          'create_at' => date('Y-m-d H:i:s'),
       ];
 
-      $insertStatus = insert('services', $dataInsert);
+      $insertStatus = insert('portfolios', $dataInsert);
       if($insertStatus) {
-            setFlashData('msg', 'Thêm dịch vụ thành công.');
+            setFlashData('msg', 'Thêm dự án thành công.');
             setFlashData('msg_type', 'success');
       } else {
         setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
          setFlashData('msg_type', 'danger'); 
       }
-      redirect('admin/?module=services');
+      redirect('admin/?module=portfolios');
       
    } else {
       setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
       setFlashData('msg_type', 'danger');
       setFlashData('errors', $errors);
       setFlashData('old', $body);
-      redirect('admin/?module=services&action=add');
+      redirect('admin/?module=portfolios&action=add');
    }
 }
 
@@ -80,7 +93,6 @@ $msg = getFlashData('msg');
 $msgType = getFlashData('msg_type');
 $errors = getFlashData('errors');
 $old = getFlashData('old');
-
  ?>
 
 <div class="container">
@@ -95,31 +107,57 @@ $old = getFlashData('old');
             <div class="row">
                <div class="col">
                   <div class="form-group">
-                     <label for="name">Tên dịch vụ</label>
-                     <input type="text" id="name" name="name" class="form-control" placeholder="Tên dịch vụ..."
+                     <label for="name">Tên dự án</label>
+                     <input type="text" id="name" name="name" class="form-control" placeholder="Tên dự án..."
                         value="<?php echo old('name', $old) ?>">
                      <?php echo form_error('name', $errors, '<span class="error">', '</span>') ?>
                   </div>
                   <div class="form-group">
+                     <label for="cate_id">Danh mục dự án</label>
+                     <select name="cate_id" id="cate_id" class="form-control">
+                        <option value="0">Chọn danh mục</option>
+                        <?php 
+                           if(!empty($listAllCates)):
+                              foreach($listAllCates as $cate):
+                        ?>
+                        <option value="<?php echo $cate['id'] ?>"
+                           <?php echo (!empty($old['cate_id']) && $old['cate_id'] == $cate['id']) ? "selected" : false ?>>
+                           <?php echo $cate['name'] ?>
+                        </option>
+                        <?php 
+                              endforeach;
+                           endif;
+                        ?>
+                     </select>
+                     <?php echo form_error('cate_id', $errors, '<span class="error">', '</span>') ?>
+                  </div>
+                  <div class="form-group">
                      <label for="slug">Đường dẫn tĩnh</label>
-                     <input type="text" id="slug" name="slug" class="form-control" placeholder="Phân quyền..."
+                     <input type="text" id="slug" name="slug" class="form-control" placeholder="Đường dẫn tĩnh..."
                         value="<?php echo old('slug', $old) ?>">
                      <?php echo form_error('slug', $errors, '<span class="error">', '</span>') ?>
                      <p class="render-link"><b>Link: </b><span></span></p>
                   </div>
                   <div class="form-group">
-                     <label for="icon">Icon</label>
+                     <label for="thumbnail">Thumbnail</label>
                      <div class="row ckfinder-group">
                         <div class="col-9">
-                           <input type="text" id="icon" name="icon" class="form-control image-link"
-                              placeholder="Đường dẫn ảnh hoặc mã icon..." value="<?php echo old('icon', $old) ?>">
-                           <?php echo form_error('icon', $errors, '<span class="error">', '</span>') ?>
+                           <input type="text" id="thumbnail" name="thumbnail" class="form-control image-link"
+                              placeholder="Đường dẫn ảnh hoặc mã thumbnail..."
+                              value="<?php echo old('thumbnail', $old) ?>">
+                           <?php echo form_error('thumbnail', $errors, '<span class="error">', '</span>') ?>
                         </div>
                         <div class="col-3">
                            <button type="button" class="btn btn-success btn-block ckfinder-choose-image">Chọn
                               ảnh</button>
                         </div>
                      </div>
+                  </div>
+                  <div class="form-group">
+                     <label for="video">Video</label>
+                     <input type="url" id="video" name="video" class="form-control" placeholder="Đường dẫn video..."
+                        value="<?php echo old('video', $old) ?>">
+                     <?php echo form_error('video', $errors, '<span class="error">', '</span>') ?>
                   </div>
                   <div class="form-group">
                      <label for="description">Mô tả ngắn</label>

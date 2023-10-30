@@ -36,7 +36,6 @@ if(!empty($_GET["action"])) {
 }
 
 $path = "./modules/$module/$action.php";
-
 // nếu file tồn tại thì hiển thị lên index.php
 if(file_exists($path)) {
    require_once($path);

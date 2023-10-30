@@ -1,43 +1,43 @@
 <?php
 if(!defined('_INCODE')) die('Access denied...');
 /**
- * Chứa chức năng chỉnh sửa người dùng
+ * Chứa chức năng thêm người dùng
  */
 $data = [
-   'title' => 'Chỉnh sửa dịch vụ'
+   'title' => 'Sửa thông tin dự án'
 ];
 
    layout('header', 'admin', $data);
    layout('sidebar', 'admin', $data);
-   layout('breadcrumb', 'admin', $data);  
+   layout('breadcrumb', 'admin', $data);
 
  // Xử lý đăng ký
 
-if(isGet()) {
-   $serviceId = trim(getBody()['id']);
-   
-   if(!empty($serviceId)) {
-      $defaultService = firstRaw("SELECT name, slug, icon, description, content FROM services WHERE id = '$serviceId'");
-      setFlashData('defaultService', $defaultService);
-   } else {
-      redirect("admin/?module=services");
-   }
-}
+ $userId = isLogin()['user_id'];
 
+ $listAllCates = getRaw("SELECT id, name FROM portfolio_categories");
+ if(isGet()) {
+    $id = getBody("get")['id'];
+   $defaultPortfolio = firstRaw("SELECT * FROM portfolios WHERE id = $id");
+   setFlashData('defaultPortfolio', $defaultPortfolio);
+ }
  if(isPost()) {
+
    //Validate form
-   $body = getBody(); //lấy tất cả dữ liệu trong form
+   $body = getBody('post'); //lấy tất cả dữ liệu trong form
 
    $errors = []; // mãng lưu trữ các lỗi
 
    // Lọc giá trị ban đầu
+   $id = trim($body['id']);
    $name = trim($body['name']);
    $slug = trim($body['slug']);
-   $icon = trim($body['icon']);
+   $thumbnail = trim($body['thumbnail']);
    $description = trim($body['description']);
    $content = trim($body['content']);
-   $serviceId = trim($body['id']);
-   
+   $cateId = trim($body['category_id']);
+   $video = trim($body['video']);
+
    if(empty($name)) {
       $errors['name']['required'] = 'Tên nhóm không được để trống';
    }
@@ -46,41 +46,52 @@ if(isGet()) {
       $errors['slug']['required'] = 'Đường dẫn tĩnh không được để trống';
    }
 
-   if(empty($icon)) {
-      $errors['icon']['required'] = 'Icon không được để trống';
+   if(empty($thumbnail)) {
+      $errors['thumbnail']['required'] = 'Thumbnail không được để trống';
+   }
+
+   if(empty($video)) {
+      $errors['video']['required'] = 'Video không được để trống';
+   }
+
+   if(empty($cateId)) {
+      $errors['category_id']['required'] = 'Vui lòng chọn danh mục sản phẩm';
    } 
 
    if(empty($content)) {
       $errors['content']['required'] = 'Nội dung không được để trống';
    } 
-   
+
    if(empty($errors)) {
       // Không có lỗi xảy ra
       $dataUpdate = [
          'name' => $name,
          'slug' => $slug,
-         'icon' => $icon,
+         'thumbnail' => $thumbnail,
          'description' => $description,
          'content' => $content,
+         'user_id' => $userId,
+         'category_id' => $cateId,
+         'video' => $video,
          'update_at' => date('Y-m-d H:i:s'),
       ];
 
-      $updateStatus = update('services', $dataUpdate, "id=$serviceId");
+      $updateStatus = update('portfolios', $dataUpdate, "id = $id");
       if($updateStatus) {
-            setFlashData('msg', 'Chỉnh sửa dịch vụ thành công.');
+            setFlashData('msg', 'Sửa thông tin dự án thành công.');
             setFlashData('msg_type', 'success');
       } else {
-         setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
-         setFlashData('msg_type', 'danger');
+        setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
+         setFlashData('msg_type', 'danger'); 
       }
-      redirect('admin/?module=services');
+      redirect('admin/?module=portfolios');
       
    } else {
       setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
       setFlashData('msg_type', 'danger');
       setFlashData('errors', $errors);
       setFlashData('old', $body);
-      redirect("admin/?module=services&action=edit&id=$serviceId");
+      redirect('admin/?module=portfolios&action=edit&id='.$id);
    }
 }
 
@@ -88,15 +99,16 @@ $msg = getFlashData('msg');
 $msgType = getFlashData('msg_type');
 $errors = getFlashData('errors');
 $old = getFlashData('old');
-$defaultService = getFlashData('defaultService');
-if(!empty($defaultService)) {
-   $old = $defaultService;
+$defaultPortfolio = getFlashData('defaultPortfolio');
+if(empty($old)) {
+   $old = $defaultPortfolio;
 }
  ?>
 
 <div class="container">
    <div class="row">
       <div class="col" style="margin: 20px auto;">
+
          <?php 
             getMsg($msg, $msgType);
          ?>
@@ -104,26 +116,46 @@ if(!empty($defaultService)) {
          <form action="" method="post">
             <div class="row">
                <div class="col">
-                  <div class="form-service">
-                     <label for="name">Tên dịch vụ</label>
-                     <input type="text" id="name" name="name" class="form-control" placeholder="Tên dịch vụ..."
+                  <div class="form-group">
+                     <label for="name">Tên dự án</label>
+                     <input type="text" id="name" name="name" class="form-control" placeholder="Tên dự án..."
                         value="<?php echo old('name', $old) ?>">
                      <?php echo form_error('name', $errors, '<span class="error">', '</span>') ?>
                   </div>
-                  <div class="form-service">
+                  <div class="form-group">
+                     <label for="category_id">Danh mục dự án</label>
+                     <select name="category_id" id="category_id" class="form-control">
+                        <option value="0">Chọn danh mục</option>
+                        <?php 
+                           if(!empty($listAllCates)):
+                              foreach($listAllCates as $cate):
+                        ?>
+                        <option value="<?php echo $cate['id'] ?>"
+                           <?php echo (!empty($old['category_id']) && $old['category_id'] == $cate['id']) ? "selected" : false ?>>
+                           <?php echo $cate['name'] ?>
+                        </option>
+                        <?php 
+                              endforeach;
+                           endif;
+                        ?>
+                     </select>
+                     <?php echo form_error('category_id', $errors, '<span class="error">', '</span>') ?>
+                  </div>
+                  <div class="form-group">
                      <label for="slug">Đường dẫn tĩnh</label>
-                     <input type="text" id="slug" name="slug" class="form-control" placeholder="Phân quyền..."
+                     <input type="text" id="slug" name="slug" class="form-control" placeholder="Đường dẫn tĩnh..."
                         value="<?php echo old('slug', $old) ?>">
                      <?php echo form_error('slug', $errors, '<span class="error">', '</span>') ?>
                      <p class="render-link"><b>Link: </b><span></span></p>
                   </div>
-                  <div class="form-service">
-                     <label for="icon">Icon</label>
-                     <div class="row ckfinder-service">
+                  <div class="form-group">
+                     <label for="thumbnail">Thumbnail</label>
+                     <div class="row ckfinder-group">
                         <div class="col-9">
-                           <input type="text" id="icon" name="icon" class="form-control image-link"
-                              placeholder="Đường dẫn ảnh hoặc mã icon..." value="<?php echo old('icon', $old) ?>">
-                           <?php echo form_error('icon', $errors, '<span class="error">', '</span>') ?>
+                           <input type="text" id="thumbnail" name="thumbnail" class="form-control image-link"
+                              placeholder="Đường dẫn ảnh hoặc mã thumbnail..."
+                              value="<?php echo old('thumbnail', $old) ?>">
+                           <?php echo form_error('thumbnail', $errors, '<span class="error">', '</span>') ?>
                         </div>
                         <div class="col-3">
                            <button type="button" class="btn btn-success btn-block ckfinder-choose-image">Chọn
@@ -131,22 +163,29 @@ if(!empty($defaultService)) {
                         </div>
                      </div>
                   </div>
-                  <div class="form-service">
+                  <div class="form-group">
+                     <label for="video">Video</label>
+                     <input type="url" id="video" name="video" class="form-control" placeholder="Đường dẫn video..."
+                        value="<?php echo old('video', $old) ?>">
+                     <?php echo form_error('video', $errors, '<span class="error">', '</span>') ?>
+                  </div>
+                  <div class="form-group">
                      <label for="description">Mô tả ngắn</label>
                      <textarea name="description" id="description" placeholder="Mô tả ngắn..."
                         class="form-control"><?php echo old('description', $old) ?></textarea>
                      <?php echo form_error('description', $errors, '<span class="error">', '</span>') ?>
                   </div>
-                  <div class="form-service">
+                  <div class="form-group">
                      <label for="">Nội dung</label>
                      <textarea name="content" class="form-control editor"><?php echo old('content', $old) ?></textarea>
                      <?php echo form_error('content', $errors, '<span class="error">', '</span>') ?>
                   </div>
-                  <input type="hidden" name="id" value="<?php echo $serviceId ?>">
                </div>
             </div>
-            <button class="btn btn-primary" type="submit">Sửa</button>
-            <a href="<?php echo getLinkAdmin('services') ?>" class="btn btn-success" type="submit">Quay lại</a>
+            <input type="hidden" name="modules" value="portfolios">
+            <input type="hidden" name="id" value="<?php echo $id ?>">
+            <button class="btn btn-primary" type="submit">Chỉnh sửa</button>
+            <a class="btn btn-success" href="<?php echo getLinkAdmin('portfolios') ?>">Quay lại</a>
             <hr>
          </form>
       </div>
@@ -154,5 +193,5 @@ if(!empty($defaultService)) {
 </div>
 
 <?php
-  layout('footer','admin');
+  layout('footer', 'admin', $data);
  ?>
