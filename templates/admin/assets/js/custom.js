@@ -103,39 +103,161 @@ if (listEditor != null) {
 }
 
 //tích hợp ckfinder
-let ckfinderChooseImages = document.querySelectorAll(".ckfinder-choose-image");
-if (ckfinderChooseImages !== null) {
-  ckfinderChooseImages.forEach((item) => {
-    item.addEventListener("click", () => {
-      let parentElementObject = item.parentElement;
-      let parent = "ckfinder-group";
-      while (parentElementObject) {
-        if (parentElementObject.classList.contains(parent)) {
-          break;
-        } else {
-          parentElementObject = parentElementObject.parentElement;
+// if (ckfinderChooseImages !== null) {
+//   ckfinderChooseImages.forEach((item) => {
+//     chooseCkfinder(item);
+//   });
+// }
+// handleImagePortfolio();
+
+// function chooseCkfinder(item) {
+//   item.addEventListener("click", (e) => {
+//     e.preventDefault();
+//     let parentElementObject = item.parentElement;
+//     let parent = "ckfinder-group";
+//     while (parentElementObject) {
+//       if (parentElementObject.classList.contains(parent)) {
+//         break;
+//       } else {
+//         parentElementObject = parentElementObject.parentElement;
+//       }
+//     }
+
+//     let imageLink = parentElementObject.querySelector(".image-link");
+
+//     CKFinder.popup({
+//       chooseFiles: true,
+//       width: 800,
+//       height: 600,
+//       onInit: function (finder) {
+//         finder.on("files:choose", function (evt) {
+//           let fileUrl = evt.data.files.first().getUrl();
+//           //Xử lý chèn link ảnh vào input
+//           imageLink.value = fileUrl;
+//         });
+//         finder.on("file:choose:resizedImage", function (evt) {
+//           let fileUrl = evt.data.resizedUrl;
+//           //Xử lý chèn link ảnh vào input
+//           imageLink.value = fileUrl;
+//         });
+//       },
+//     });
+//   });
+// }
+
+function chooseCkfinder() {
+  let ckfinderChooseImages = document.querySelectorAll(
+    ".ckfinder-choose-image"
+  );
+  if (ckfinderChooseImages !== null) {
+    ckfinderChooseImages.forEach((item) => {
+      item.addEventListener("click", () => {
+        let parentElementObject = item.parentElement;
+        let parent = "ckfinder-group";
+        while (parentElementObject) {
+          if (parentElementObject.classList.contains(parent)) {
+            break;
+          } else {
+            parentElementObject = parentElementObject.parentElement;
+          }
         }
-      }
 
-      let imageLink = parentElementObject.querySelector(".image-link");
+        let imageLink = parentElementObject.querySelector(".image-link");
 
-      CKFinder.popup({
-        chooseFiles: true,
-        width: 800,
-        height: 600,
-        onInit: function (finder) {
-          finder.on("files:choose", function (evt) {
-            let fileUrl = evt.data.files.first().getUrl();
-            //Xử lý chèn link ảnh vào input
-            imageLink.value = fileUrl;
-          });
-          finder.on("file:choose:resizedImage", function (evt) {
-            let fileUrl = evt.data.resizedUrl;
-            //Xử lý chèn link ảnh vào input
-            imageLink.value = fileUrl;
-          });
-        },
+        CKFinder.popup({
+          chooseFiles: true,
+          width: 800,
+          height: 600,
+          onInit: function (finder) {
+            finder.on("files:choose", function (evt) {
+              let fileUrl = evt.data.files.first().getUrl();
+              //Xử lý chèn link ảnh vào input
+              imageLink.value = fileUrl;
+            });
+            finder.on("file:choose:resizedImage", function (evt) {
+              let fileUrl = evt.data.resizedUrl;
+              //Xử lý chèn link ảnh vào input
+              imageLink.value = fileUrl;
+            });
+          },
+        });
       });
     });
-  });
+  }
+}
+
+function submitRemoveBtn() {
+  let listRemoveBtn = document.querySelectorAll(".btn-remove-image");
+  if (listRemoveBtn !== null) {
+    listRemoveBtn.forEach((item) => {
+      item.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (confirm("Bạn có chắc chắn muốn xoá?")) {
+          let parentElementObject = item.parentElement;
+          let parent = "gallery-item";
+          while (parentElementObject) {
+            if (parentElementObject.classList.contains(parent)) {
+              break;
+            } else {
+              parentElementObject = parentElementObject.parentElement;
+            }
+          }
+          parentElementObject.remove();
+        }
+      });
+    });
+  }
+}
+submitRemoveBtn();
+chooseCkfinder();
+
+//Xử lý thêm ảnh portfolio_images
+let galleryImagesObject = document.querySelector(".gallery-images");
+let btnAddImage = document.querySelector("#addImage");
+let htmlGalleryItem = `
+<div class="gallery-item">
+  <div class="row ckfinder-group">
+    <div class="col-9">
+        <input type="text" id="gallery" name="gallery[]" class="form-control image-link"
+          placeholder="Đường dẫn ảnh...">
+    </div>
+    <div class="col-2">
+        <button type="button" class="btn btn-success btn-block ckfinder-choose-image">Chọn
+          ảnh</button>
+    </div>
+    <div class="col-1">
+        <button type="button" class="btn btn-danger btn-block btn-remove-image"><i
+              class="fa fa-times"></i></button>
+    </div>
+  </div>
+</div>`;
+
+if (galleryImagesObject !== null) {
+  if (btnAddImage !== null) {
+    btnAddImage.addEventListener("click", (e) => {
+      e.preventDefault();
+      let galleryItemHtmlNode = new DOMParser()
+        .parseFromString(htmlGalleryItem, "text/html")
+        .querySelector(".gallery-item");
+      galleryImagesObject.appendChild(galleryItemHtmlNode);
+      chooseCkfinder();
+      handleImagePortfolio();
+    });
+  }
+}
+
+function handleImagePortfolio() {
+  let listGalleryItems = document.querySelectorAll(".gallery-item");
+  console.log(listGalleryItems);
+  if (listGalleryItems !== null) {
+    listGalleryItems.forEach((item) => {
+      let btnRemove = item.querySelector(".btn-remove-image");
+      btnRemove.addEventListener("click", (e) => {
+        e.preventDefault();
+        if (confirm("Bạn có chắc chắn muốn xoá?")) {
+          item.remove();
+        }
+      });
+    });
+  }
 }

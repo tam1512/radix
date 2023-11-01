@@ -19,7 +19,13 @@ $data = [
  if(isGet()) {
     $id = getBody("get")['id'];
    $defaultPortfolio = firstRaw("SELECT * FROM portfolios WHERE id = $id");
-   setFlashData('defaultPortfolio', $defaultPortfolio);
+   $listImages = getRaw("SELECT id, image FROM portfolio_images WHERE portfolio_id = $id");
+   if(empty($listImages)) {
+      setFlashData('defaultPortfolio', $defaultPortfolio);
+   } else {
+      $defaultPortfolio['gallery'] = $listImages;
+      setFlashData('defaultPortfolio', $defaultPortfolio);
+   }
  }
  if(isPost()) {
 
@@ -37,6 +43,25 @@ $data = [
    $content = trim($body['content']);
    $cateId = trim($body['category_id']);
    $video = trim($body['video']);
+   $images = $body['gallery'];
+   
+   $listImages = getRaw("SELECT id, image FROM portfolio_images WHERE portfolio_id = $id");
+
+   $listImageDelete = [];
+   foreach($listImages as $image) {
+      $checkDelete = false;
+      foreach($images as $item) {
+         if(!empty($item['id'])) {
+            if($image['id'] == $item['id']) {
+               $checkDelete = true;
+            }
+         }
+      }
+      if(!$checkDelete) {
+         $listImageDelete[] = $image;
+      }
+   }
+
 
    if(empty($name)) {
       $errors['name']['required'] = 'Tên nhóm không được để trống';
@@ -78,10 +103,63 @@ $data = [
 
       $updateStatus = update('portfolios', $dataUpdate, "id = $id");
       if($updateStatus) {
-            setFlashData('msg', 'Sửa thông tin dự án thành công.');
-            setFlashData('msg_type', 'success');
+         if(empty($images)) {
+            $deleteImageStatus = delete('portfolio_images', 'portfolio_id='.$id);
+            if($deleteImageStatus) {
+               setFlashData('msg', 'Sửa thông tin dự án thành công.');
+               setFlashData('msg_type', 'success');
+            } else {
+               setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau ($deleteImage).');
+               setFlashData('msg_type', 'danger');
+            }
+         } else {
+            foreach($images as $key=>$value) {
+               if(!empty($value['id'])) {
+                  $dataUpdateImage = [
+                     'id' => $value['id'],
+                     'portfolio_id' => $id,
+                     'image' => $value['image'],
+                     'update_at' => date('Y-m-d H:i:s')
+                  ];
+                  $updateImageStatus = update('portfolio_images', $dataUpdateImage, "id = ".$value['id']);
+                  if($updateImageStatus) {
+                     setFlashData('msg', 'Sửa thông tin dự án thành công.');
+                     setFlashData('msg_type', 'success');
+                  } else {
+                     setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau ($updateImage).');
+                     setFlashData('msg_type', 'danger');
+                  }
+               } else {
+                  if(is_string($value) && !empty($value)) {
+                     $dataInsertImage = [
+                        'portfolio_id' => $id,
+                        'image' => $value,
+                        'create_at' => date('Y-m-d H:i:s')
+                     ];
+                     $insertImageStatus = insert('portfolio_images', $dataInsertImage);
+                     if($insertImageStatus) {
+                        setFlashData('msg', 'Sửa thông tin dự án thành công.');
+                        setFlashData('msg_type', 'success');
+                     } else {
+                        setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau ($insertImage).');
+                        setFlashData('msg_type', 'danger');
+                     }
+                  }
+               }
+            }
+
+            if(!empty($listImageDelete)) {
+               foreach($listImageDelete as $image) {
+                 $deleteImageStatus = delete('portfolio_images', "id=".$image['id']);
+                 if(!$deleteImageStatus) {
+                  setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau ($deleteImage).');
+                  setFlashData('msg_type', 'danger');
+                 }
+               }
+            }
+         }
       } else {
-        setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
+         setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
          setFlashData('msg_type', 'danger'); 
       }
       redirect('admin/?module=portfolios');
@@ -179,6 +257,41 @@ if(empty($old)) {
                      <label for="">Nội dung</label>
                      <textarea name="content" class="form-control editor"><?php echo old('content', $old) ?></textarea>
                      <?php echo form_error('content', $errors, '<span class="error">', '</span>') ?>
+                  </div>
+                  <div class="form-group">
+                     <label for="">Ảnh dự án</label>
+                     <div class="gallery-images">
+                        <?php 
+                           if(!empty($old["gallery"])):
+                              foreach($old["gallery"] as $key=>$image):
+                        ?>
+                        <div class="gallery-item">
+                           <div class="row ckfinder-group">
+                              <div class="col-9">
+                                 <input type="text" id="gallery" name="gallery[<?php echo $key ?>][image]"
+                                    class="form-control image-link" placeholder="Đường dẫn ảnh..."
+                                    value=<?php echo $image['image'] ?>>
+                                 <input type="hidden" name="gallery[<?php echo $key ?>][id]"
+                                    value="<?php echo $image['id'] ?>">
+                              </div>
+                              <div class="col-2">
+                                 <button type="button" class="btn btn-success btn-block ckfinder-choose-image">Chọn
+                                    ảnh</button>
+                              </div>
+                              <div class="col-1">
+                                 <button type="button" class="btn btn-danger btn-block btn-remove-image"><i
+                                       class="fa fa-times"></i></button>
+                              </div>
+                           </div>
+                        </div>
+                        <?php 
+                              endforeach;
+                           endif;
+                        ?>
+                     </div>
+                  </div>
+                  <div class="form-group">
+                     <button type="button" class="btn btn-warning btn-small" id="addImage">Thêm ảnh</button>
                   </div>
                </div>
             </div>

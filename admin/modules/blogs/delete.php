@@ -6,15 +6,11 @@ if(!defined('_INCODE')) die('Access denied...');
 if(isGet()) {
    $body = getBody();
    if(!empty($body['id'])) {
-      $portfolioId = $body['id'];
-      $portfolioDetailRows = getRows("SELECT id FROM portfolios WHERE id = $portfolioId");
-      $portfolioImageRows = getRows("SELECT id FROM portfolio_images WHERE portfolio_id = $portfolioId");
-      if($portfolioImageRows > 0) {
-         delete('portfolio_images', "portfolio_id = $portfolioId");
-      } 
-      if($portfolioDetailRows > 0) {
-         $deletePortfolio = delete('portfolios', "id = $portfolioId");
-         if($deletePortfolio) {
+      $blogId = $body['id'];
+      $blogDetailRows = getRows("SELECT id FROM blogs WHERE id = $blogId");
+      if($blogDetailRows > 0) {
+         $deleteBlog = delete('blogs', "id = $blogId");
+         if($deleteBlog) {
             setFlashData('msg','Xóa thành công');
             setFlashData('msg_type', 'success');
          } else {
@@ -22,7 +18,7 @@ if(isGet()) {
             setFlashData('msg_type', 'danger');
          }
       } else {
-         setFlashData('msg','Dự án không tồn tại');
+         setFlashData('msg','Blog không tồn tại');
          setFlashData('msg_type', 'danger');
       } 
    } else {
@@ -30,4 +26,4 @@ if(isGet()) {
       setFlashData('msg_type', 'danger');
    }
 }
-redirect('admin/?module=portfolios');
+redirect('admin/?module=blogs');

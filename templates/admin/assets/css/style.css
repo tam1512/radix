@@ -55,3 +55,8 @@
 .pb-16 {
   padding-bottom: 16px !important;
 }
+
+/* portfolio */
+.gallery-item + .gallery-item {
+  margin-top: 10px;
+}

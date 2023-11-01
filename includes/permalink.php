@@ -6,7 +6,8 @@
          'services' => 'dich-vu',
          'pages' => 'trang',
          'portfolios' => 'du-an',
-         'blog_categories' => 'danh-muc-blog'
+         'blog_categories' => 'danh-muc-blog',
+         'blogs' => 'blog',
       ];
       if(!empty($prefixArr[$module])) {
          return $prefixArr[$module];

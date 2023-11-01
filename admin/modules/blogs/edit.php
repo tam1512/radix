@@ -4,7 +4,7 @@ if(!defined('_INCODE')) die('Access denied...');
  * Chứa chức năng thêm người dùng
  */
 $data = [
-   'title' => 'Thêm dự án'
+   'title' => 'Sửa thông tin blog'
 ];
 
    layout('header', 'admin', $data);
@@ -15,7 +15,12 @@ $data = [
 
  $userId = isLogin()['user_id'];
 
- $listAllCates = getRaw("SELECT id, name FROM portfolio_categories");
+ $listAllCates = getRaw("SELECT id, name FROM blog_categories");
+ if(isGet()) {
+    $id = getBody("get")['id'];
+   $defaultBlog = firstRaw("SELECT * FROM blogs WHERE id = $id");
+   setFlashData('defaultBlog', $defaultBlog);
+ }
  if(isPost()) {
 
    //Validate form
@@ -24,17 +29,16 @@ $data = [
    $errors = []; // mãng lưu trữ các lỗi
 
    // Lọc giá trị ban đầu
-   $name = trim($body['name']);
+   $id = trim($body['id']);
+   $title = trim($body['title']);
    $slug = trim($body['slug']);
    $thumbnail = trim($body['thumbnail']);
    $description = trim($body['description']);
    $content = trim($body['content']);
-   $cateId = trim($body['cate_id']);
-   $video = trim($body['video']);
-   $images = $body['gallery'];
+   $cateId = trim($body['category_id']);
 
-   if(empty($name)) {
-      $errors['name']['required'] = 'Tên nhóm không được để trống';
+   if(empty($title)) {
+      $errors['title']['required'] = 'Tiêu đề không được để trống';
    }
 
    if(empty($slug)) {
@@ -45,12 +49,8 @@ $data = [
       $errors['thumbnail']['required'] = 'Thumbnail không được để trống';
    }
 
-   if(empty($video)) {
-      $errors['video']['required'] = 'Video không được để trống';
-   }
-
    if(empty($cateId)) {
-      $errors['cate_id']['required'] = 'Vui lòng chọn danh mục sản phẩm';
+      $errors['category_id']['required'] = 'Vui lòng chọn danh mục sản phẩm';
    } 
 
    if(empty($content)) {
@@ -59,53 +59,33 @@ $data = [
 
    if(empty($errors)) {
       // Không có lỗi xảy ra
-      $dataInsert = [
-         'name' => $name,
+      $dataUpdate = [
+         'title' => $title,
          'slug' => $slug,
          'thumbnail' => $thumbnail,
          'description' => $description,
          'content' => $content,
          'user_id' => $userId,
          'category_id' => $cateId,
-         'video' => $video,
-         'create_at' => date('Y-m-d H:i:s'),
+         'update_at' => date('Y-m-d H:i:s'),
       ];
 
-      $insertStatus = insert('portfolios', $dataInsert);
-      if($insertStatus) {
-            if(empty($images)) {
-               setFlashData('msg', 'Thêm dự án thành công.');
-               setFlashData('msg_type', 'success');
-            } else {
-               $portfolioId = insertId();
-               foreach($images as $image) {
-                  $dataInsertImage = [
-                     'portfolio_id' => $portfolioId,
-                     'image' => $image,
-                     'create_at' => date('Y-m-d H:i:s')
-                  ];
-                  $insertImageStatus = insert('portfolio_images', $dataInsertImage);
-                  if($insertImageStatus) {
-                     setFlashData('msg', 'Thêm dự án thành công.');
-                     setFlashData('msg_type', 'success');
-                  } else {
-                     setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau (insertImage).');
-                     setFlashData('msg_type', 'danger'); 
-                  }
-               }
-            }
+      $updateStatus = update('blogs', $dataUpdate, "id = $id");
+      if($updateStatus) {
+            setFlashData('msg', 'Sửa thông tin blog thành công.');
+            setFlashData('msg_type', 'success');
       } else {
         setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
          setFlashData('msg_type', 'danger'); 
       }
-      redirect('admin/?module=portfolios');
+      redirect('admin/?module=blogs');
       
    } else {
       setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
       setFlashData('msg_type', 'danger');
       setFlashData('errors', $errors);
       setFlashData('old', $body);
-      redirect('admin/?module=portfolios&action=add');
+      redirect('admin/?module=blogs&action=edit&id='.$id);
    }
 }
 
@@ -113,6 +93,10 @@ $msg = getFlashData('msg');
 $msgType = getFlashData('msg_type');
 $errors = getFlashData('errors');
 $old = getFlashData('old');
+$defaultBlog = getFlashData('defaultBlog');
+if(empty($old)) {
+   $old = $defaultBlog;
+}
  ?>
 
 <div class="container">
@@ -127,21 +111,21 @@ $old = getFlashData('old');
             <div class="row">
                <div class="col">
                   <div class="form-group">
-                     <label for="name">Tên dự án</label>
-                     <input type="text" id="name" name="name" class="form-control" placeholder="Tên dự án..."
-                        value="<?php echo old('name', $old) ?>">
-                     <?php echo form_error('name', $errors, '<span class="error">', '</span>') ?>
+                     <label for="name">Tiêu đề</label>
+                     <input type="text" id="name" name="title" class="form-control" placeholder="Tiêu đề..."
+                        value="<?php echo old('title', $old) ?>">
+                     <?php echo form_error('title', $errors, '<span class="error">', '</span>') ?>
                   </div>
                   <div class="form-group">
-                     <label for="cate_id">Danh mục dự án</label>
-                     <select name="cate_id" id="cate_id" class="form-control">
+                     <label for="category_id">Danh mục blog</label>
+                     <select name="category_id" id="category_id" class="form-control">
                         <option value="0">Chọn danh mục</option>
                         <?php 
                            if(!empty($listAllCates)):
                               foreach($listAllCates as $cate):
                         ?>
                         <option value="<?php echo $cate['id'] ?>"
-                           <?php echo (!empty($old['cate_id']) && $old['cate_id'] == $cate['id']) ? "selected" : false ?>>
+                           <?php echo (!empty($old['category_id']) && $old['category_id'] == $cate['id']) ? "selected" : false ?>>
                            <?php echo $cate['name'] ?>
                         </option>
                         <?php 
@@ -149,7 +133,7 @@ $old = getFlashData('old');
                            endif;
                         ?>
                      </select>
-                     <?php echo form_error('cate_id', $errors, '<span class="error">', '</span>') ?>
+                     <?php echo form_error('category_id', $errors, '<span class="error">', '</span>') ?>
                   </div>
                   <div class="form-group">
                      <label for="slug">Đường dẫn tĩnh</label>
@@ -174,12 +158,6 @@ $old = getFlashData('old');
                      </div>
                   </div>
                   <div class="form-group">
-                     <label for="video">Video</label>
-                     <input type="url" id="video" name="video" class="form-control" placeholder="Đường dẫn video..."
-                        value="<?php echo old('video', $old) ?>">
-                     <?php echo form_error('video', $errors, '<span class="error">', '</span>') ?>
-                  </div>
-                  <div class="form-group">
                      <label for="description">Mô tả ngắn</label>
                      <textarea name="description" id="description" placeholder="Mô tả ngắn..."
                         class="form-control"><?php echo old('description', $old) ?></textarea>
@@ -190,41 +168,12 @@ $old = getFlashData('old');
                      <textarea name="content" class="form-control editor"><?php echo old('content', $old) ?></textarea>
                      <?php echo form_error('content', $errors, '<span class="error">', '</span>') ?>
                   </div>
-                  <div class="form-group">
-                     <label for="">Ảnh dự án</label>
-                     <div class="gallery-images">
-                        <?php 
-                           if(!empty($old["gallery"])):
-                              foreach($old["gallery"] as $image):
-                        ?>
-                        <div class="gallery-item">
-                           <div class="row ckfinder-group">
-                              <div class="col-9">
-                                 <input type="text" id="gallery" name="gallery[]" class="form-control image-link"
-                                    placeholder="Đường dẫn ảnh..." value=<?php echo $image ?>>
-                              </div>
-                              <div class="col-2">
-                                 <button type="button" class="btn btn-success btn-block ckfinder-choose-image">Chọn
-                                    ảnh</button>
-                              </div>
-                              <div class="col-1">
-                                 <button type="button" class="btn btn-danger btn-block btn-remove-image"><i
-                                       class="fa fa-times"></i></button>
-                              </div>
-                           </div>
-                        </div>
-                        <?php 
-                              endforeach;
-                           endif;
-                        ?>
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     <button type="button" class="btn btn-warning btn-small" id="addImage">Thêm ảnh</button>
-                  </div>
                </div>
             </div>
-            <button class="btn btn-primary" type="submit">Thêm</button>
+            <input type="hidden" name="modules" value="blogs">
+            <input type="hidden" name="id" value="<?php echo $id ?>">
+            <button class="btn btn-primary" type="submit">Chỉnh sửa</button>
+            <a class="btn btn-success" href="<?php echo getLinkAdmin('blogs') ?>">Quay lại</a>
             <hr>
          </form>
       </div>
