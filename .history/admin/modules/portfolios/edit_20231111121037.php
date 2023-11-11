@@ -43,11 +43,7 @@ $data = [
    $content = trim($body['content']);
    $cateId = trim($body['category_id']);
    $video = trim($body['video']);
-   if(isset($body['gallery'])) {
-      $images = $body['gallery'];
-   } else {
-      $images = [];
-   }
+   $images = $body['gallery'];
 
    
    $listImages = getRaw("SELECT id, image FROM portfolio_images WHERE portfolio_id = $id");
