@@ -1,0 +1,22 @@
+{
+  "Print array": {
+    "prefix": "z_p",
+    "body": ["echo '<pre>';", "print_r($arr);", "echo '</pre>';"],
+    "description": "Print Array"
+  },
+  "Echo variables": {
+    "prefix": "e_b",
+    "body": ["echo $variable;", "echo '</br>';"],
+    "description": "Echo Variables"
+  },
+  "Echo bread": {
+    "prefix": "b_r",
+    "body": ["echo '</br>';"],
+    "description": "Echo bread"
+  },
+  "var_dump bread": {
+    "prefix": "v_d",
+    "body": ["var_dump($v);", "echo '</br>';"],
+    "description": "var_dump bread"
+  }
+}
