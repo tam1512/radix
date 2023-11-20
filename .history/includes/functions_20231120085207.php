@@ -475,14 +475,16 @@ function renderOptions($prefixKey) {
   if(!empty($prefixKey)) {
     $sql = "SELECT * FROM options WHERE opt_key LIKE '%$prefixKey%'";
     $options = getRaw($sql);
+    echo '<pre>';
+    print_r($options);
+    echo '</pre>';
     if(!empty($options)) {
       foreach($options as $option) {
-        $key = trim($option['opt_key']);
+        $key = explode('_', trim($option['opt_key']))[1];
         $value = trim($option['opt_value']);
-        $name = trim($option['name']);
         $html .= '<div class="form-group">
-                    <label for="'.$key.'">'.$name.'</label>
-                    <input type="text" id="'.$key.'" name="'.$key.'" class="form-control" placeholder="'.$name.'..." value="'.$value.'">
+                    <label for="'.$key.'">'.$value.'</label>
+                    <input type="text" id="'.$key.'" name="'.$key.'" class="form-control" placeholder="'.$value.'..." value="'.$value.'">
                   </div>';
       }
     }

@@ -477,12 +477,11 @@ function renderOptions($prefixKey) {
     $options = getRaw($sql);
     if(!empty($options)) {
       foreach($options as $option) {
-        $key = trim($option['opt_key']);
+        $key = end(explode('_', trim($option['opt_key'])));
         $value = trim($option['opt_value']);
-        $name = trim($option['name']);
         $html .= '<div class="form-group">
-                    <label for="'.$key.'">'.$name.'</label>
-                    <input type="text" id="'.$key.'" name="'.$key.'" class="form-control" placeholder="'.$name.'..." value="'.$value.'">
+                    <label for="'.$key.'">'.$value.'</label>
+                    <input type="text" id="'.$key.'" name="'.$key.'" class="form-control" placeholder="'.$value.'..." value="'.$value.'">
                   </div>';
       }
     }

@@ -460,35 +460,12 @@ function updateOptions() {
 }
 
 function getOption($key, $type="") {
-    $sql = "SELECT * FROM options WHERE opt_key = '$key'";
-    $option = firstRaw($sql);
-    if(!empty($option)) {
-      if($type == 'label') {
-        return $option['name'];
-      }
-      return $option['opt_value'];
+  $sql = "SELECT * FROM options WHERE opt_key = '$key'";
+  $option = firstRaw($sql);
+  if(!empty($option)) {
+    if($type == 'label') {
+      return $option['name'];
     }
-}
-
-function renderOptions($prefixKey) {
-  $html = '';
-  if(!empty($prefixKey)) {
-    $sql = "SELECT * FROM options WHERE opt_key LIKE '%$prefixKey%'";
-    $options = getRaw($sql);
-    if(!empty($options)) {
-      foreach($options as $option) {
-        $key = trim($option['opt_key']);
-        $value = trim($option['opt_value']);
-        $name = trim($option['name']);
-        $html .= '<div class="form-group">
-                    <label for="'.$key.'">'.$name.'</label>
-                    <input type="text" id="'.$key.'" name="'.$key.'" class="form-control" placeholder="'.$name.'..." value="'.$value.'">
-                  </div>';
-      }
-    }
+    return $option['opt_value'];
   }
-  if(!empty($html)) {
-    return $html;
-  }
-  return false;
 }

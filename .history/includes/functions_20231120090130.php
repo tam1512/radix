@@ -435,27 +435,30 @@ function getPathAdmin() {
 function updateOptions() {
   if(isPost()){
     $body = getBody('post');
-    $countUpdate = 0;
-    if(!empty($body)) {
-      foreach($body as $key => $value) {
-        $condition = "opt_key = '$key'";
-        $dataUpdate = [
-          "opt_value" => trim($value)
-        ];
-        $updateStatus = update('options', $dataUpdate, $condition);
-        if($updateStatus) {
-          $countUpdate++;
-        }
-      }
-    }
-    if($countUpdate > 0) {
-      setFlashData('msg', "Đã cập nhật $countUpdate bản ghi thành công.");
-      setFlashData('msg_type', "success");
-    } else {
-      setFlashData('msg', "Cập nhật không thành công.");
-      setFlashData('msg_type', "error");
-    }
-    redirect(getPathAdmin());
+    echo '<pre>';
+    print_r($body);
+    echo '</pre>';
+    // $countUpdate = 0;
+    // if(!empty($body)) {
+    //   foreach($body as $key => $value) {
+    //     $condition = "opt_key = '$key'";
+    //     $dataUpdate = [
+    //       "opt_value" => trim($value)
+    //     ];
+    //     $updateStatus = update('options', $dataUpdate, $condition);
+    //     if($updateStatus) {
+    //       $countUpdate++;
+    //     }
+    //   }
+    // }
+    // if($countUpdate > 0) {
+    //   setFlashData('msg', "Đã cập nhật $countUpdate bản ghi thành công.");
+    //   setFlashData('msg_type', "success");
+    // } else {
+    //   setFlashData('msg', "Cập nhật không thành công.");
+    //   setFlashData('msg_type', "error");
+    // }
+    // redirect(getPathAdmin());
   }
 }
 
@@ -477,7 +480,7 @@ function renderOptions($prefixKey) {
     $options = getRaw($sql);
     if(!empty($options)) {
       foreach($options as $option) {
-        $key = trim($option['opt_key']);
+        $key = explode('_', trim($option['opt_key']))[1];
         $value = trim($option['opt_value']);
         $name = trim($option['name']);
         $html .= '<div class="form-group">

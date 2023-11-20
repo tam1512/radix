@@ -477,7 +477,7 @@ function renderOptions($prefixKey) {
     $options = getRaw($sql);
     if(!empty($options)) {
       foreach($options as $option) {
-        $key = trim($option['opt_key']);
+        $key = explode('_', trim($option['opt_key']))[1];
         $value = trim($option['opt_value']);
         $name = trim($option['name']);
         $html .= '<div class="form-group">

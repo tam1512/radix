@@ -219,30 +219,23 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                   class="nav-link <?php echo activeMenuSidebar('options', '', true) ? 'active' : false ?>">
                   <i class="nav-icon fa fa-file"></i>
                   <p>
-                     Thiết lập
+                     Quản lý blog
                      <i class="right fas fa-angle-left"></i>
                   </p>
                </a>
                <ul class="nav nav-treeview">
                   <li class="nav-item">
-                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=options&action=general" ?>"
-                        class="nav-link <?php echo activeMenuSidebar('options', 'general') ? 'active' : false ?>">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=options" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('options', '', ['edit', 'delete']) ? 'active' : false ?>">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Thiết lập chung</p>
+                        <p>Danh sách</p>
                      </a>
                   </li>
                   <li class="nav-item">
-                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=options&action=header" ?>"
-                        class="nav-link <?php echo activeMenuSidebar('options', 'header') ? 'active' : false ?>">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=options&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('options', 'add') ? 'active' : false ?>">
                         <i class="far fa-circle nav-icon"></i>
-                        <p>Thiết lập Header</p>
-                     </a>
-                  </li>
-                  <li class="nav-item">
-                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=options&action=footer" ?>"
-                        class="nav-link <?php echo activeMenuSidebar('options', 'footer') ? 'active' : false ?>">
-                        <i class="far fa-circle nav-icon"></i>
-                        <p>Thiết lập Footer</p>
+                        <p>Thêm mới</p>
                      </a>
                   </li>
                </ul>
