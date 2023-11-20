@@ -232,6 +232,13 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                      </a>
                   </li>
                   <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=contacts&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('contacts', 'add') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm mới</p>
+                     </a>
+                  </li>
+                  <li class="nav-item">
                      <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=departments" ?>"
                         class="nav-link <?php echo activeMenuSidebar('departments') ? 'active' : false ?>">
                         <i class="far fa-circle nav-icon"></i>

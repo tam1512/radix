@@ -217,7 +217,7 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                class="nav-item has-treeview <?php echo activeMenuSidebar('contacts', '', true, 'departments') ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=contacts" ?>"
                   class="nav-link <?php echo activeMenuSidebar('contacts', '', true, 'departments') ? 'active' : false ?>">
-                  <i class="nav-icon fas fa-id-card"></i>
+                  <i class="nav-icon fa-solid fa-id-card"></i>
                   <p>
                      Quản lý liên hệ
                      <i class="right fas fa-angle-left"></i>
@@ -229,6 +229,13 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                         class="nav-link <?php echo activeMenuSidebar('contacts', '', ['edit', 'delete']) ? 'active' : false ?>">
                         <i class="far fa-circle nav-icon"></i>
                         <p>Danh sách</p>
+                     </a>
+                  </li>
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=contacts&action=add" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('contacts', 'add') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thêm mới</p>
                      </a>
                   </li>
                   <li class="nav-item">
