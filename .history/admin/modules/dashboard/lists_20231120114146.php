@@ -1,5 +1,6 @@
 <?php 
 if(!defined('_INCODE')) die('Access denied...');
+var_dump(isLogin());
 if(!isLogin()) {
    redirect("admin?module=auth&action=login");
  }

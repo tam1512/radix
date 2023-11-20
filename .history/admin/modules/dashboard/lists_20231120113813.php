@@ -2,10 +2,10 @@
 if(!defined('_INCODE')) die('Access denied...');
 if(!isLogin()) {
    redirect("admin?module=auth&action=login");
+ } else {
+    //Lấy userID
+    $userId = $_COOKIE['user_id'];
  }
-
-   //Lấy userID
-   $userId = isLogin()['user_id'];
 
    $data = [
       'title' => 'Tổng quan'

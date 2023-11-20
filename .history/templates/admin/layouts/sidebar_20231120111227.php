@@ -217,7 +217,7 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                class="nav-item has-treeview <?php echo activeMenuSidebar('options', '', true) ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=options" ?>"
                   class="nav-link <?php echo activeMenuSidebar('options', '', true) ? 'active' : false ?>">
-                  <i class="nav-icon fas fa-cogs"></i>
+                  <i class="nav-icon fas fa-gears"></i>
                   <p>
                      Thiết lập
                      <i class="right fas fa-angle-left"></i>

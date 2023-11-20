@@ -43,7 +43,7 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
             <li class="nav-item has-treeview <?php echo activeMenuSidebar('groups', '', true) ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=groups" ?>"
                   class="nav-link <?php echo activeMenuSidebar('groups', '', true) ? 'active' : false ?>">
-                  <i class="nav-icon fas fa-users"></i>
+                  <i class="nav-icon fa-solid fa-users"></i>
                   <p>
                      Nhóm người dùng
                      <i class="right fas fa-angle-left"></i>
@@ -69,7 +69,7 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
             <li class="nav-item has-treeview <?php echo activeMenuSidebar('users', '', true) ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=users" ?>"
                   class="nav-link <?php echo activeMenuSidebar('users', '', true) ? 'active' : false ?>">
-                  <i class="nav-icon fas fa-user"></i>
+                  <i class="nav-icon fa-solid fa-user"></i>
                   <p>
                      Quản lý người dùng
                      <i class="right fas fa-angle-left"></i>
@@ -96,7 +96,7 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                class="nav-item has-treeview <?php echo activeMenuSidebar('services', '', true) ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=services" ?>"
                   class="nav-link <?php echo activeMenuSidebar('services', '', true) ? 'active' : false ?>">
-                  <i class="nav-icon far fa-clone"></i>
+                  <i class="nav-icon fa-regular fa-clone"></i>
                   <p>
                      Quản lý dịch vụ
                      <i class="right fas fa-angle-left"></i>
@@ -122,7 +122,7 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
             <li class="nav-item has-treeview <?php echo activeMenuSidebar('pages', '', true) ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=pages" ?>"
                   class="nav-link <?php echo activeMenuSidebar('pages', '', true) ? 'active' : false ?>">
-                  <i class="nav-icon fas fa-file"></i>
+                  <i class="nav-icon fa-solid fa-file"></i>
                   <p>
                      Quản lý trang
                      <i class="right fas fa-angle-left"></i>
@@ -183,7 +183,7 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                class="nav-item has-treeview <?php echo activeMenuSidebar('blogs', '', true, 'blog_categories') ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=blogs" ?>"
                   class="nav-link <?php echo activeMenuSidebar('blogs', '', true, 'blog_categories') ? 'active' : false ?>">
-                  <i class="nav-icon fas fa-blog"></i>
+                  <i class="nav-icon fa fa-file"></i>
                   <p>
                      Quản lý blog
                      <i class="right fas fa-angle-left"></i>
@@ -217,7 +217,7 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                class="nav-item has-treeview <?php echo activeMenuSidebar('options', '', true) ? 'menu-open' : false ?>">
                <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=options" ?>"
                   class="nav-link <?php echo activeMenuSidebar('options', '', true) ? 'active' : false ?>">
-                  <i class="nav-icon fas fa-cogs"></i>
+                  <i class="nav-icon fa fa-file"></i>
                   <p>
                      Thiết lập
                      <i class="right fas fa-angle-left"></i>
