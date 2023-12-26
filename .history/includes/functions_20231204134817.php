@@ -670,13 +670,12 @@ $.widget.bridge('uibutton', $.ui.button)
    if(!empty($body['module'])) {
       $module = $body['module'];
    }
-  //  global $oldAboutProgress;
 ?>
 
 <script type="text/javascript">
 let rootUrlAdmin = "<?php echo _WEB_HOST_ROOT_ADMIN.'/' ?>";
 let prefixLink = "<?php echo getPrefixLink($module) ?>"
-// let oldAboutProgress = "<?php// echo !empty($oldAboutProgress) ? json_encode($oldAboutProgress) : '' ?>"
+let oldAboutProgress = "<?php !empty($oldAboutProgress) ? $oldAboutProgress : [] ?>"
 </script>
 
 <!-- range js-->

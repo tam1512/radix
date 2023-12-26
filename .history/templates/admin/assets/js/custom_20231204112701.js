@@ -383,7 +383,7 @@ if (progressObjects !== null && btnAddProgress !== null) {
       item.ionRangeSlider({
         min: 0,
         max: 100,
-        // from: progressValue,
+        from: progressValue,
         type: "single",
         step: 1,
         postfix: "%",
@@ -415,14 +415,12 @@ if (progressObjects !== null && btnAddProgress !== null) {
   });
 }
 
-// console.log(Json.pare(oldAboutProgress));
-
 $(".progress-range").each(function () {
   var item = $(this);
   item.ionRangeSlider({
     min: 0,
     max: 100,
-    // from: progressValue,
+    from: progressValue,
     type: "single",
     step: 1,
     postfix: "%",

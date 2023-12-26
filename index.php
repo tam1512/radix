@@ -1,5 +1,6 @@
 <?php
 session_start();
+ob_start();
 require_once 'config.php';
 //import phpmailer libs
 require_once 'includes/phpmailer/Exception.php';

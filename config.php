@@ -47,4 +47,4 @@ const _PAGE_ON_PAGE = 3;
 const _LIMIT_PAGINATION = 10;
 
 //Thời gian hủy phiên đăng nhập
-const _TIME_OUT_LOGIN = 15;
+const _TIME_OUT_LOGIN = 30;

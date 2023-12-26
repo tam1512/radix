@@ -17,24 +17,18 @@
 ?>
 
 <div class="container">
-   <div class="row">
-      <div class="col" style="margin: 20px auto;">
 
-         <?php 
+   <?php 
             getMsg($msg, $msgType);
          ?>
 
-         <form action="" method="post">
-            <div class="row">
-               <div class="col">
-                  <?php echo renderOptions('general') ?>
-               </div>
-            </div>
-            <button class="btn btn-primary" type="submit">Cập nhật</button>
-            <hr>
-         </form>
+   <form action="" method="post">
+      <div class="row">
+         <?php echo renderOptions('general') ?>
       </div>
-   </div>
+      <button class="btn btn-primary" type="submit">Cập nhật</button>
+      <hr>
+   </form>
 </div>
 
 <?php

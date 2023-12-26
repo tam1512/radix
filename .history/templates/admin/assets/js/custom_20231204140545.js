@@ -415,7 +415,7 @@ if (progressObjects !== null && btnAddProgress !== null) {
   });
 }
 
-// console.log(Json.pare(oldAboutProgress));
+console.log(Json.pare(oldAboutProgress));
 
 $(".progress-range").each(function () {
   var item = $(this);

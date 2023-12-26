@@ -279,6 +279,13 @@ $userDetail = firstRaw("SELECT fullname FROM users WHERE id = $userId");
                         <p>Thiết lập Footer</p>
                      </a>
                   </li>
+                  <li class="nav-item">
+                     <a href="<?php echo _WEB_HOST_ROOT_ADMIN."/?module=options&action=home" ?>"
+                        class="nav-link <?php echo activeMenuSidebar('options', 'home') ? 'active' : false ?>">
+                        <i class="far fa-circle nav-icon"></i>
+                        <p>Thiết lập Trang chủ</p>
+                     </a>
+                  </li>
                </ul>
             </li>
          </ul>

@@ -17,9 +17,6 @@
    <!-- Title Tag -->
    <title><?php echo (!empty($data['title'])) ? $data['title'] : false ?></title>
 
-   <!-- Favicon -->
-   <link rel="icon" type="image/png" href="<?php echo _WEB_HOST_TEMPLATE.'/assets/images/' ?>favicon.png">
-
    <?php
       head();
    ?>
@@ -51,12 +48,13 @@
                <div class="col-lg-6 col-12">
                   <!-- Contact -->
                   <ul class="contact">
-                     <li><i class="fa fa-headphones"></i> +(123) 45678910</li>
+                     <li><i class="fa fa-headphones"></i><?php echo getOption('header_hotline')?></li>
                      <li>
                         <i class="fa fa-envelope"></i>
-                        <a href="mailto:info@yourmail.com">info@yourmail.com</a>
+                        <a
+                           href="mailto:<?php echo getOption('header_email')?>"><?php echo getOption('header_email')?></a>
                      </li>
-                     <li><i class="fa fa-clock-o"></i>Opening: 09am-5pm</li>
+                     <li><i class="fa fa-clock-o"></i>Opening: <?php echo getOption('header_time')?></li>
                   </ul>
                   <!--/ End Contact -->
                </div>
@@ -66,26 +64,31 @@
                      <div class="search-form active">
                         <a class="icon" href="#"><i class="fa fa-search"></i></a>
                         <form class="form" action="#">
-                           <input placeholder="Search & Enter" type="search" />
+                           <input placeholder="<?php echo getOption("header_placeholder_search") ?>..." type="search" />
                         </form>
                      </div>
                      <!--/ End Search Form -->
                      <!-- Social -->
                      <ul class="social">
                         <li>
-                           <a href="#"><i class="fa fa-twitter"></i></a>
+                           <a href="<?php echo getOption("header_twitter") ?>" target="blank"><i
+                                 class="fa fa-twitter"></i></a>
                         </li>
                         <li>
-                           <a href="#"><i class="fa fa-facebook"></i></a>
+                           <a href="<?php echo getOption("header_facebook") ?>" target="blank"><i
+                                 class="fa fa-facebook"></i></a>
                         </li>
                         <li>
-                           <a href="#"><i class="fa fa-linkedin"></i></a>
+                           <a href="<?php echo getOption("header_linkedin") ?>" target="blank"><i
+                                 class="fa fa-linkedin"></i></a>
                         </li>
                         <li>
-                           <a href="#"><i class="fa fa-behance"></i></a>
+                           <a href="<?php echo getOption("header_behance") ?>" target="blank"><i
+                                 class="fa fa-behance"></i></a>
                         </li>
                         <li>
-                           <a href="#"><i class="fa fa-youtube"></i></a>
+                           <a href="<?php echo getOption("header_youtube") ?>" target="blank"><i
+                                 class="fa fa-youtube"></i></a>
                         </li>
                      </ul>
                      <!--/ End Social -->
@@ -102,11 +105,16 @@
                <div class="col-lg-2 col-12">
                   <!-- Logo -->
                   <div class="logo">
-                     <a href="index.html"><img src="<?php echo _WEB_HOST_TEMPLATE.'/assets/images/' ?>logo.png"
-                           alt="logo" /></a>
+                     <a href="<?php echo _WEB_HOST_ROOT ?>">
+                        <?php if(!empty(getOption('general_logo'))): ?>
+                        <img src="<?php echo getOption('general_logo')?>" alt="logo" />
+                        <?php else: ?>
+                        <h1 class="mt-2"><?php echo getOption('general_name_site') ?></h1>
+                        <?php endif; ?>
+                     </a>
                   </div>
                   <div class="link">
-                     <a href="index.html"><span>R</span>adix</a>
+                     <a href="<?php echo _WEB_HOST_ROOT ?>"><?php echo customNameSite() ?></a>
                   </div>
                   <!--/ End Logo -->
                   <button class="mobile-arrow"><i class="fa fa-bars"></i></button>
@@ -117,7 +125,7 @@
                   <div class="mainmenu">
                      <nav class="navigation">
                         <ul class="nav menu">
-                           <li class="active"><a href="index.html">Home</a></li>
+                           <li class="active"><a href="<?php echo _WEB_HOST_ROOT ?>">Home</a></li>
                            <li>
                               <a href="#">Pages<i class="fa fa-caret-down"></i></a>
                               <ul class="dropdown">
@@ -140,7 +148,8 @@
                      </nav>
                      <!-- Button -->
                      <div class="button">
-                        <a href="contact.html" class="btn">Get a quote</a>
+                        <a href="<?php echo !empty(getOption('header_quote_link')) ? getOption('header_quote_link') : "#" ?>"
+                           class="btn"><?php echo !empty(getOption('header_quote_text')) ? getOption('header_quote_text') : "get a quote"?></a>
                      </div>
                      <!--/ End Button -->
                   </div>

@@ -57,3 +57,11 @@
 .gallery-item + .gallery-item {
   margin-top: 10px;
 }
+
+.remove:hover i {
+  color: red;
+}
+
+.remove i {
+  font-size: 20px;
+}

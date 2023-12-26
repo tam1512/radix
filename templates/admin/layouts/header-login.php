@@ -13,6 +13,8 @@ if(!defined('_INCODE')) die('Access denied...');
       href="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>plugins/fontawesome-free/css/all.min.css">
    <link rel="stylesheet"
       href="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets'; ?>/css/style.css?ver=<?php echo rand(); ?>">
+   <link rel="stylesheet"
+      href="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/../core/assets'; ?>/css/style.css?ver=<?php echo rand(); ?>">
 </head>
 
 <body>
