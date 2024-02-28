@@ -46,8 +46,8 @@
 
       //get default about
       $jsonDataAbout = firstRaw("SELECT opt_value FROM options WHERE opt_key = 'home_about'")['opt_value'];
-      $homeAbout = json_decode($jsonDataAbout, true);
-      setFlashData('aboutDefault', $homeAbout);
+      $arrAbout = json_decode($jsonDataAbout, true);
+      setFlashData('aboutDefault', $arrAbout);
    }
 
    if(isPost()) {
@@ -70,6 +70,9 @@
       //home_about
       if(!empty(getBody('post')['home_about'])) {
          $homeAbout = getBody('post')['home_about'];
+         echo '<pre>';
+         print_r($homeAbout);
+         echo '</pre>';
          foreach($homeAbout as $key => $value) {
             if(is_array($value)) {
                foreach($value as $k => $v) {
@@ -109,7 +112,7 @@
          
       if(empty($errors)) {
          $jsonSlider = json_encode($arrSlider);
-         $jsonAbout = json_encode($homeAbout);
+         $jsonAbout = json_encode($arrAbout);
          
          // Không có lỗi xảy ra
          $dataSliderUpdate = [
@@ -128,15 +131,16 @@
            setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
             setFlashData('msg_type', 'danger'); 
          }
-         redirect('admin/?module=options&action=home');
+         // redirect('admin/?module=options&action=home');
       } else {
          setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
          setFlashData('msg_type', 'danger');
          setFlashData('errors', $errors);
          setFlashData('oldSlider', $arrSlider);
-         setFlashData('oldAbout', $homeAbout);
+         setFlashData('oldAbout', $arrAbout);
+         setFlashData('oldAboutProgress', $arrAboutProgress);
          setFlashData('body', getBody('post')['home_about']);
-         redirect('admin/?module=options&action=home');
+         // redirect('admin/?module=options&action=home');
       }
    }
 
@@ -145,7 +149,8 @@
 
    $errors = getFlashData('errors');
    $old = getFlashData('oldSlider');
-   $oldAbout = getFlashData('oldAbout');
+   $oldAbout = getFlashData('oldAbout'); 
+   $oldAboutProgress = getFlashData('oldAboutProgress'); 
    $body = getFlashData('body');
    if(empty($old)) {
       $arrSlider = getFlashData('sliderDefault');
@@ -153,21 +158,15 @@
       $arrSlider = $old;
    }
    if(empty($oldAbout)) {
-      $homeAbout = getFlashData('aboutDefault');
+      $arrAbout = getFlashData('aboutDefault');
+      $oldAbout = json_decode($arrAbout, true);
+      $oldAboutProgress = $oldAbout[''];
    } else {
-      $homeAbout = $oldAbout;
+      $arrAbout = $oldAbout;
    }
-   if(!empty($homeAbout)) {
-      foreach($homeAbout as $key => $value) {
-         if(is_array($value)) {
-            foreach($value as $k => $v) {
-               $arrAboutProgress[$k][$key] =$v ;
-            }
-         } else {
-            $arrAbout[$key] = $value;
-         }
-      }
-   }
+   // echo '<pre>';
+   // print_r($errors);
+   // echo '</pre>';
 ?>
 
 <!-- <div class="container"> -->
@@ -179,8 +178,8 @@
    require_once('contents/slider.php');
    require_once('contents/about.php');
    ?>
-   <div class="px-1 mb-2">
-      <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+   <div class="px-1">
+      <button class="btn btn-primary" type="submit">Cập nhật</button>
    </div>
 </form>
 <!-- </div> -->

@@ -180,7 +180,7 @@
    require_once('contents/about.php');
    ?>
    <div class="px-1 mb-2">
-      <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+      <button class="btn btn-primary" type="submit">Cập nhật</button>
    </div>
 </form>
 <!-- </div> -->

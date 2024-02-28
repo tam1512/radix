@@ -110,6 +110,15 @@
                   </div>
                </div>
             </div>
+            <div class="flex-shrink-0 ms-2">
+               <ul class="list-inline mb-0">
+                  <li class="list-inline-item">
+                     <button type="button" class="text-muted px-1 btn remove">
+                        <i class="fa fa-trash" aria-hidden="true"></i>
+                     </button>
+                  </li>
+               </ul>
+            </div>
          </div>
       </div>
    </div>

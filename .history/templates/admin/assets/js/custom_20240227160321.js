@@ -168,12 +168,12 @@ function openCkfinder() {
           height: 600,
           onInit: function (finder) {
             finder.on("files:choose", function (evt) {
-              let fileUrl = rootUrl + evt.data.files.first().getUrl();
+              let fileUrl = evt.data.files.first().getUrl();
               //Xử lý chèn link ảnh vào input
               imageLink.value = fileUrl;
             });
             finder.on("file:choose:resizedImage", function (evt) {
-              let fileUrl = rootUrl + evt.data.resizedUrl;
+              let fileUrl = evt.data.resizedUrl;
               //Xử lý chèn link ảnh vào input
               imageLink.value = fileUrl;
             });

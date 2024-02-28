@@ -157,17 +157,9 @@
    } else {
       $homeAbout = $oldAbout;
    }
-   if(!empty($homeAbout)) {
-      foreach($homeAbout as $key => $value) {
-         if(is_array($value)) {
-            foreach($value as $k => $v) {
-               $arrAboutProgress[$k][$key] =$v ;
-            }
-         } else {
-            $arrAbout[$key] = $value;
-         }
-      }
-   }
+   echo '<pre>';
+   print_r($homeAbout);
+   echo '</pre>';
 ?>
 
 <!-- <div class="container"> -->
@@ -179,8 +171,8 @@
    require_once('contents/slider.php');
    require_once('contents/about.php');
    ?>
-   <div class="px-1 mb-2">
-      <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+   <div class="px-1">
+      <button class="btn btn-primary" type="submit">Cập nhật</button>
    </div>
 </form>
 <!-- </div> -->

@@ -46,8 +46,8 @@
 
       //get default about
       $jsonDataAbout = firstRaw("SELECT opt_value FROM options WHERE opt_key = 'home_about'")['opt_value'];
-      $homeAbout = json_decode($jsonDataAbout, true);
-      setFlashData('aboutDefault', $homeAbout);
+      $arrAbout = json_decode($jsonDataAbout, true);
+      setFlashData('homeDefault', $arrAbout);
    }
 
    if(isPost()) {
@@ -109,7 +109,7 @@
          
       if(empty($errors)) {
          $jsonSlider = json_encode($arrSlider);
-         $jsonAbout = json_encode($homeAbout);
+         $jsonAbout = json_encode($arrAbout);
          
          // Không có lỗi xảy ra
          $dataSliderUpdate = [
@@ -134,7 +134,8 @@
          setFlashData('msg_type', 'danger');
          setFlashData('errors', $errors);
          setFlashData('oldSlider', $arrSlider);
-         setFlashData('oldAbout', $homeAbout);
+         setFlashData('oldAbout', $arrAbout);
+         setFlashData('oldAboutProgress', $arrAboutProgress);
          setFlashData('body', getBody('post')['home_about']);
          redirect('admin/?module=options&action=home');
       }
@@ -146,28 +147,16 @@
    $errors = getFlashData('errors');
    $old = getFlashData('oldSlider');
    $oldAbout = getFlashData('oldAbout');
+   $oldAboutProgress = getFlashData('oldAboutProgress');
    $body = getFlashData('body');
    if(empty($old)) {
       $arrSlider = getFlashData('sliderDefault');
    } else {
       $arrSlider = $old;
    }
-   if(empty($oldAbout)) {
-      $homeAbout = getFlashData('aboutDefault');
-   } else {
-      $homeAbout = $oldAbout;
-   }
-   if(!empty($homeAbout)) {
-      foreach($homeAbout as $key => $value) {
-         if(is_array($value)) {
-            foreach($value as $k => $v) {
-               $arrAboutProgress[$k][$key] =$v ;
-            }
-         } else {
-            $arrAbout[$key] = $value;
-         }
-      }
-   }
+   // echo '<pre>';
+   // print_r($errors);
+   // echo '</pre>';
 ?>
 
 <!-- <div class="container"> -->
@@ -179,8 +168,8 @@
    require_once('contents/slider.php');
    require_once('contents/about.php');
    ?>
-   <div class="px-1 mb-2">
-      <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+   <div class="px-1">
+      <button class="btn btn-primary" type="submit">Cập nhật</button>
    </div>
 </form>
 <!-- </div> -->

@@ -168,6 +168,10 @@
          }
       }
    }
+
+   echo '<pre>';
+   print_r($arrAboutProgress);
+   echo '</pre>';
 ?>
 
 <!-- <div class="container"> -->
@@ -179,8 +183,8 @@
    require_once('contents/slider.php');
    require_once('contents/about.php');
    ?>
-   <div class="px-1 mb-2">
-      <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+   <div class="px-1">
+      <button class="btn btn-primary" type="submit">Cập nhật</button>
    </div>
 </form>
 <!-- </div> -->

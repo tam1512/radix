@@ -119,7 +119,7 @@
             'opt_value' => $jsonAbout,
          ];
 
-         $updateSliderStatus = update('options', $dataSliderUpdate, "opt_key = 'home_slide'");
+         $updateSliderStatus = update('options', $dataUpdate, "opt_key = 'home_slide'");
          $updateAboutStatus = update('options', $dataAboutUpdate, "opt_key = 'home_about'");
          if($updateSliderStatus && $updateAboutStatus) {
                setFlashData('msg', 'Chỉnh sửa trang chủ thành công.');
@@ -128,7 +128,7 @@
            setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
             setFlashData('msg_type', 'danger'); 
          }
-         redirect('admin/?module=options&action=home');
+         // redirect('admin/?module=options&action=home');
       } else {
          setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
          setFlashData('msg_type', 'danger');
@@ -136,7 +136,7 @@
          setFlashData('oldSlider', $arrSlider);
          setFlashData('oldAbout', $homeAbout);
          setFlashData('body', getBody('post')['home_about']);
-         redirect('admin/?module=options&action=home');
+         // redirect('admin/?module=options&action=home');
       }
    }
 
@@ -157,17 +157,9 @@
    } else {
       $homeAbout = $oldAbout;
    }
-   if(!empty($homeAbout)) {
-      foreach($homeAbout as $key => $value) {
-         if(is_array($value)) {
-            foreach($value as $k => $v) {
-               $arrAboutProgress[$k][$key] =$v ;
-            }
-         } else {
-            $arrAbout[$key] = $value;
-         }
-      }
-   }
+   echo '<pre>';
+   print_r($homeAbout);
+   echo '</pre>';
 ?>
 
 <!-- <div class="container"> -->
@@ -179,8 +171,8 @@
    require_once('contents/slider.php');
    require_once('contents/about.php');
    ?>
-   <div class="px-1 mb-2">
-      <button class="btn btn-primary" type="submit">Lưu thay đổi</button>
+   <div class="px-1">
+      <button class="btn btn-primary" type="submit">Cập nhật</button>
    </div>
 </form>
 <!-- </div> -->

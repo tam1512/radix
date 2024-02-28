@@ -675,8 +675,9 @@ $.widget.bridge('uibutton', $.ui.button)
 
 <script type="text/javascript">
 let rootUrlAdmin = "<?php echo _WEB_HOST_ROOT_ADMIN.'/' ?>";
-let rootUrl = "<?php echo _WEB_HOST_ROOT ?>";
+let rootUrl = "<?php echo _WEB_HOST_ROOT.'/' ?>";
 let prefixLink = "<?php echo getPrefixLink($module) ?>"
+// let oldAboutProgress = "<?php// echo !empty($oldAboutProgress) ? json_encode($oldAboutProgress) : '' ?>"
 </script>
 
 <!-- range js-->

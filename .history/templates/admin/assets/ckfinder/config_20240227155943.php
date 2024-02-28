@@ -33,7 +33,7 @@ $config['authentication'] = function () {
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_licenseKey
 
 $config['licenseName'] = 'radix.local';
-$config['licenseKey']  = '9GPGNUDVQ4XJHRMHDJ6668QWSCDKT';
+$config['licenseKey']  = '4QCQ9U6FP3G5UQV414YP642WYFEE4';
 
 /*============================ CKFinder Internal Directory ============================*/
 // https://ckeditor.com/docs/ckfinder/ckfinder3-php/configuration.html#configuration_options_privateDir
@@ -66,7 +66,7 @@ $config['images'] = array(
 $config['backends'][] = array(
     'name'         => 'default',
     'adapter'      => 'local',
-    'baseUrl'      => '/uploads',
+    'baseUrl'      => '/KimDuc/radix/uploads',
 //  'root'         => '', // Can be used to explicitly set the CKFinder user files directory.
     'chmodFiles'   => 0777,
     'chmodFolders' => 0755,

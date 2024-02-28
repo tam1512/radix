@@ -15,8 +15,8 @@ const _MODULE_DEFAULT_ADMIN = 'dashboard';
 const _INCODE = true; // ngăn chặn hành vi truy cập trực tiếp vào file
 
 // Thiết lập host
-define('_WEB_HOST_ROOT', 'http://'.$_SERVER['HTTP_HOST']); //địa chỉ trang chủ
-define('_WEB_HOST_ROOT_ADMIN', 'http://'.$_SERVER['HTTP_HOST'].'/admin'); //địa chỉ trang chủ admin
+define('_WEB_HOST_ROOT', 'http://'.$_SERVER['HTTP_HOST'].'/PHP/PHP_co_ban/Module05/radix'); //địa chỉ trang chủ
+define('_WEB_HOST_ROOT_ADMIN', 'http://'.$_SERVER['HTTP_HOST'].'/PHP/PHP_co_ban/Module05/radix/admin'); //địa chỉ trang chủ admin
 
 // Đường dẫn thiết lập template của client
 define('_WEB_HOST_TEMPLATE', _WEB_HOST_ROOT.'/templates/client');
