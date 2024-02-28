@@ -149,8 +149,11 @@
            setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
             setFlashData('msg_type', 'danger'); 
          }
-         redirect('admin/?module=options&action=home');
+         // redirect('admin/?module=options&action=home');
       } else {
+         echo '<pre>';
+         print_r($body);
+         echo '</pre>';
          setFlashData('msg', 'Vui lòng kiểm tra dữ liệu nhập vào!');
          setFlashData('msg_type', 'danger');
          setFlashData('errors', $errors);
@@ -158,7 +161,7 @@
          setFlashData('oldAbout', $homeAbout);
          setFlashData('old', $body);
          setFlashData('body', getBody('post')['home_about']);
-         redirect('admin/?module=options&action=home');
+         // redirect('admin/?module=options&action=home');
       }
    }
 
@@ -192,6 +195,9 @@
    }
 
    $oldService = getFlashData('old');
+   echo '<pre>';
+   print_r($oldService);
+   echo '</pre>';
 ?>
 
 <!-- <div class="container"> -->

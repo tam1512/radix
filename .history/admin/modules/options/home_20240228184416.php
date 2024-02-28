@@ -191,7 +191,10 @@
       }
    }
 
-   $oldService = getFlashData('old');
+   $oldService = !empty(getFlashData('old')) ? getFlashData('old') : false;
+   echo '<pre>';
+   print_r($oldService);
+   echo '</pre>';
 ?>
 
 <!-- <div class="container"> -->

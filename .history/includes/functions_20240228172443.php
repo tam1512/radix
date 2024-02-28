@@ -345,9 +345,8 @@ function getDateFormat($dateStr, $format) {
 
 //Check icon
 function isIcon($input) {
-  $input = html_entity_decode($input);
-  if(strpos($input, '<i class="') !== false) {
-    return $input;
+  if(strpos($input, '<i class="') != false) {
+    return true;
   }
   return false;
 }
@@ -447,46 +446,31 @@ function getPath() {
   return $path;
 }
 
-function updateOptions($prefixKey='') {
-  if(empty($prefixKey)) {
-    if(isPost()){
-      $body = getBody('post');
-      $countUpdate = 0;
-      if(!empty($body)) {
-        foreach($body as $key => $value) {
-          $condition = "opt_key = '$key'";
-          $dataUpdate = [
-            "opt_value" => trim($value)
-          ];
-  
-          $updateStatus = update('options', $dataUpdate, $condition);
-          if($updateStatus) {
-            $countUpdate++;
-          }
+function updateOptions() {
+  if(isPost()){
+    $body = getBody('post');
+    $countUpdate = 0;
+    if(!empty($body)) {
+      foreach($body as $key => $value) {
+        $condition = "opt_key = '$key'";
+        $dataUpdate = [
+          "opt_value" => trim($value)
+        ];
+
+        $updateStatus = update('options', $dataUpdate, $condition);
+        if($updateStatus) {
+          $countUpdate++;
         }
       }
-      if($countUpdate > 0) {
-        setFlashData('msg', "Đã cập nhật $countUpdate bản ghi thành công.");
-        setFlashData('msg_type', "success");
-      } else {
-        setFlashData('msg', "Cập nhật không thành công.");
-        setFlashData('msg_type', "error");
-      }
-      redirect(getPathAdmin());
     }
-  } else {
-    $sql = "SELECT * FROM options WHERE opt_key LIKE '%$prefixKey%'";
-    $options = getRaw($sql);
-    $body = getBody('post');
-    if(!empty($body) && !empty($options)) {
-      foreach($options as $value) {
-        $condition = "opt_key = '".$value['opt_key']."'";
-        $dataUpdate = [
-          'opt_value' => trim($body[$value['opt_key']])
-        ];
-        $updateStatus = update('options', $dataUpdate, $condition);
-      }
+    if($countUpdate > 0) {
+      setFlashData('msg', "Đã cập nhật $countUpdate bản ghi thành công.");
+      setFlashData('msg_type', "success");
+    } else {
+      setFlashData('msg', "Cập nhật không thành công.");
+      setFlashData('msg_type', "error");
     }
+    redirect(getPathAdmin());
   }
 }
 
@@ -530,20 +514,6 @@ function renderOptions($prefixKey, $layout=1) {
                         </div>
                     </div>
                   </div>';
-        } else if($upload == 2) {
-          $html .= '<div class="col-'.(12/$layout).'">
-          <div class="form-group">
-            <label for="'.$key.'">'.$name.'</label>
-            <textarea type="text" id="'.$key.'" name="'.$key.'" class="form-control" placeholder="'.$name.'...">'.$value.'</textarea>
-          </div>
-        </div>';
-        } else if($upload == 3) {
-          $html .= '<div class="col-'.(12/$layout).'">
-          <div class="form-group">
-            <label for="'.$key.'">'.$name.'</label>
-            <textarea type="text" id="'.$key.'" name="'.$key.'" class="form-control editor" placeholder="'.$name.'...">'.$value.'</textarea>
-          </div>
-        </div>';
         } else {
           $html .= '<div class="col-'.(12/$layout).'">
                       <div class="form-group">
@@ -631,8 +601,6 @@ function headAdmin() {
 <!-- range style-->
 <link rel="stylesheet"
    href="<?php echo $host.'/assets'; ?>/plugins/ion-rangeslider/css/ion.rangeSlider.min.css?ver=<?php echo rand(); ?>">
-<!-- font awesome -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 <!-- Style core-->
 <link rel="stylesheet" href="<?php echo $host.'/../core/assets'; ?>/css/style.css?ver=<?php echo rand(); ?>">
 <!-- Style-->

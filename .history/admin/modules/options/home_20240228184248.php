@@ -191,7 +191,7 @@
       }
    }
 
-   $oldService = getFlashData('old');
+   $oldService = !empty(getFlashData('old')) ? getFlashData('old') : false;
 ?>
 
 <!-- <div class="container"> -->

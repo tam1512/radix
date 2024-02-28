@@ -631,7 +631,7 @@ function headAdmin() {
 <!-- range style-->
 <link rel="stylesheet"
    href="<?php echo $host.'/assets'; ?>/plugins/ion-rangeslider/css/ion.rangeSlider.min.css?ver=<?php echo rand(); ?>">
-<!-- font awesome -->
+
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 <!-- Style core-->
 <link rel="stylesheet" href="<?php echo $host.'/../core/assets'; ?>/css/style.css?ver=<?php echo rand(); ?>">

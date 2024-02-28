@@ -217,7 +217,10 @@ $msgType = getFlashData('msg_type');
                <td><?php echo $count ?></td>
                <td>
                   <?php
-                   echo isIcon($service['icon']) ? isIcon($service['icon']) : '<img src="'.$service['icon'].'" alt="img_service" width="80%">' 
+                  echo $service['icon'].'<br>';
+                  // var_dump(isIcon($service['icon']));
+                  echo isIcon($service['icon']).'<br>';
+                   echo isIcon($service['icon']) ? $service['icon'] : '<img src="'.$service['icon'].'" alt="img_service" width="80%">' 
                    ?>
                </td>
                <td>

@@ -56,9 +56,6 @@
       $arrSlider = [];
       $arrAbout = [];
       $arrAboutProgress = [];
-
-      $body = getBody('post');
-
       //home_slide
       if(!empty(getBody('post')['home_slide'])) {
          $homeSlider = getBody('post')['home_slide'];
@@ -85,7 +82,6 @@
       }
 
 
-
       //xử lý lỗi của home_about
       foreach($arrAbout as $key => $value) {
          if(empty($value)) {
@@ -110,22 +106,6 @@
          }
       }
 
-      //home services
-      $homeServicesTitleBg = trim($body['home_services_title-bg']);
-      $homeServicesTitle = trim($body['home_services_title']);
-      $homeServicesContent = trim($body['home_services_content']);
-
-      if(empty($homeServicesTitleBg)) {
-         $errors['home_services_title-bg']['required'] = 'Không được để trống tiêu đề nền';
-      }
-
-      if(empty($homeServicesTitle)) {
-         $errors['home_services_title']['required'] = 'Không được để trống tiêu đề';
-      }
-
-      if(empty($homeServicesContent)) {
-         $errors['home_services_content']['required'] = 'Không được để trống nội dung';
-      }
          
       if(empty($errors)) {
          $jsonSlider = json_encode($arrSlider);
@@ -141,7 +121,6 @@
 
          $updateSliderStatus = update('options', $dataSliderUpdate, "opt_key = 'home_slide'");
          $updateAboutStatus = update('options', $dataAboutUpdate, "opt_key = 'home_about'");
-         updateOptions('home_services');
          if($updateSliderStatus && $updateAboutStatus) {
                setFlashData('msg', 'Chỉnh sửa trang chủ thành công.');
                setFlashData('msg_type', 'success');
@@ -156,7 +135,6 @@
          setFlashData('errors', $errors);
          setFlashData('oldSlider', $arrSlider);
          setFlashData('oldAbout', $homeAbout);
-         setFlashData('old', $body);
          setFlashData('body', getBody('post')['home_about']);
          redirect('admin/?module=options&action=home');
       }
@@ -190,8 +168,6 @@
          }
       }
    }
-
-   $oldService = getFlashData('old');
 ?>
 
 <!-- <div class="container"> -->
