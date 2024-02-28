@@ -478,29 +478,17 @@ let btnAddFact = document.querySelector("#addFact");
 let htmlFactItem = `
 <div class="facts_item">
   <div class="row">
-      <div class="col-4">
+      <div class="col-12 ">
         <div class="form-group">
             <input type="text" name="home_facts[facts_item_desc][]" id="facts_item_desc"
-              class="form-control" placeholder="Thành tựu...">
+              class="form-control" placeholder="Mô tả...">
         </div>
       </div>
-      <div class="col-3">
-        <div class="form-group">
-            <input type="text" name="home_facts[facts_item_icon][]" id="facts_item_icon"
-              class="form-control" placeholder="Icon...">
-        </div>
+      <div class="col-12">
+        <input type="text" name="home_facts[facts_item_icon][]">
       </div>
-      <div class="col-2">
-        <div class="form-group">
-            <input type="number" name="home_facts[facts_item_number][]" id="facts_item_number"
-              class="form-control" placeholder="Số lượng...">
-        </div>
-      </div>
-      <div class="col-2">
-        <div class="form-group">
-            <input type="text" name="home_facts[facts_item_unit][]" id="facts_item_unit"
-              class="form-control" placeholder="Đơn vị...">
-        </div>
+      <div class="col-12">
+        <input type="text" name="home_facts[facts_item_number][]">
       </div>
       <div class="col-1">
         <button class="btn btn-danger btn-block remove">X</button>

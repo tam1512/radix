@@ -477,62 +477,69 @@ let factObjects = document.querySelector(".facts");
 let btnAddFact = document.querySelector("#addFact");
 let htmlFactItem = `
 <div class="facts_item">
-  <div class="row">
-      <div class="col-4">
-        <div class="form-group">
-            <input type="text" name="home_facts[facts_item_desc][]" id="facts_item_desc"
-              class="form-control" placeholder="Thành tựu...">
-        </div>
-      </div>
-      <div class="col-3">
-        <div class="form-group">
-            <input type="text" name="home_facts[facts_item_icon][]" id="facts_item_icon"
-              class="form-control" placeholder="Icon...">
-        </div>
-      </div>
-      <div class="col-2">
-        <div class="form-group">
-            <input type="number" name="home_facts[facts_item_number][]" id="facts_item_number"
-              class="form-control" placeholder="Số lượng...">
-        </div>
-      </div>
-      <div class="col-2">
-        <div class="form-group">
-            <input type="text" name="home_facts[facts_item_unit][]" id="facts_item_unit"
-              class="form-control" placeholder="Đơn vị...">
-        </div>
-      </div>
-      <div class="col-1">
-        <button class="btn btn-danger btn-block remove">X</button>
-      </div>
-  </div>
-</div>`;
+                              <div class="row">
+                                 <div class="col-12 ">
+                                    <div class="form-group">
+                                       <input type="text" name="home_facts[facts_item_desc][]" id="facts_item_desc"
+                                          class="form-control" placeholder="Mô tả..."
+                                          value="<?php echo !empty($value['facts_item_desc']) ? $value['facts_item_desc'] : false ?>">
+                                       <?php echo !empty($errors['facts_item_desc']) ? form_error($key, $errors['facts_item_desc'], '<span class="error">', '</span>') : false?>
+                                    </div>
+                                 </div>
+                                 <div class="col-12">
+                                    <input type="text" name="home_facts[facts_item_icon][]"
+                                       value="<?php echo !empty($value['facts_item_icon']) ? $value['facts_item_icon'] : false ?>">
+                                    <?php echo !empty($errors['facts_item_icon']) ? form_error($key, $errors['facts_item_icon'], '<span class="error">', '</span>') : false?>
+                                 </div>
+                                 <div class="col-12">
+                                    <input type="text" name="home_facts[facts_item_number][]"
+                                       value="<?php echo !empty($value['facts_item_number']) ? $value['facts_item_number'] : false ?>">
+                                    <?php echo !empty($errors['facts_item_number']) ? form_error($key, $errors['facts_item_number'], '<span class="error">', '</span>') : false?>
+                                 </div>
+                                 <div class="col-1">
+                                    <button class="btn btn-danger btn-block remove">X</button>
+                                 </div>
+                              </div>
+                           </div>`;
 
-if (factObjects !== null && btnAddFact !== null) {
-  btnAddFact.addEventListener("click", (e) => {
+if (progressObjects !== null && btnAddProgress !== null) {
+  btnAddProgress.addEventListener("click", (e) => {
     e.preventDefault();
-    let factItemHtmlNode = new DOMParser()
-      .parseFromString(htmlFactItem, "text/html")
-      .querySelector(".facts_item");
-    factObjects.appendChild(factItemHtmlNode);
+    let progressItemHtmlNode = new DOMParser()
+      .parseFromString(htmlProgressItem, "text/html")
+      .querySelector(".about_progress-item");
+    progressObjects.appendChild(progressItemHtmlNode);
+    $(".progress-range").each(function () {
+      var item = $(this);
+      item.ionRangeSlider({
+        min: 0,
+        max: 100,
+        // from: progressValue,
+        type: "single",
+        step: 1,
+        postfix: "%",
+        prettify: false,
+        hasGrid: true,
+      });
+    });
   });
 
-  factObjects.addEventListener("click", function (e) {
+  progressObjects.addEventListener("click", function (e) {
     e.preventDefault();
     if (
       e.target.classList.contains("remove") ||
       e.target.parentElement.classList.contains("remove")
     ) {
       if (confirm("Bạn có chắc chắn muốn xóa?")) {
-        let factsItem = e.target;
-        while (factsItem) {
-          factsItem = factsItem.parentElement;
-          if (factsItem.classList.contains("facts_item")) {
+        let progressItem = e.target;
+        while (progressItem) {
+          progressItem = progressItem.parentElement;
+          if (progressItem.classList.contains("about_progress-item")) {
             break;
           }
         }
-        if (factsItem !== null) {
-          factsItem.remove();
+        if (progressItem !== null) {
+          progressItem.remove();
         }
       }
     }

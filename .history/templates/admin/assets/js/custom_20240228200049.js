@@ -481,25 +481,19 @@ let htmlFactItem = `
       <div class="col-4">
         <div class="form-group">
             <input type="text" name="home_facts[facts_item_desc][]" id="facts_item_desc"
-              class="form-control" placeholder="Thành tựu...">
+              class="form-control" placeholder="Mô tả...">
+        </div>
+      </div>
+      <div class="col-4">
+        <div class="form-group">
+            <input type="text" name="home_facts[facts_item_icon][]" id="facts_item_icon"
+              class="form-control" placeholder="Mô tả...">
         </div>
       </div>
       <div class="col-3">
         <div class="form-group">
-            <input type="text" name="home_facts[facts_item_icon][]" id="facts_item_icon"
-              class="form-control" placeholder="Icon...">
-        </div>
-      </div>
-      <div class="col-2">
-        <div class="form-group">
-            <input type="number" name="home_facts[facts_item_number][]" id="facts_item_number"
-              class="form-control" placeholder="Số lượng...">
-        </div>
-      </div>
-      <div class="col-2">
-        <div class="form-group">
-            <input type="text" name="home_facts[facts_item_unit][]" id="facts_item_unit"
-              class="form-control" placeholder="Đơn vị...">
+            <input type="text" name="home_facts[facts_item_number][]" id="facts_item_number"
+              class="form-control" placeholder="Mô tả...">
         </div>
       </div>
       <div class="col-1">

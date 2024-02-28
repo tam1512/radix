@@ -141,7 +141,7 @@
       }
       foreach($arrFacts as $key => $value) {
          foreach($value as $k => $v) {
-           if(empty($v) && $k != 'facts_item_unit') {
+           if(empty($v)) {
             $errors[$k][$key]["required"] = "Không được để trống ".$arrValueFacts[$k];
            }
            if($k == 'facts_item_number' && !isNumberInt($v)) {

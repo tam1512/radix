@@ -43,8 +43,7 @@
       'facts_button_link' => 'liên kết',
       'facts_item_desc' => 'thành tựu',
       'facts_item_icon' => 'icon',
-      'facts_item_number' => 'sô lượng thành tựu',
-      'facts_item_unit' => 'đơn vị tính',
+      'facts_item_number' => 'sô lượng thành tựu'
    ];
    if(isGet()) {
       //get default slider
@@ -141,12 +140,9 @@
       }
       foreach($arrFacts as $key => $value) {
          foreach($value as $k => $v) {
-           if(empty($v) && $k != 'facts_item_unit') {
+           if(empty($v)) {
             $errors[$k][$key]["required"] = "Không được để trống ".$arrValueFacts[$k];
            }
-           if($k == 'facts_item_number' && !isNumberInt($v)) {
-            $errors[$k][$key]["number"] = 'Số lượng phải là số';
-           } 
          }
       }   
 

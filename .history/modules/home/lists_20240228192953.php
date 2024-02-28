@@ -8,7 +8,6 @@
    require_once('contents/slider.php');
    require_once('contents/about.php');
    require_once('contents/services.php');
-   require_once('contents/facts.php');
 ?>
 <!-- Portfolio -->
 <section id="portfolio" class="portfolio section">
