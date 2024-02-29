@@ -4,7 +4,7 @@ if(!defined('_INCODE')) die('Access denied...');
  * Chứa chức năng thêm người dùng
  */
 $data = [
-   'title' => 'Thêm dự án'
+   'title' => 'Sửa thông tin dự án'
 ];
 
    layout('header', 'admin', $data);
@@ -16,6 +16,17 @@ $data = [
  $userId = isLogin()['user_id'];
 
  $listAllCates = getRaw("SELECT id, name FROM portfolio_categories");
+ if(isGet()) {
+    $id = getBody("get")['id'];
+   $defaultPortfolio = firstRaw("SELECT * FROM portfolios WHERE id = $id");
+   $listImages = getRaw("SELECT id, image FROM portfolio_images WHERE portfolio_id = $id");
+   if(empty($listImages)) {
+      setFlashData('defaultPortfolio', $defaultPortfolio);
+   } else {
+      $defaultPortfolio['gallery'] = $listImages;
+      setFlashData('defaultPortfolio', $defaultPortfolio);
+   }
+ }
  if(isPost()) {
 
    //Validate form
@@ -24,14 +35,38 @@ $data = [
    $errors = []; // mãng lưu trữ các lỗi
 
    // Lọc giá trị ban đầu
+   $id = trim($body['id']);
    $name = trim($body['name']);
    $slug = trim($body['slug']);
    $thumbnail = trim($body['thumbnail']);
    $description = trim($body['description']);
    $content = trim($body['content']);
-   $cateId = trim($body['cate_id']);
+   $cateId = trim($body['category_id']);
    $video = trim($body['video']);
-   $images = $body['gallery'];
+   if(isset($body['gallery'])) {
+      $images = $body['gallery'];
+   } else {
+      $images = [];
+   }
+
+   
+   $listImages = getRaw("SELECT id, image FROM portfolio_images WHERE portfolio_id = $id");
+
+   $listImageDelete = [];
+   foreach($listImages as $image) {
+      $checkDelete = false;
+      foreach($images as $item) {
+         if(!empty($item['id'])) {
+            if($image['id'] == $item['id']) {
+               $checkDelete = true;
+            }
+         }
+      }
+      if(!$checkDelete) {
+         $listImageDelete[] = $image;
+      }
+   }
+
 
    if(empty($name)) {
       $errors['name']['required'] = 'Tên nhóm không được để trống';
@@ -50,7 +85,7 @@ $data = [
    }
 
    if(empty($cateId)) {
-      $errors['cate_id']['required'] = 'Vui lòng chọn danh mục sản phẩm';
+      $errors['category_id']['required'] = 'Vui lòng chọn danh mục sản phẩm';
    } 
 
    if(empty($content)) {
@@ -59,7 +94,7 @@ $data = [
 
    if(empty($errors)) {
       // Không có lỗi xảy ra
-      $dataInsert = [
+      $dataUpdate = [
          'name' => $name,
          'slug' => $slug,
          'thumbnail' => $thumbnail,
@@ -68,34 +103,68 @@ $data = [
          'user_id' => $userId,
          'category_id' => $cateId,
          'video' => $video,
-         'create_at' => date('Y-m-d H:i:s'),
+         'update_at' => date('Y-m-d H:i:s'),
       ];
 
-      $insertStatus = insert('portfolios', $dataInsert);
-      if($insertStatus) {
-            if(empty($images)) {
-               setFlashData('msg', 'Thêm dự án thành công.');
+      $updateStatus = update('portfolios', $dataUpdate, "id = $id");
+      if($updateStatus) {
+         if(empty($images)) {
+            $deleteImageStatus = delete('portfolio_images', 'portfolio_id='.$id);
+            if($deleteImageStatus) {
+               setFlashData('msg', 'Sửa thông tin dự án thành công.');
                setFlashData('msg_type', 'success');
             } else {
-               $portfolioId = insertId();
-               foreach($images as $image) {
-                  $dataInsertImage = [
-                     'portfolio_id' => $portfolioId,
-                     'image' => $image,
-                     'create_at' => date('Y-m-d H:i:s')
+               setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau ($deleteImage).');
+               setFlashData('msg_type', 'danger');
+            }
+         } else {
+            foreach($images as $key=>$value) {
+               if(!empty($value['id'])) {
+                  $dataUpdateImage = [
+                     'id' => $value['id'],
+                     'portfolio_id' => $id,
+                     'image' => $value['image'],
+                     'update_at' => date('Y-m-d H:i:s')
                   ];
-                  $insertImageStatus = insert('portfolio_images', $dataInsertImage);
-                  if($insertImageStatus) {
-                     setFlashData('msg', 'Thêm dự án thành công.');
+                  $updateImageStatus = update('portfolio_images', $dataUpdateImage, "id = ".$value['id']);
+                  if($updateImageStatus) {
+                     setFlashData('msg', 'Sửa thông tin dự án thành công.');
                      setFlashData('msg_type', 'success');
                   } else {
-                     setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau (insertImage).');
-                     setFlashData('msg_type', 'danger'); 
+                     setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau ($updateImage).');
+                     setFlashData('msg_type', 'danger');
+                  }
+               } else {
+                  if(is_string($value) && !empty($value)) {
+                     $dataInsertImage = [
+                        'portfolio_id' => $id,
+                        'image' => $value,
+                        'create_at' => date('Y-m-d H:i:s')
+                     ];
+                     $insertImageStatus = insert('portfolio_images', $dataInsertImage);
+                     if($insertImageStatus) {
+                        setFlashData('msg', 'Sửa thông tin dự án thành công.');
+                        setFlashData('msg_type', 'success');
+                     } else {
+                        setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau ($insertImage).');
+                        setFlashData('msg_type', 'danger');
+                     }
                   }
                }
             }
+
+            if(!empty($listImageDelete)) {
+               foreach($listImageDelete as $image) {
+                 $deleteImageStatus = delete('portfolio_images', "id=".$image['id']);
+                 if(!$deleteImageStatus) {
+                  setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau ($deleteImage).');
+                  setFlashData('msg_type', 'danger');
+                 }
+               }
+            }
+         }
       } else {
-        setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
+         setFlashData('msg', 'Lỗi hệ thống. Vui lòng thử lại sau.');
          setFlashData('msg_type', 'danger'); 
       }
       redirect('admin/?module=portfolios');
@@ -105,7 +174,7 @@ $data = [
       setFlashData('msg_type', 'danger');
       setFlashData('errors', $errors);
       setFlashData('old', $body);
-      redirect('admin/?module=portfolios&action=add');
+      redirect('admin/?module=portfolios&action=edit&id='.$id);
    }
 }
 
@@ -113,6 +182,10 @@ $msg = getFlashData('msg');
 $msgType = getFlashData('msg_type');
 $errors = getFlashData('errors');
 $old = getFlashData('old');
+$defaultPortfolio = getFlashData('defaultPortfolio');
+if(empty($old)) {
+   $old = $defaultPortfolio;
+}
  ?>
 
 <div class="container">
@@ -133,15 +206,15 @@ $old = getFlashData('old');
                      <?php echo form_error('name', $errors, '<span class="error">', '</span>') ?>
                   </div>
                   <div class="form-group">
-                     <label for="cate_id">Danh mục dự án</label>
-                     <select name="cate_id" id="cate_id" class="form-control">
+                     <label for="category_id">Danh mục dự án</label>
+                     <select name="category_id" id="category_id" class="form-control">
                         <option value="0">Chọn danh mục</option>
                         <?php 
                            if(!empty($listAllCates)):
                               foreach($listAllCates as $cate):
                         ?>
                         <option value="<?php echo $cate['id'] ?>"
-                           <?php echo (!empty($old['cate_id']) && $old['cate_id'] == $cate['id']) ? "selected" : false ?>>
+                           <?php echo (!empty($old['category_id']) && $old['category_id'] == $cate['id']) ? "selected" : false ?>>
                            <?php echo $cate['name'] ?>
                         </option>
                         <?php 
@@ -149,7 +222,7 @@ $old = getFlashData('old');
                            endif;
                         ?>
                      </select>
-                     <?php echo form_error('cate_id', $errors, '<span class="error">', '</span>') ?>
+                     <?php echo form_error('category_id', $errors, '<span class="error">', '</span>') ?>
                   </div>
                   <div class="form-group">
                      <label for="slug">Đường dẫn tĩnh</label>
@@ -195,13 +268,16 @@ $old = getFlashData('old');
                      <div class="gallery-images">
                         <?php 
                            if(!empty($old["gallery"])):
-                              foreach($old["gallery"] as $image):
+                              foreach($old["gallery"] as $key=>$image):
                         ?>
                         <div class="gallery-item">
                            <div class="row ckfinder-group">
                               <div class="col-9">
-                                 <input type="text" id="gallery" name="gallery[]" class="form-control image-link"
-                                    placeholder="Đường dẫn ảnh..." value=<?php echo $image ?>>
+                                 <input type="text" id="gallery" name="gallery[<?php echo $key ?>][image]"
+                                    class="form-control image-link" placeholder="Đường dẫn ảnh..."
+                                    value=<?php echo $image['image'] ?>>
+                                 <input type="hidden" name="gallery[<?php echo $key ?>][id]"
+                                    value="<?php echo $image['id'] ?>">
                               </div>
                               <div class="col-2">
                                  <button type="button" class="btn btn-success btn-block ckfinder-choose-image">Chọn
@@ -224,7 +300,10 @@ $old = getFlashData('old');
                   </div>
                </div>
             </div>
-            <button class="btn btn-primary" type="submit">Thêm</button>
+            <input type="hidden" name="modules" value="portfolios">
+            <input type="hidden" name="id" value="<?php echo $id ?>">
+            <button class="btn btn-primary" type="submit">Chỉnh sửa</button>
+            <a class="btn btn-success" href="<?php echo getLinkAdmin('portfolios') ?>">Quay lại</a>
             <hr>
          </form>
       </div>
