@@ -176,33 +176,6 @@
       if(empty($homeServicesContent)) {
          $errors['home_services_content']['required'] = 'Không được để trống nội dung';
       }
-
-      //home portfolios
-      $homePortfoliosTitleBg = trim($body['home_portfolios_title-bg']);
-      $homePortfoliosTitle = trim($body['home_portfolios_title']);
-      $homePortfoliosContent = trim($body['home_portfolios_content']);
-      $homePortfoliosBtn = trim($body['home_portfolios_btn']);
-      $homePortfoliosBtnLink = trim($body['home_portfolios_btn_link']);
-
-      if(empty($homePortfoliosTitleBg)) {
-         $errors['home_portfolios_title-bg']['required'] = 'Không được để trống tiêu đề nền';
-      }
-
-      if(empty($homePortfoliosTitle)) {
-         $errors['home_portfolios_title']['required'] = 'Không được để trống tiêu đề';
-      }
-
-      if(empty($homePortfoliosContent)) {
-         $errors['home_portfolios_content']['required'] = 'Không được để trống nội dung';
-      }
-
-      if(empty($homePortfoliosBtn)) {
-         $errors['home_portfolios_btn']['required'] = 'Không được để trống nội dung nút';
-      }
-
-      if(empty($homePortfoliosBtnLink)) {
-         $errors['home_portfolios_btn_link']['required'] = 'Không được để trống link nút';
-      }
          
       if(empty($errors)) {
          $jsonSlider = json_encode($arrSlider);
@@ -224,7 +197,6 @@
          $updateAboutStatus = update('options', $dataAboutUpdate, "opt_key = 'home_about'");
          $updateFactsStatus = update('options', $dataFactsUpdate, "opt_key = 'home_facts'");
          updateOptions('home_services');
-         updateOptions('home_portfolios');
          if($updateSliderStatus && $updateAboutStatus && $updateFactsStatus) {
                setFlashData('msg', 'Chỉnh sửa trang chủ thành công.');
                setFlashData('msg_type', 'success');

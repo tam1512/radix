@@ -8,7 +8,6 @@ if(isGet()) {
    if(!empty($body['id'])) {
       $portfolioId = $body['id'];
       $portfolioDetail = firstRaw("SELECT * FROM portfolios WHERE id = $portfolioId");
-      $mapping = getRaw('SELECT category_id FROM portfolio_category_mapping WHERE portfolio_id = '.$portfolioId);
       if(!empty($portfolioDetail)) {
          $duplicate = $portfolioDetail['duplicate'];
          $duplicate++;
@@ -23,16 +22,6 @@ if(isGet()) {
 
          $insertStatus = insert('portfolios', $portfolioDetail);
          if($insertStatus) {
-            $id = insertId();
-            foreach($mapping as $map) {
-               $dataInsert = [
-                  'portfolio_id' => $id,
-                  'category_id' => $map['category_id'],
-                  'user_id' => isLogin()['user_id'],
-                  'create_at' => date('Y-m-d H:i:s')
-               ];
-               insert('portfolio_category_mapping', $dataInsert);
-            }
             setFlashData('msg','Nhân bản thành công');
             setFlashData('msg_type', 'success');
             update('portfolios', [

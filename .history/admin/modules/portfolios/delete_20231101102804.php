@@ -13,7 +13,6 @@ if(isGet()) {
          delete('portfolio_images', "portfolio_id = $portfolioId");
       } 
       if($portfolioDetailRows > 0) {
-         delete('portfolio_category_mapping', "portfolio_id = $portfolioId");
          $deletePortfolio = delete('portfolios', "id = $portfolioId");
          if($deletePortfolio) {
             setFlashData('msg','Xóa thành công');

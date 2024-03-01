@@ -224,7 +224,6 @@
          $updateAboutStatus = update('options', $dataAboutUpdate, "opt_key = 'home_about'");
          $updateFactsStatus = update('options', $dataFactsUpdate, "opt_key = 'home_facts'");
          updateOptions('home_services');
-         updateOptions('home_portfolios');
          if($updateSliderStatus && $updateAboutStatus && $updateFactsStatus) {
                setFlashData('msg', 'Chỉnh sửa trang chủ thành công.');
                setFlashData('msg_type', 'success');

@@ -9,7 +9,6 @@
    require_once('contents/about.php');
    require_once('contents/services.php');
    require_once('contents/facts.php');
-   require_once('contents/portfolios.php');
 ?>
 
 <!-- Call To Action -->
