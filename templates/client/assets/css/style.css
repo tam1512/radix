@@ -874,7 +874,7 @@ Version: 1.0
 .why-choose .why-video {
   width: 100%;
   height: 100%;
-  background-image: url("images/why-choose.jpg");
+  background-image: url("../images/why-choose.jpg");
   background-repeat: no-repeat;
   background-size: cover;
   text-align: center;
@@ -1846,7 +1846,7 @@ Version: 1.0
 ========================================*/
 .call-to-action {
   position: relative;
-  background-image: url("images/call-to-action.jpg");
+  background-image: url("../images/call-to-action.jpg");
   background-repeat: no-repeat;
   background-size: cover;
 }

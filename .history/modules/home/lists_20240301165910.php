@@ -10,7 +10,6 @@
    require_once('contents/services.php');
    require_once('contents/facts.php');
    require_once('contents/portfolios.php');
-   require_once('contents/callToAction.php');
 ?>
 <!-- Blogs Area -->
 <section class="blogs-main section">

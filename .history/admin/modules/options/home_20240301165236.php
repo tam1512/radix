@@ -203,23 +203,6 @@
       if(empty($homePortfoliosBtnLink)) {
          $errors['home_portfolios_btn_link']['required'] = 'Không được để trống link nút';
       }
-
-      //home call to action
-      $homeCtaContent = trim($body['home_cta_content']);
-      $homeCtaBtn = trim($body['home_cta_btn']);
-      $homeCtaBtnLink = trim($body['home_cta_btn_link']);
-
-      if(empty($homeCtaContent)) {
-         $errors['home_cta_content']['required'] = 'Không được để trống nội dung';
-      }
-
-      if(empty($homeCtaBtn)) {
-         $errors['home_cta_btn']['required'] = 'Không được để trống nội dung nút';
-      }
-
-      if(empty($homeCtaBtnLink)) {
-         $errors['home_cta_btn_link']['required'] = 'Không được để trống link nút';
-      }
          
       if(empty($errors)) {
          $jsonSlider = json_encode($arrSlider);
@@ -242,7 +225,6 @@
          $updateFactsStatus = update('options', $dataFactsUpdate, "opt_key = 'home_facts'");
          updateOptions('home_services');
          updateOptions('home_portfolios');
-         updateOptions('home_cta');
          if($updateSliderStatus && $updateAboutStatus && $updateFactsStatus) {
                setFlashData('msg', 'Chỉnh sửa trang chủ thành công.');
                setFlashData('msg_type', 'success');
