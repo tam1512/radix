@@ -142,7 +142,7 @@ $old = getFlashData('old');
                      <?php echo form_error('name', $errors, '<span class="error">', '</span>') ?>
                   </div>
                   <div class="form-group">
-                     <label for="portfolio_cate_id">Danh mục dự án</label>
+                     <label for="cate_id">Danh mục dự án</label>
                      <select name="cate_id[]" id="portfolio_cate_id" class="form-control" multiple>
                         <option value="0">Chọn danh mục</option>
                         <?php 

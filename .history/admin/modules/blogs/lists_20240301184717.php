@@ -119,7 +119,7 @@ $msgType = getFlashData('msg_type');
             <div class="col-3">
                <div class="form-group">
                   <select name="cate_id" id="cate_id" class="form-control selectpicker" data-live-search="true"
-                     data-title="Chọn danh mục" data-width="100%">
+                     data-title="Chọn người đăng" data-width="100%">
                      <option value="0">Chọn danh mục</option>
                      <?php 
                         if(!empty($listAllCates)):

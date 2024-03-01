@@ -221,25 +221,6 @@
          $errors['home_cta_btn_link']['required'] = 'Không được để trống link nút';
       }
          
-
-      
-      //home blogs
-      $homeBlogsTitleBg = trim($body['home_blogs_title-bg']);
-      $homeBlogsTitle = trim($body['home_blogs_title']);
-      $homeBlogsContent = trim($body['home_blogs_content']);
-
-      if(empty($homeBlogsTitleBg)) {
-         $errors['home_blogs_title-bg']['required'] = 'Không được để trống tiêu đề nền';
-      }
-
-      if(empty($homeblogsTitle)) {
-         $errors['home_blogs_title']['required'] = 'Không được để trống tiêu đề';
-      }
-
-      if(empty($homeBlogsContent)) {
-         $errors['home_blogs_content']['required'] = 'Không được để trống nội dung';
-      }
-
       if(empty($errors)) {
          $jsonSlider = json_encode($arrSlider);
          $jsonAbout = json_encode($homeAbout);
@@ -262,7 +243,6 @@
          updateOptions('home_services');
          updateOptions('home_portfolios');
          updateOptions('home_cta');
-         updateOptions('home_blogs');
          if($updateSliderStatus && $updateAboutStatus && $updateFactsStatus) {
                setFlashData('msg', 'Chỉnh sửa trang chủ thành công.');
                setFlashData('msg_type', 'success');

@@ -11,7 +11,6 @@
    require_once('contents/facts.php');
    require_once('contents/portfolios.php');
    require_once('contents/callToAction.php');
-   require_once('contents/blogs.php');
 ?>
 <!-- Partners -->
 <section id="partners" class="partners section">

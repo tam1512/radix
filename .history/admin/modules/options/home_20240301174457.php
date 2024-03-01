@@ -262,7 +262,6 @@
          updateOptions('home_services');
          updateOptions('home_portfolios');
          updateOptions('home_cta');
-         updateOptions('home_blogs');
          if($updateSliderStatus && $updateAboutStatus && $updateFactsStatus) {
                setFlashData('msg', 'Chỉnh sửa trang chủ thành công.');
                setFlashData('msg_type', 'success');

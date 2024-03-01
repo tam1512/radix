@@ -96,10 +96,9 @@ $msgType = getFlashData('msg_type');
       ?>
       <form action="" method="get">
          <div class="row">
-            <div class="col-3">
-               <div class="form-group">
-                  <select name="user_id" id="user_id" class="form-control selectpicker" data-live-search="true"
-                     data-title="Chọn người đăng" data-width="100%">
+            <div class="col-3 d-flex">
+               <div class="form-group d-flex">
+                  <select name="select" id="select" class="form-control" readonly disabled>
                      <option value="0">Chọn người đăng</option>
                      <?php 
                         if(!empty($listAllUsers)):
@@ -114,12 +113,92 @@ $msgType = getFlashData('msg_type');
                         endif;
                      ?>
                   </select>
+                  <input type="hidden" name="user_id" id="user_id">
+                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#chooseUser">
+                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  </button>
+               </div>
+
+
+               <!-- Modal -->
+               <!-- data-backdrop="static" -->
+               <div class="modal fade" id="chooseUser" data-keyboard="false" tabindex="-1"
+                  aria-labelledby="chooseUserLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-scrollable">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="chooseUserLabel">Danh sách người đăng</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                           </button>
+                        </div>
+                        <div class="modal-body">
+                           <!-- <form action="" method="POST"> -->
+                           <div class="row justify-content-center mb-8">
+                              <div class="col-6">
+                                 <input type="text" class="form-control" id="keyword_modal" name="keyword_modal"
+                                    placeholder="Nhập tên hoặc email...">
+                              </div>
+                              <div class="col-3">
+                                 <button type="button" id="btnSearchModal" class="btn btn-success">Tìm kiếm</button>
+                              </div>
+                           </div>
+                           <hr>
+                           <!-- </form> -->
+                           <table class="table table-bordered">
+                              <thead>
+                                 <tr>
+                                    <th width="5%">STT</th>
+                                    <th>Tên người đăng</th>
+                                    <th>Email</th>
+                                    <th width="15%">Chọn</th>
+                                 </tr>
+                              </thead>
+                              <tbody id="content_modal">
+                                 <?php 
+                                    if(!empty($listAllUsers)):
+                                       if(empty($cateId)) {
+                                          $cateId = '';
+                                       }
+                                       $count = 0;
+                                       foreach($listAllUsers as $user):
+                                          $count++;
+                                 ?>
+                                 <tr>
+                                    <td><?php echo $count ?></td>
+                                    <td>
+                                       <?php
+                                          echo $user['fullname']
+                                       ?>
+                                    </td>
+                                    <td><?php echo $user['email'] ?></td>
+                                    <td class="text-center">
+                                       <a class="btn btn-success"
+                                          href="<?php echo !empty($keyword) ? getLinkAdmin('blogs', '', ['keyword'=>$keyword, 'user_id'=>$user["id"], 'cate_id'=>$cateId]) : getLinkAdmin('blogs', '', ['user_id'=>$user["id"], 'cate_id'=>$cateId]) ?>">Chọn</a>
+                                    </td>
+                                 </tr>
+                                 <?php 
+                                    endforeach; else:
+                                 ?>
+                                 <tr>
+                                    <td colspan="4" class="text-center alert alert-danger">Không có người đăng</td>
+                                 </tr>
+                                 <?php endif; ?>
+                              </tbody>
+                           </table>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-primary" data-dismiss="modal">Thoát</button>
+                           <a href="<?php echo getLinkAdmin('blogs') ?>" type="button" class="btn btn-danger">Hủy
+                              chọn</a>
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
-            <div class="col-3">
-               <div class="form-group">
-                  <select name="cate_id" id="cate_id" class="form-control selectpicker" data-live-search="true"
-                     data-title="Chọn danh mục" data-width="100%">
+            <div class="col-3 d-flex">
+               <div class="form-group d-flex mw-210">
+                  <select name="select" id="select" class="form-control" readonly disabled>
                      <option value="0">Chọn danh mục</option>
                      <?php 
                         if(!empty($listAllCates)):
@@ -134,6 +213,83 @@ $msgType = getFlashData('msg_type');
                         endif;
                      ?>
                   </select>
+                  <input type="hidden" name="cate_id" id="cate_id">
+                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#chooseCate">
+                     <i class="fa fa-ellipsis-h" aria-hidden="true"></i>
+                  </button>
+               </div>
+
+
+               <!-- Modal -->
+               <!-- data-backdrop="static" -->
+               <div class="modal fade" id="chooseCate" data-keyboard="false" tabindex="-1"
+                  aria-labelledby="chooseCateLabel" aria-hidden="true">
+                  <div class="modal-dialog modal-dialog-scrollable">
+                     <div class="modal-content">
+                        <div class="modal-header">
+                           <h5 class="modal-title" id="chooseCateLabel">Danh sách danh mục</h5>
+                           <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                              <span aria-hidden="true">&times;</span>
+                           </button>
+                        </div>
+                        <div class="modal-body">
+                           <div class="row justify-content-center mb-8">
+                              <div class="col-6">
+                                 <input type="text" class="form-control" id="keyword_modal" name="keyword_modal"
+                                    placeholder="Nhập tên danh mục...">
+                              </div>
+                              <div class="col-3">
+                                 <button type="button" id="btnSearchModal" class="btn btn-success">Tìm kiếm</button>
+                              </div>
+                           </div>
+                           <hr>
+                           <table class="table table-bordered">
+                              <thead>
+                                 <tr>
+                                    <th width="5%">STT</th>
+                                    <th>Tên danh mục</th>
+                                    <th width="15%">Chọn</th>
+                                 </tr>
+                              </thead>
+                              <tbody id="content_modal">
+                                 <?php 
+                                    if(!empty($listAllCates)):
+                                       if(empty($userId)) {
+                                          $userId = '';
+                                       }
+                                       $count = 0;
+                                       foreach($listAllCates as $cate):
+                                          $count++;
+                                 ?>
+                                 <tr>
+                                    <td><?php echo $count ?></td>
+                                    <td>
+                                       <?php
+                                          echo $cate['name']
+                                       ?>
+                                    </td>
+                                    <td class="text-center">
+                                       <a class="btn btn-success"
+                                          href="<?php echo !empty($keyword) ? getLinkAdmin('blogs', '', ['keyword'=>$keyword, 'cate_id'=>$cate["id"], 'user_id' => $userId]) : getLinkAdmin('blogs', '', ['cate_id'=>$cate["id"], 'user_id' => $userId]) ?>">Chọn</a>
+                                    </td>
+                                 </tr>
+                                 <?php 
+                                    endforeach; else:
+                                 ?>
+                                 <tr>
+                                    <td colspan="4" class="text-center alert alert-danger">Không có danh mục</td>
+                                 </tr>
+                                 <?php endif; ?>
+                              </tbody>
+                           </table>
+                        </div>
+                        <div class="modal-footer">
+                           <button type="button" class="btn btn-primary" data-dismiss="modal">Thoát</button>
+                           <a href="<?php echo getLinkAdmin('blogs') ?>" type="button" class="btn btn-danger">Hủy
+                              chọn</a>
+                        </div>
+                     </div>
+                  </div>
                </div>
             </div>
             <div class="col-4">
