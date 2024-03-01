@@ -62,7 +62,7 @@ $copyrightContent = getOption('copyright_content');
                         <i class="fa fa-headphones"></i>Phone: <?php echo !empty($hotlline) ? $hotlline : false ?>
                      </li>
                      <li>
-                        <i class="fa fa-envelope"></i>Email:<a
+                        <i class="fa fa-headphones"></i>Email:<a
                            href="mailto:<?php echo !empty($email) ? $email : false ?>"><?php echo !empty($email) ? $email : false ?></a>
                      </li>
                   </ul>

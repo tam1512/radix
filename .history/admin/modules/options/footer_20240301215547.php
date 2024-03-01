@@ -3,7 +3,7 @@
    if(!defined('_INCODE')) die('Access denied...');
 
    $data = [
-      'title' => "Thiết lập trang chủ"
+      'title' => "Thiết lập Footer"
    ];
 
    layout('header', 'admin', $data);

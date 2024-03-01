@@ -62,7 +62,7 @@ $copyrightContent = getOption('copyright_content');
                         <i class="fa fa-headphones"></i>Phone: <?php echo !empty($hotlline) ? $hotlline : false ?>
                      </li>
                      <li>
-                        <i class="fa fa-envelope"></i>Email:<a
+                        <i class="fa fa-headphones"></i>Email:<a
                            href="mailto:<?php echo !empty($email) ? $email : false ?>"><?php echo !empty($email) ? $email : false ?></a>
                      </li>
                   </ul>
@@ -72,7 +72,7 @@ $copyrightContent = getOption('copyright_content');
             <div class="col-lg-3 col-md-6 col-12">
                <!-- Links Widget -->
                <div class="single-widget links">
-                  <h2><?php echo !empty($arrFooter2['footer_2_title']) ? $arrFooter2['footer_2_title'] : false ?></h2>
+                  <h2><?php echo !empty($titleFooter2) ? $titleFooter2 : false ?></h2>
                   <ul class="list">
                      <?php 
                         if(!empty($arrQuickLinks)):

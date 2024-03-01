@@ -48,11 +48,11 @@
                <div class="col-lg-6 col-12">
                   <!-- Contact -->
                   <ul class="contact">
-                     <li><i class="fa fa-headphones"></i><?php echo getOption('general_hotline')?></li>
+                     <li><i class="fa fa-headphones"></i><?php echo getOption('header_hotline')?></li>
                      <li>
                         <i class="fa fa-envelope"></i>
                         <a
-                           href="mailto:<?php echo getOption('general_email')?>"><?php echo getOption('general_email')?></a>
+                           href="mailto:<?php echo getOption('header_email')?>"><?php echo getOption('header_email')?></a>
                      </li>
                      <li><i class="fa fa-clock-o"></i>Opening: <?php echo getOption('header_time')?></li>
                   </ul>
@@ -71,23 +71,23 @@
                      <!-- Social -->
                      <ul class="social">
                         <li>
-                           <a href="<?php echo getOption("general_twitter") ?>" target="blank"><i
+                           <a href="<?php echo getOption("header_twitter") ?>" target="blank"><i
                                  class="fa fa-twitter"></i></a>
                         </li>
                         <li>
-                           <a href="<?php echo getOption("general_facebook") ?>" target="blank"><i
+                           <a href="<?php echo getOption("header_facebook") ?>" target="blank"><i
                                  class="fa fa-facebook"></i></a>
                         </li>
                         <li>
-                           <a href="<?php echo getOption("general_linkedin") ?>" target="blank"><i
+                           <a href="<?php echo getOption("header_linkedin") ?>" target="blank"><i
                                  class="fa fa-linkedin"></i></a>
                         </li>
                         <li>
-                           <a href="<?php echo getOption("general_behance") ?>" target="blank"><i
+                           <a href="<?php echo getOption("header_behance") ?>" target="blank"><i
                                  class="fa fa-behance"></i></a>
                         </li>
                         <li>
-                           <a href="<?php echo getOption("general_youtube") ?>" target="blank"><i
+                           <a href="<?php echo getOption("header_youtube") ?>" target="blank"><i
                                  class="fa fa-youtube"></i></a>
                         </li>
                      </ul>

@@ -646,7 +646,7 @@ if (footer2ListObject !== null && btnAddQuickLinkFooter2 !== null) {
         let quickLinkFooter2Item = e.target;
         while (quickLinkFooter2Item) {
           quickLinkFooter2Item = quickLinkFooter2Item.parentElement;
-          if (quickLinkFooter2Item.classList.contains("footer_2_item")) {
+          if (quickLinkFooter2Item.classList.contains("facts_item")) {
             break;
           }
         }

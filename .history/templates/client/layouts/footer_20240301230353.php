@@ -35,8 +35,6 @@ $linkTwitter = getOption('general_Twitter');
 $linkLinkedin = getOption('general_linkedin');
 $linkBehance = getOption('general_behance');
 $linkYoutube = getOption('general_youtube');
-
-$copyrightContent = getOption('copyright_content');
 ?>
 <!-- Footer -->
 <footer id="footer" class="footer wow fadeIn">
@@ -62,7 +60,7 @@ $copyrightContent = getOption('copyright_content');
                         <i class="fa fa-headphones"></i>Phone: <?php echo !empty($hotlline) ? $hotlline : false ?>
                      </li>
                      <li>
-                        <i class="fa fa-envelope"></i>Email:<a
+                        <i class="fa fa-headphones"></i>Email:<a
                            href="mailto:<?php echo !empty($email) ? $email : false ?>"><?php echo !empty($email) ? $email : false ?></a>
                      </li>
                   </ul>
@@ -72,7 +70,7 @@ $copyrightContent = getOption('copyright_content');
             <div class="col-lg-3 col-md-6 col-12">
                <!-- Links Widget -->
                <div class="single-widget links">
-                  <h2><?php echo !empty($arrFooter2['footer_2_title']) ? $arrFooter2['footer_2_title'] : false ?></h2>
+                  <h2><?php echo !empty($titleFooter2) ? $titleFooter2 : false ?></h2>
                   <ul class="list">
                      <?php 
                         if(!empty($arrQuickLinks)):
@@ -155,7 +153,11 @@ $copyrightContent = getOption('copyright_content');
                   <!--/ End Social -->
                   <!-- Copyright -->
                   <div class="copyright">
-                     <?php echo !empty($copyrightContent) ? html_entity_decode($copyrightContent) : false ?>
+                     <p>
+                        &copy; 2020 All Right Reserved. Design & Development By
+                        <a target="_blank" href="http://themelamp.com">ThemeLamp.com</a>, Theme Provided By
+                        <a target="_blank" href="https://codeglim.com">CodeGlim.com</a>
+                     </p>
                   </div>
                   <!--/ End Copyright -->
                </div>

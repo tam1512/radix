@@ -3,12 +3,14 @@
    if(!defined('_INCODE')) die('Access denied...');
 
    $data = [
-      'title' => "Thiết lập trang chủ"
+      'title' => "Thiết lập Footer"
    ];
 
    layout('header', 'admin', $data);
    layout('sidebar', 'admin', $data);
    layout('breadcrumb', 'admin', $data);
+
+   $listSliderCurrent = getOption('home_slide');
 
    $arrValueSlider = [
       'slider_title' => 'tiêu đề',
