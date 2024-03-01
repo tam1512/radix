@@ -399,7 +399,7 @@
                $arrPartners[$k][$key] =$v ;
             }
          } else {
-            $arrPartnersContent[$key] = $value;
+            $arrFactsContent[$key] = $value;
          }
       }
    }

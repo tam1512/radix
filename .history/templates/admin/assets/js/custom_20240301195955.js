@@ -561,7 +561,7 @@ let htmlPartnerItem = `
       <div class="col-4">
         <div class="form-group">
           <input type="text" name="home_partners[partners_links][]" id="partners_links"
-            class="form-control image-link" placeholder="Liên kết...">
+            class="form-control image-link" placeholder="Tên công việc...">
         </div>
       </div>
       <div class="col-1">
@@ -577,7 +577,6 @@ if (partnerObjects !== null && btnAddPartner !== null) {
       .parseFromString(htmlPartnerItem, "text/html")
       .querySelector(".partners-item");
     partnerObjects.appendChild(partnerItemHtmlNode);
-    openCkfinder();
   });
 
   partnerObjects.addEventListener("click", function (e) {

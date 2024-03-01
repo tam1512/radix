@@ -47,7 +47,7 @@
       'facts_item_unit' => 'đơn vị tính',
    ];
 
-   $arrValuePartners = [
+   $arrValueFactPartners = [
       'partners_title' => 'tiêu đề',
       'partners_title_sub' => 'tiêu đề phụ',
       'partners_desc' => 'mô tả',
@@ -69,15 +69,10 @@
       $homeAbout = json_decode($jsonDataAbout, true);
       setFlashData('aboutDefault', $homeAbout);
 
-      //get default fact
+      //get default about
       $jsonDataFacts = firstRaw("SELECT opt_value FROM options WHERE opt_key = 'home_facts'")['opt_value'];
       $homeFacts = json_decode($jsonDataFacts, true);
       setFlashData('factsDefault', $homeFacts);
-
-      //get default partners
-      $jsonDataPartners = firstRaw("SELECT opt_value FROM options WHERE opt_key = 'home_partners'")['opt_value'];
-      $homePartners = json_decode($jsonDataPartners, true);
-      setFlashData('partnersDefault', $homePartners);
    }
 
    if(isPost()) {
@@ -87,8 +82,6 @@
       $arrAbout = [];
       $arrFacts = [];
       $arrFactsContent = [];
-      $arrPartners = [];
-      $arrPartnersContent = [];
       $arrAboutProgress = [];
 
       $body = getBody('post');
@@ -130,9 +123,11 @@
             $errors[$k][$key]["required"] = "Không được để trống ".$arrValueAbout[$k];
            }
          }
-      }  
+      }   
 
-      //home_fact
+
+      
+      //home_about
       if(!empty(getBody('post')['home_facts'])) {
          $homeFacts = getBody('post')['home_facts'];
          foreach($homeFacts as $key => $value) {
@@ -172,36 +167,6 @@
            }
          }
       }
-
-
-      //home_partners
-      if(!empty(getBody('post')['home_partners'])) {
-         $homePartners = getBody('post')['home_partners'];
-         foreach($homePartners as $key => $value) {
-            if(is_array($value)) {
-               foreach($value as $k => $v) {
-                  $arrPartners[$k][$key] =$v ;
-               }
-            } else {
-               $arrPartnersContent[$key] = $value;
-            }
-         }
-      }
-
-      //xử lý lỗi của home_partners
-      foreach($arrPartnersContent as $key => $value) {
-         if(empty($value)) {
-            $errors[$key]['required'] = "Không được để trống ".$arrValuePartners[$key];
-         }
-      }
-      foreach($arrPartners as $key => $value) {
-         foreach($value as $k => $v) {
-           if(empty($v)) {
-            $errors[$k][$key]["required"] = "Không được để trống ".$arrValuePartners[$k];
-           }
-         }
-      }   
-
 
       //home services
       $homeServicesTitleBg = trim($body['home_services_title-bg']);
@@ -287,7 +252,6 @@
          $jsonSlider = json_encode($arrSlider);
          $jsonAbout = json_encode($homeAbout);
          $jsonFacts = json_encode($homeFacts);
-         $jsonPartners = json_encode($homePartners);
          
          // Không có lỗi xảy ra
          $dataSliderUpdate = [
@@ -299,19 +263,15 @@
          $dataFactsUpdate = [
             'opt_value' => $jsonFacts,
          ];
-         $dataPartnersUpdate = [
-            'opt_value' => $jsonPartners,
-         ];
 
          $updateSliderStatus = update('options', $dataSliderUpdate, "opt_key = 'home_slide'");
          $updateAboutStatus = update('options', $dataAboutUpdate, "opt_key = 'home_about'");
          $updateFactsStatus = update('options', $dataFactsUpdate, "opt_key = 'home_facts'");
-         $updatePartnersStatus = update('options', $dataPartnersUpdate, "opt_key = 'home_partners'");
          updateOptions('home_services');
          updateOptions('home_portfolios');
          updateOptions('home_cta');
          updateOptions('home_blogs');
-         if($updateSliderStatus && $updateAboutStatus && $updateFactsStatus && $updatePartnersStatus) {
+         if($updateSliderStatus && $updateAboutStatus && $updateFactsStatus) {
                setFlashData('msg', 'Chỉnh sửa trang chủ thành công.');
                setFlashData('msg_type', 'success');
          } else {
@@ -326,7 +286,6 @@
          setFlashData('oldSlider', $arrSlider);
          setFlashData('oldAbout', $homeAbout);
          setFlashData('oldFacts', $homeFacts);
-         setFlashData('oldPartners', $homePartners);
          setFlashData('old', $body);
          setFlashData('body', getBody('post')['home_about']);
          redirect('admin/?module=options&action=home');
@@ -340,17 +299,13 @@
    $old = getFlashData('oldSlider');
    $oldAbout = getFlashData('oldAbout');
    $oldFacts = getFlashData('oldFacts');
-   $oldPartners = getFlashData('oldPartners');
    $body = getFlashData('body');
 
-   //old slider
    if(empty($old)) {
       $arrSlider = getFlashData('sliderDefault');
    } else {
       $arrSlider = $old;
    }
-
-   //old about
    if(empty($oldAbout)) {
       $homeAbout = getFlashData('aboutDefault');
    } else {
@@ -367,8 +322,6 @@
          }
       }
    }
-
-   //old fact
    if(empty($oldFacts)) {
       $homeFacts = getFlashData('factsDefault');
    } else {
@@ -382,24 +335,6 @@
             }
          } else {
             $arrFactsContent[$key] = $value;
-         }
-      }
-   }
-
-   //old partner
-   if(empty($oldPartners)) {
-      $homePartners = getFlashData('partnersDefault');
-   } else {
-      $homePartners = $oldPartners;
-   }
-   if(!empty($homePartners)) {
-      foreach($homePartners as $key => $value) {
-         if(is_array($value)) {
-            foreach($value as $k => $v) {
-               $arrPartners[$k][$key] =$v ;
-            }
-         } else {
-            $arrPartnersContent[$key] = $value;
          }
       }
    }

@@ -474,7 +474,7 @@ $(".progress-range").each(function () {
 
 //Xử lý thêm progress ở home_about
 let factObjects = document.querySelector(".facts");
-let btnAddFact = document.querySelector("#addFact");
+let btnAddFact = document.querySelector("#addPartners");
 let htmlFactItem = `
 <div class="facts_item">
   <div class="row">
@@ -540,28 +540,27 @@ if (factObjects !== null && btnAddFact !== null) {
 }
 
 //Xử lý thêm progress ở home_partner
-let partnerObjects = document.querySelector(".partners-list");
-let btnAddPartner = document.querySelector("#addPartners");
+let partnerObjects = document.querySelector(".partners");
+let btnAddPartner = document.querySelector("#addPartner");
 let htmlPartnerItem = `
 <div class="partners-item">
   <div class="row">
-    <div class="col-7">
-      <div class="row ckfinder-group">
-        <div class="col-9">
-            <input type="text" name="home_partners[partners_imgs][]" id="partners_imgs"
-              class="form-control image-link" placeholder="Ảnh đối tác...">
-        </div>
-        <div class="col-3">
-            <button type="button" class="btn btn-success btn-block ckfinder-choose-image">
-              <i class="fa fa-upload" aria-hidden="true"></i>
-            </button>
+      <div class="col-5">
+        <div class="form-group">
+          <input type="text" name="home_partners[partners_imgs][]" id="partners_imgs"
+            class="form-control image-link" placeholder="Tên công việc...">
         </div>
       </div>
-    </div>
+      <div class="col-2">
+        <div class="form-group">
+            <button type="button"
+              class="btn btn-success btn-block ckfinder-choose-image">Chọn ảnh</button>
+        </div>
+      </div>
       <div class="col-4">
         <div class="form-group">
           <input type="text" name="home_partners[partners_links][]" id="partners_links"
-            class="form-control image-link" placeholder="Liên kết...">
+            class="form-control image-link" placeholder="Tên công việc...">
         </div>
       </div>
       <div class="col-1">
@@ -575,9 +574,8 @@ if (partnerObjects !== null && btnAddPartner !== null) {
     e.preventDefault();
     let partnerItemHtmlNode = new DOMParser()
       .parseFromString(htmlPartnerItem, "text/html")
-      .querySelector(".partners-item");
+      .querySelector(".facts_item");
     partnerObjects.appendChild(partnerItemHtmlNode);
-    openCkfinder();
   });
 
   partnerObjects.addEventListener("click", function (e) {
@@ -590,7 +588,7 @@ if (partnerObjects !== null && btnAddPartner !== null) {
         let partnersItem = e.target;
         while (partnersItem) {
           partnersItem = partnersItem.parentElement;
-          if (partnersItem.classList.contains("partners-item")) {
+          if (partnersItem.classList.contains("facts_item")) {
             break;
           }
         }

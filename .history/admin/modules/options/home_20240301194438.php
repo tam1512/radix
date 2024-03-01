@@ -287,7 +287,6 @@
          $jsonSlider = json_encode($arrSlider);
          $jsonAbout = json_encode($homeAbout);
          $jsonFacts = json_encode($homeFacts);
-         $jsonPartners = json_encode($homePartners);
          
          // Không có lỗi xảy ra
          $dataSliderUpdate = [
@@ -299,19 +298,15 @@
          $dataFactsUpdate = [
             'opt_value' => $jsonFacts,
          ];
-         $dataPartnersUpdate = [
-            'opt_value' => $jsonPartners,
-         ];
 
          $updateSliderStatus = update('options', $dataSliderUpdate, "opt_key = 'home_slide'");
          $updateAboutStatus = update('options', $dataAboutUpdate, "opt_key = 'home_about'");
          $updateFactsStatus = update('options', $dataFactsUpdate, "opt_key = 'home_facts'");
-         $updatePartnersStatus = update('options', $dataPartnersUpdate, "opt_key = 'home_partners'");
          updateOptions('home_services');
          updateOptions('home_portfolios');
          updateOptions('home_cta');
          updateOptions('home_blogs');
-         if($updateSliderStatus && $updateAboutStatus && $updateFactsStatus && $updatePartnersStatus) {
+         if($updateSliderStatus && $updateAboutStatus && $updateFactsStatus) {
                setFlashData('msg', 'Chỉnh sửa trang chủ thành công.');
                setFlashData('msg_type', 'success');
          } else {
@@ -326,7 +321,6 @@
          setFlashData('oldSlider', $arrSlider);
          setFlashData('oldAbout', $homeAbout);
          setFlashData('oldFacts', $homeFacts);
-         setFlashData('oldPartners', $homePartners);
          setFlashData('old', $body);
          setFlashData('body', getBody('post')['home_about']);
          redirect('admin/?module=options&action=home');
@@ -340,17 +334,13 @@
    $old = getFlashData('oldSlider');
    $oldAbout = getFlashData('oldAbout');
    $oldFacts = getFlashData('oldFacts');
-   $oldPartners = getFlashData('oldPartners');
    $body = getFlashData('body');
 
-   //old slider
    if(empty($old)) {
       $arrSlider = getFlashData('sliderDefault');
    } else {
       $arrSlider = $old;
    }
-
-   //old about
    if(empty($oldAbout)) {
       $homeAbout = getFlashData('aboutDefault');
    } else {
@@ -367,8 +357,6 @@
          }
       }
    }
-
-   //old fact
    if(empty($oldFacts)) {
       $homeFacts = getFlashData('factsDefault');
    } else {
@@ -382,24 +370,6 @@
             }
          } else {
             $arrFactsContent[$key] = $value;
-         }
-      }
-   }
-
-   //old partner
-   if(empty($oldPartners)) {
-      $homePartners = getFlashData('partnersDefault');
-   } else {
-      $homePartners = $oldPartners;
-   }
-   if(!empty($homePartners)) {
-      foreach($homePartners as $key => $value) {
-         if(is_array($value)) {
-            foreach($value as $k => $v) {
-               $arrPartners[$k][$key] =$v ;
-            }
-         } else {
-            $arrPartnersContent[$key] = $value;
          }
       }
    }

@@ -577,7 +577,6 @@ if (partnerObjects !== null && btnAddPartner !== null) {
       .parseFromString(htmlPartnerItem, "text/html")
       .querySelector(".partners-item");
     partnerObjects.appendChild(partnerItemHtmlNode);
-    openCkfinder();
   });
 
   partnerObjects.addEventListener("click", function (e) {
