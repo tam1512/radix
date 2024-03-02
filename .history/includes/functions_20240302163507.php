@@ -345,8 +345,9 @@ function getDateFormat($dateStr, $format) {
 
 //Check icon
 function isIcon($input) {
-  if(strpos($input, '<i class="') != false) {
-    return true;
+  $input = html_entity_decode($input);
+  if(strpos($input, '<i class="') !== false) {
+    return $input;
   }
   return false;
 }
@@ -446,31 +447,52 @@ function getPath() {
   return $path;
 }
 
-function updateOptions() {
-  if(isPost()){
+function updateOptions($prefixKey='') {
+  if(empty($prefixKey)) {
+    if(isPost()){
+      $body = getBody('post');
+      $countUpdate = 0;
+      if(!empty($body)) {
+        foreach($body as $key => $value) {
+          $condition = "opt_key = '$key'";
+          $dataUpdate = [
+            "opt_value" => trim($value)
+          ];
+  
+          $updateStatus = update('options', $dataUpdate, $condition);
+          if($updateStatus) {
+            $countUpdate++;
+          }
+        }
+      }
+      if($countUpdate > 0) {
+        setFlashData('msg', "Đã cập nhật $countUpdate bản ghi thành công.");
+        setFlashData('msg_type', "success");
+      } else {
+        setFlashData('msg', "Cập nhật không thành công.");
+        setFlashData('msg_type', "error");
+      }
+      redirect(getPathAdmin());
+    }
+  } else {
+    $sql = "SELECT * FROM options WHERE opt_key LIKE '%$prefixKey%'";
+    $options = getRaw($sql);
     $body = getBody('post');
-    $countUpdate = 0;
-    if(!empty($body)) {
-      foreach($body as $key => $value) {
-        $condition = "opt_key = '$key'";
+    $isSuccess = true;
+    if(!empty($body) && !empty($options)) {
+      foreach($options as $value) {
+        $condition = "opt_key = '".$value['opt_key']."'";
         $dataUpdate = [
-          "opt_value" => trim($value)
+          'opt_value' => trim($body[$value['opt_key']])
         ];
-
         $updateStatus = update('options', $dataUpdate, $condition);
-        if($updateStatus) {
-          $countUpdate++;
+        if(!$updateStatus) {
+          $isSuccess = false;
+          break;
         }
       }
     }
-    if($countUpdate > 0) {
-      setFlashData('msg', "Đã cập nhật $countUpdate bản ghi thành công.");
-      setFlashData('msg_type', "success");
-    } else {
-      setFlashData('msg', "Cập nhật không thành công.");
-      setFlashData('msg_type', "error");
-    }
-    redirect(getPathAdmin());
+    return $isSuccess;
   }
 }
 
@@ -514,6 +536,20 @@ function renderOptions($prefixKey, $layout=1) {
                         </div>
                     </div>
                   </div>';
+        } else if($upload == 2) {
+          $html .= '<div class="col-'.(12/$layout).'">
+          <div class="form-group">
+            <label for="'.$key.'">'.$name.'</label>
+            <textarea type="text" id="'.$key.'" name="'.$key.'" class="form-control" placeholder="'.$name.'...">'.$value.'</textarea>
+          </div>
+        </div>';
+        } else if($upload == 3) {
+          $html .= '<div class="col-'.(12/$layout).'">
+          <div class="form-group">
+            <label for="'.$key.'">'.$name.'</label>
+            <textarea type="text" id="'.$key.'" name="'.$key.'" class="form-control editor" placeholder="'.$name.'...">'.$value.'</textarea>
+          </div>
+        </div>';
         } else {
           $html .= '<div class="col-'.(12/$layout).'">
                       <div class="form-group">
@@ -601,8 +637,15 @@ function headAdmin() {
 <!-- range style-->
 <link rel="stylesheet"
    href="<?php echo $host.'/assets'; ?>/plugins/ion-rangeslider/css/ion.rangeSlider.min.css?ver=<?php echo rand(); ?>">
+<!-- multi select tags -->
+<link rel="stylesheet"
+   href="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/css/multi-select-tag.css">
+<!-- font awesome -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" />
 <!-- Style core-->
 <link rel="stylesheet" href="<?php echo $host.'/../core/assets'; ?>/css/style.css?ver=<?php echo rand(); ?>">
+<!-- Select-->
+<link rel="stylesheet" href="<?php echo $host.'/assets'; ?>/css/select.css?ver=<?php echo rand(); ?>">
 <!-- Style-->
 <link rel="stylesheet" href="<?php echo $host.'/assets'; ?>/css/style.css?ver=<?php echo rand(); ?>">
 <!-- Google Font: Source Sans Pro -->
@@ -655,13 +698,6 @@ $.widget.bridge('uibutton', $.ui.button)
 <!-- AdminLTE for demo purposes -->
 <script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/demo.js"></script>
 
-<!-- Xử lý service modal search -->
-<script
-   src="<?php echo _WEB_HOST_ROOT.'/templates/admin/assets/js/services/hidden_select.js?ver=<?php echo rand() ?>' ?>">
-</script>
-<script
-   src="<?php echo _WEB_HOST_ROOT.'/templates/admin/assets/js/services/modal_search.js?ver=<?php echo rand() ?>' ?>">
-</script>
 
 <!-- Lấy ra web host root và prefix link để hiển thị link ở slug -->
 <?php 
@@ -675,15 +711,18 @@ $.widget.bridge('uibutton', $.ui.button)
 
 <script type="text/javascript">
 let rootUrlAdmin = "<?php echo _WEB_HOST_ROOT_ADMIN.'/' ?>";
+let rootUrl = "<?php echo _WEB_HOST_ROOT ?>";
 let prefixLink = "<?php echo getPrefixLink($module) ?>"
-// let oldAboutProgress = "<?php// echo !empty($oldAboutProgress) ? json_encode($oldAboutProgress) : '' ?>"
 </script>
 
 <!-- range js-->
 <script
    src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets'; ?>/plugins/ion-rangeslider/js/ion.rangeSlider.min.js?ver=<?php echo rand() ?>">
 </script>
+<!-- select multi tag -->
+<script src="https://cdn.jsdelivr.net/gh/habibmhamadi/multi-select-tag@2.0.1/dist/js/multi-select-tag.js"></script>
 <!-- custom.js for me -->
+<script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/select.js?ver=<?php echo rand() ?>"></script>
 <script src="<?php echo _WEB_HOST_TEMPLATE_ADMIN.'/assets/' ?>js/custom.js?ver=<?php echo rand() ?>"></script>
 <?php
 }
