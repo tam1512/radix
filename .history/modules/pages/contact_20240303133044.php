@@ -98,27 +98,21 @@
                         <div class="contact">
                            <h2>Our Contact Address</h2>
                            <ul class="address">
-                              <li><i class="fa fa-paper-plane"></i><span>Address: </span>
-                                 <?php echo !empty($address) ? $address : false ?></li>
-                              <li><i class="fa fa-phone"></i><span>Phone:
-                                 </span><?php echo !empty($hotline) ? $hotline : false ?></li>
+                              <li><i class="fa fa-paper-plane"></i><span>Address: </span> Road no 3, Block-D, Khilgaon
+                                 1200, Dhaka Bangladesh</li>
+                              <li><i class="fa fa-phone"></i><span>Phone: </span>+(123) 31222183</li>
                               <li class="email"><i class="fa fa-envelope"></i><span>Email: </span><a
-                                    href="mailto:<?php echo !empty($email) ? $email : false ?>"><?php echo !empty($email) ? $email : false ?></a>
-                              </li>
+                                    href="mailto:info@youremail.com">info@youremail.com</a></li>
                            </ul>
                         </div>
                         <!--/ End Address -->
                         <!-- Social -->
                         <ul class="social">
-                           <li><a href="<?php echo !empty($facebook) ? $facebook : false ?>"><i
-                                    class="fa fa-facebook"></i>Like Us facebook</a></li>
-                           <li><a href="<?php echo !empty($twitter) ? $twitter : false ?>"><i
-                                    class="fa fa-twitter"></i>Follow Us twitter</a></li>
+                           <li class="active"><a href="#"><i class="fa fa-facebook"></i>Like Us facebook</a></li>
+                           <li><a href="#"><i class="fa fa-twitter"></i>Follow Us twitter</a></li>
                            <li><a href="#"><i class="fa fa-google-plus"></i>Follow Us google-plus</a></li>
-                           <li><a href="<?php echo !empty($linkedin) ? $linkedin : false ?>"><i
-                                    class="fa fa-linkedin"></i>Follow Us linkedin</a></li>
-                           <li><a href="<?php echo !empty($behance) ? $behance : false ?>"><i
-                                    class="fa fa-behance"></i>Follow Us behance</a></li>
+                           <li><a href="#"><i class="fa fa-linkedin"></i>Follow Us linkedin</a></li>
+                           <li><a href="#"><i class="fa fa-behance"></i>Follow Us behance</a></li>
                         </ul>
                         <!--/ End Social -->
                      </div>

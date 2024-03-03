@@ -17,24 +17,11 @@
       }
    }
 
-   $titlePage = getOption('page_portfolios_title_page');
    $titleBg = getOption('page_portfolios_title-bg');
    $title = getOption('page_portfolios_title');
    $content = getOption('page_portfolios_content');
    $btn = getOption('page_portfolios_btn');
    $btnLink = getOption('page_portfolios_btn_link');
-
-   $isPage = false;
-   if(empty($data)) {
-      $data = [
-         'title' => $titlePage,
-         'name' => 'Portfolio Masonry'
-      ];
-      $isPage = true;
-
-      layout('header', 'client', $data);
-      layout('breadcrumb', 'client', $data);
-   }
 ?>
 <!-- Portfolio -->
 <section id="portfolio" class="portfolio section">
@@ -113,21 +100,14 @@
                   ?>
                </div>
             </div>
-            <?php if(!$isPage): ?>
             <div class="col-12">
                <div class="button">
                   <a class="btn primary"
                      href="<?php echo !empty($btnLink) ? $btnLink : false ?>"><?php echo !empty($btn) ? $btn : false ?></a>
                </div>
             </div>
-            <?php endif; ?>
          </div>
       </div>
    </div>
 </section>
 <!--/ End portfolio -->
-<?php 
-   if($isPage) {
-      layout('footer', 'client', $data);
-   }
-?>

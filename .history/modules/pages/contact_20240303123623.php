@@ -3,17 +3,6 @@
    $titleBg = getOption('page_contact_title-bg');
    $title = getOption('page_contact_title');
    $content = getOption('page_contact_content');
-   $jsonMessageType = getOption('page_contact_message_type');
-   $arrMessageType = json_decode($jsonMessageType, true);
-
-   $address = getOption('general_address');
-   $hotline = getOption('general_hotline');
-   $email = getOption('general_email');
-
-   $facebook = getOption('general_facebook');
-   $twitter = getOption('general_twitter');
-   $linkedin = getOption('general_linkedin');
-   $behance = getOption('general_behance');
 
    $isPage = false;
    if(empty($data)) {
@@ -33,9 +22,11 @@
       <div class="row">
          <div class="col-12">
             <div class="section-title">
-               <span class="title-bg"><?php echo !empty($titleBg) ? $titleBg : false ?></span>
-               <h1><?php echo !empty($title) ? $title : false ?></h1>
-               <?php echo !empty($content) ? html_entity_decode($content) : false ?>
+               <span class="title-bg">Radix</span>
+               <h1>Contact Us</h1>
+               <p>contrary to popular belief, Lorem Ipsum is not simply random text. It has roots in a piece of
+                  classical Latin literature from 45 BC, making it over 2000 years old
+               <p>
             </div>
          </div>
       </div>
@@ -64,15 +55,10 @@
                               <div class="col-12">
                                  <div class="form-group">
                                     <select name="subject">
-                                       <?php 
-                                          if(!empty($arrMessageType)):
-                                             foreach($arrMessageType as $item):
-                                       ?>
-                                       <option class="option" value="<?php echo $item ?>"><?php echo $item ?></option>
-                                       <?php 
-                                             endforeach;
-                                          endif;
-                                       ?>
+                                       <option class="option" value="1">Starting a new business</option>
+                                       <option class="option" value="2">Startup Consultation</option>
+                                       <option class="option" value="3">Financial Consultation</option>
+                                       <option class="option" value="4">Business Consultation</option>
                                     </select>
                                  </div>
                               </div>
@@ -98,27 +84,21 @@
                         <div class="contact">
                            <h2>Our Contact Address</h2>
                            <ul class="address">
-                              <li><i class="fa fa-paper-plane"></i><span>Address: </span>
-                                 <?php echo !empty($address) ? $address : false ?></li>
-                              <li><i class="fa fa-phone"></i><span>Phone:
-                                 </span><?php echo !empty($hotline) ? $hotline : false ?></li>
+                              <li><i class="fa fa-paper-plane"></i><span>Address: </span> Road no 3, Block-D, Khilgaon
+                                 1200, Dhaka Bangladesh</li>
+                              <li><i class="fa fa-phone"></i><span>Phone: </span>+(123) 31222183</li>
                               <li class="email"><i class="fa fa-envelope"></i><span>Email: </span><a
-                                    href="mailto:<?php echo !empty($email) ? $email : false ?>"><?php echo !empty($email) ? $email : false ?></a>
-                              </li>
+                                    href="mailto:info@youremail.com">info@youremail.com</a></li>
                            </ul>
                         </div>
                         <!--/ End Address -->
                         <!-- Social -->
                         <ul class="social">
-                           <li><a href="<?php echo !empty($facebook) ? $facebook : false ?>"><i
-                                    class="fa fa-facebook"></i>Like Us facebook</a></li>
-                           <li><a href="<?php echo !empty($twitter) ? $twitter : false ?>"><i
-                                    class="fa fa-twitter"></i>Follow Us twitter</a></li>
+                           <li class="active"><a href="#"><i class="fa fa-facebook"></i>Like Us facebook</a></li>
+                           <li><a href="#"><i class="fa fa-twitter"></i>Follow Us twitter</a></li>
                            <li><a href="#"><i class="fa fa-google-plus"></i>Follow Us google-plus</a></li>
-                           <li><a href="<?php echo !empty($linkedin) ? $linkedin : false ?>"><i
-                                    class="fa fa-linkedin"></i>Follow Us linkedin</a></li>
-                           <li><a href="<?php echo !empty($behance) ? $behance : false ?>"><i
-                                    class="fa fa-behance"></i>Follow Us behance</a></li>
+                           <li><a href="#"><i class="fa fa-linkedin"></i>Follow Us linkedin</a></li>
+                           <li><a href="#"><i class="fa fa-behance"></i>Follow Us behance</a></li>
                         </ul>
                         <!--/ End Social -->
                      </div>

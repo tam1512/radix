@@ -56,21 +56,10 @@
                   </p>
                </div>
                <!-- End Single Service -->
-               <?php 
-                        if($isPage) {
-                           echo '</div>';
-                        }
-                     endforeach; 
-                  endif; ?>
+               <?php endforeach; endif; ?>
             </div>
          </div>
       </div>
    </div>
 </section>
 <!--/ End Services -->
-<?php 
-   if($isPage) {
-      require_once(_WEB_PATH_ROOT."/modules/home/contents/partners.php");
-      layout('footer', 'client', $data);
-   }
-?>

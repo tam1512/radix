@@ -20,7 +20,7 @@
       $pageContactTitleBg = trim($body['page_contact_title-bg']);
       $pageContactTitle = trim($body['page_contact_title']);
       $pageContactContent = trim($body['page_contact_content']);
-      $pageContactMessageType = !empty($body['page_contact_message_type']) ? $body['page_contact_message_type'] : false;
+      $pageContactMessageType = !empty($body['page_contact_message_type']) ? array_filter($body['page_contact_message_type']) : false;
 
       if(empty($pageContactTitlePage)) {
          $errors['page_contact_title_page']['required'] = 'Không được để trống tiêu đề trang';
@@ -72,15 +72,6 @@
 
    $errors = getFlashData('errors');
    $old = getFlashData('old');
-
-   $arrMessageType = [];
-   if(!empty($old['page_contact_message_type'])) {
-      $arrMessageType = $old['page_contact_message_type'];
-   } else {
-      $jsonMessageType = getOption('page_contact_message_type');
-      $arrMessageType = json_decode($jsonMessageType, true);
-   }
-
 ?>
 <form action="" method="post">
    <?php 
@@ -134,42 +125,6 @@
                               class="form-control editor"
                               placeholder="<?php echo getOption('page_contact_content', 'label') ?>..."><?php echo !empty($old) ? $old['page_contact_content'] : getOption('page_contact_content') ?></textarea>
                            <?php echo !empty($errors['page_contact_content']) ? form_error('page_contact_content', $errors, '<span class="error">', '</span>') : false ?>
-                        </div>
-                     </div>
-                     <div class="col-12">
-                        <label
-                           for="page_contact_message_type"><?php echo getOption('page_contact_message_type', 'label') ?>
-                        </label>
-                        <div class="form-group">
-                           <div class="message_type">
-                              <?php 
-                              if(!empty($arrMessageType)):
-                                 foreach($arrMessageType as $key => $value):
-                           ?>
-                              <div class="message_type-item">
-                                 <div class="row">
-                                    <div class="col-11">
-                                       <div class="form-group">
-                                          <input type="text" name="page_contact_message_type[]"
-                                             id="page_contact_message_type" class="form-control"
-                                             placeholder="Liên hệ..."
-                                             value="<?php echo !empty($value) ? $value : false ?>">
-                                          <?php echo !empty($errors['page_contact_message_type']) ? form_error($key, $errors['page_contact_message_type'], '<span class="error">', '</span>') : false?>
-                                       </div>
-                                    </div>
-                                    <div class="col-1">
-                                       <button class="btn btn-danger btn-block remove">X</button>
-                                    </div>
-                                 </div>
-                              </div>
-                              <?php
-                              endforeach;
-                           endif;
-                           ?>
-                           </div>
-                        </div>
-                        <div class="form-group">
-                           <button type="button" class="btn btn-warning" id="addMessageType">Thêm loại liên hệ</button>
                         </div>
                      </div>
                   </div>

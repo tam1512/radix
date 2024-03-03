@@ -68,9 +68,3 @@
    </div>
 </section>
 <!--/ End Services -->
-<?php 
-   if($isPage) {
-      require_once(_WEB_PATH_ROOT."/modules/home/contents/partners.php");
-      layout('footer', 'client', $data);
-   }
-?>

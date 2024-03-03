@@ -113,14 +113,12 @@
                   ?>
                </div>
             </div>
-            <?php if(!$isPage): ?>
             <div class="col-12">
                <div class="button">
                   <a class="btn primary"
                      href="<?php echo !empty($btnLink) ? $btnLink : false ?>"><?php echo !empty($btn) ? $btn : false ?></a>
                </div>
             </div>
-            <?php endif; ?>
          </div>
       </div>
    </div>

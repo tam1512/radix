@@ -18,7 +18,7 @@
    }
 ?>
 <!-- Services -->
-<section id="services" class="services <?php echo $isPage ? 'archives' : false ?> section">
+<section id="services" class="services section">
    <div class="container">
       <div class="row">
          <div class="col-12 wow fadeInUp">
@@ -33,16 +33,11 @@
          </div>
       </div>
       <div class="row">
-         <?php if(!$isPage): ?>
          <div class="col-12">
             <div class="service-slider">
                <?php 
-               endif;
                   if(!empty($arrServices)):
                      foreach($arrServices as $service):
-                        if($isPage) {
-                           echo '<div class="col-lg-4 col-md-6 col-12">';
-                        }
                ?>
                <!-- Single Service -->
                <div class="single-service">
@@ -56,21 +51,10 @@
                   </p>
                </div>
                <!-- End Single Service -->
-               <?php 
-                        if($isPage) {
-                           echo '</div>';
-                        }
-                     endforeach; 
-                  endif; ?>
+               <?php endforeach; endif; ?>
             </div>
          </div>
       </div>
    </div>
 </section>
 <!--/ End Services -->
-<?php 
-   if($isPage) {
-      require_once(_WEB_PATH_ROOT."/modules/home/contents/partners.php");
-      layout('footer', 'client', $data);
-   }
-?>

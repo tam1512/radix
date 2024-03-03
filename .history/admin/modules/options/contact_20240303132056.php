@@ -81,6 +81,10 @@
       $arrMessageType = json_decode($jsonMessageType, true);
    }
 
+   echo '<pre>';
+   print_r($errors);
+   echo '</pre>';
+
 ?>
 <form action="" method="post">
    <?php 

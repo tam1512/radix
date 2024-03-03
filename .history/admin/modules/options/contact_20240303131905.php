@@ -20,7 +20,7 @@
       $pageContactTitleBg = trim($body['page_contact_title-bg']);
       $pageContactTitle = trim($body['page_contact_title']);
       $pageContactContent = trim($body['page_contact_content']);
-      $pageContactMessageType = !empty($body['page_contact_message_type']) ? $body['page_contact_message_type'] : false;
+      $pageContactMessageType = !empty($body['page_contact_message_type']) ? array_filter($body['page_contact_message_type']) : false;
 
       if(empty($pageContactTitlePage)) {
          $errors['page_contact_title_page']['required'] = 'Không được để trống tiêu đề trang';
@@ -45,6 +45,11 @@
             }
          }
       }
+
+      echo '<pre>';
+      print_r($pageContactMessageType);
+      echo '</pre>';
+      die();
 
       if(empty($errors)) {
          $updateStatus = updateOptions('page_contact');
@@ -80,6 +85,10 @@
       $jsonMessageType = getOption('page_contact_message_type');
       $arrMessageType = json_decode($jsonMessageType, true);
    }
+
+   echo '<pre>';
+   print_r($errors);
+   echo '</pre>';
 
 ?>
 <form action="" method="post">

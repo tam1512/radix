@@ -46,6 +46,11 @@
          }
       }
 
+      echo '<pre>';
+      print_r($pageContactMessageType);
+      echo '</pre>';
+      die();
+
       if(empty($errors)) {
          $updateStatus = updateOptions('page_contact');
 
@@ -80,6 +85,10 @@
       $jsonMessageType = getOption('page_contact_message_type');
       $arrMessageType = json_decode($jsonMessageType, true);
    }
+
+   echo '<pre>';
+   print_r($errors);
+   echo '</pre>';
 
 ?>
 <form action="" method="post">

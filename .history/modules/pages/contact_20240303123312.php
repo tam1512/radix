@@ -1,15 +1,14 @@
 <?php 
-   $arrServices = getRaw('SELECT * FROM services');
-   $titlePage = getOption('page_services_title_page');
-   $titleBg = getOption('page_services_title-bg');
-   $title = getOption('page_services_title');
-   $content = getOption('page_services_content');
+   $titlePage = getOption('page_contact_title_page');
+   $titleBg = getOption('page_contact_title-bg');
+   $title = getOption('page_contact_title');
+   $content = getOption('page_contact_content');
 
    $isPage = false;
    if(empty($data)) {
       $data = [
          'title' => $titlePage,
-         'name' => 'Service'
+         'name' => 'Contact'
       ];
       $isPage = true;
 
@@ -17,8 +16,8 @@
       layout('breadcrumb', 'client', $data);
    }
 ?>
-<!-- Services -->
-<section id="services" class="services <?php echo $isPage ? 'archives' : false ?> section">
+<!-- contact -->
+<section id="contact" class="contact <?php echo $isPage ? 'archives' : false ?> section">
    <div class="container">
       <div class="row">
          <div class="col-12 wow fadeInUp">
@@ -38,8 +37,8 @@
             <div class="service-slider">
                <?php 
                endif;
-                  if(!empty($arrServices)):
-                     foreach($arrServices as $service):
+                  if(!empty($arrcontact)):
+                     foreach($arrcontact as $service):
                         if($isPage) {
                            echo '<div class="col-lg-4 col-md-6 col-12">';
                         }
@@ -67,7 +66,7 @@
       </div>
    </div>
 </section>
-<!--/ End Services -->
+<!--/ End contact -->
 <?php 
    if($isPage) {
       require_once(_WEB_PATH_ROOT."/modules/home/contents/partners.php");

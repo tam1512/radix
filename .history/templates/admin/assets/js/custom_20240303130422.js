@@ -767,7 +767,7 @@ let htmlMessageTypeItem = `
         <div class="form-group">
           <input type="text" name="page_contact_message_type[]"
               id="page_contact_message_type" class="form-control"
-              placeholder="Liên hệ...">
+              placeholder="Tên công việc...">
         </div>
     </div>
     <div class="col-1">
@@ -779,10 +779,11 @@ let htmlMessageTypeItem = `
 if (messageTypeObjects !== null && btnAddMessageType !== null) {
   btnAddMessageType.addEventListener("click", (e) => {
     e.preventDefault();
-    let messageTypeItemHtmlNode = new DOMParser()
+    let teamItemHtmlNode = new DOMParser()
       .parseFromString(htmlMessageTypeItem, "text/html")
-      .querySelector(".message_type-item");
-    messageTypeObjects.appendChild(messageTypeItemHtmlNode);
+      .querySelector(".team-item");
+    messageTypeObjects.appendChild(teamItemHtmlNode);
+    openCkfinder();
   });
 
   messageTypeObjects.addEventListener("click", function (e) {
@@ -792,15 +793,15 @@ if (messageTypeObjects !== null && btnAddMessageType !== null) {
       e.target.parentElement.classList.contains("remove")
     ) {
       if (confirm("Bạn có chắc chắn muốn xóa?")) {
-        let messageTypeItem = e.target;
-        while (messageTypeItem) {
-          messageTypeItem = messageTypeItem.parentElement;
-          if (messageTypeItem.classList.contains("message_type-item")) {
+        let teamItem = e.target;
+        while (teamItem) {
+          teamItem = teamItem.parentElement;
+          if (teamItem.classList.contains("team-item")) {
             break;
           }
         }
-        if (messageTypeItem !== null) {
-          messageTypeItem.remove();
+        if (teamItem !== null) {
+          teamItem.remove();
         }
       }
     }

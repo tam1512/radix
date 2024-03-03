@@ -20,7 +20,7 @@
       $pageContactTitleBg = trim($body['page_contact_title-bg']);
       $pageContactTitle = trim($body['page_contact_title']);
       $pageContactContent = trim($body['page_contact_content']);
-      $pageContactMessageType = !empty($body['page_contact_message_type']) ? $body['page_contact_message_type'] : false;
+      $pageContactMessageType = !empty($body['page_contact_message_type']) ? array_filter($body['page_contact_message_type']) : false;
 
       if(empty($pageContactTitlePage)) {
          $errors['page_contact_title_page']['required'] = 'Không được để trống tiêu đề trang';
@@ -80,7 +80,6 @@
       $jsonMessageType = getOption('page_contact_message_type');
       $arrMessageType = json_decode($jsonMessageType, true);
    }
-
 ?>
 <form action="" method="post">
    <?php 

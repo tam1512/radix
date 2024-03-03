@@ -767,7 +767,7 @@ let htmlMessageTypeItem = `
         <div class="form-group">
           <input type="text" name="page_contact_message_type[]"
               id="page_contact_message_type" class="form-control"
-              placeholder="Liên hệ...">
+              placeholder="Tên công việc...">
         </div>
     </div>
     <div class="col-1">

@@ -110,15 +110,11 @@
                         <!--/ End Address -->
                         <!-- Social -->
                         <ul class="social">
-                           <li><a href="<?php echo !empty($facebook) ? $facebook : false ?>"><i
-                                    class="fa fa-facebook"></i>Like Us facebook</a></li>
-                           <li><a href="<?php echo !empty($twitter) ? $twitter : false ?>"><i
-                                    class="fa fa-twitter"></i>Follow Us twitter</a></li>
+                           <li class="active"><a href="#"><i class="fa fa-facebook"></i>Like Us facebook</a></li>
+                           <li><a href="#"><i class="fa fa-twitter"></i>Follow Us twitter</a></li>
                            <li><a href="#"><i class="fa fa-google-plus"></i>Follow Us google-plus</a></li>
-                           <li><a href="<?php echo !empty($linkedin) ? $linkedin : false ?>"><i
-                                    class="fa fa-linkedin"></i>Follow Us linkedin</a></li>
-                           <li><a href="<?php echo !empty($behance) ? $behance : false ?>"><i
-                                    class="fa fa-behance"></i>Follow Us behance</a></li>
+                           <li><a href="#"><i class="fa fa-linkedin"></i>Follow Us linkedin</a></li>
+                           <li><a href="#"><i class="fa fa-behance"></i>Follow Us behance</a></li>
                         </ul>
                         <!--/ End Social -->
                      </div>

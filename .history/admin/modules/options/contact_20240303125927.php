@@ -20,7 +20,7 @@
       $pageContactTitleBg = trim($body['page_contact_title-bg']);
       $pageContactTitle = trim($body['page_contact_title']);
       $pageContactContent = trim($body['page_contact_content']);
-      $pageContactMessageType = !empty($body['page_contact_message_type']) ? $body['page_contact_message_type'] : false;
+      $pageContactMessageType = !empty($body['page_contact_message_type']) ? array_filter($body['page_contact_message_type']) : false;
 
       if(empty($pageContactTitlePage)) {
          $errors['page_contact_title_page']['required'] = 'Không được để trống tiêu đề trang';
@@ -80,7 +80,6 @@
       $jsonMessageType = getOption('page_contact_message_type');
       $arrMessageType = json_decode($jsonMessageType, true);
    }
-
 ?>
 <form action="" method="post">
    <?php 
@@ -143,8 +142,8 @@
                         <div class="form-group">
                            <div class="message_type">
                               <?php 
-                              if(!empty($arrMessageType)):
-                                 foreach($arrMessageType as $key => $value):
+                              if(!empty($$arrMessageType)):
+                                 foreach($$arrMessageType as $key => $value):
                            ?>
                               <div class="message_type-item">
                                  <div class="row">
@@ -152,8 +151,8 @@
                                        <div class="form-group">
                                           <input type="text" name="page_contact_message_type[]"
                                              id="page_contact_message_type" class="form-control"
-                                             placeholder="Liên hệ..."
-                                             value="<?php echo !empty($value) ? $value : false ?>">
+                                             placeholder="Tên công việc..."
+                                             value="<?php echo !empty($value['page_contact_message_type']) ? $value['page_contact_message_type'] : false ?>">
                                           <?php echo !empty($errors['page_contact_message_type']) ? form_error($key, $errors['page_contact_message_type'], '<span class="error">', '</span>') : false?>
                                        </div>
                                     </div>
@@ -169,7 +168,7 @@
                            </div>
                         </div>
                         <div class="form-group">
-                           <button type="button" class="btn btn-warning" id="addMessageType">Thêm loại liên hệ</button>
+                           <button type="button" class="btn btn-warning" id="addAboutProgress">Thêm công việc</button>
                         </div>
                      </div>
                   </div>
