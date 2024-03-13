@@ -35,9 +35,9 @@ if(empty($_GET['module'])) {
    $currentUrl = !empty($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '/';
 }
 
-// echo '<pre>';
-// print_r($_SERVER);
-// echo '</pre>';
+echo '<pre>';
+print_r($_SERVER);
+echo '</pre>';
 
 if($currentUrl != '/') {
    $currentUrl = trim($currentUrl,'/');

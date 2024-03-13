@@ -164,7 +164,7 @@ $old = getFlashData('old-subscribe');
                      <input placeholder="Your Name" name="fullname-subscribe" type="text"
                         value="<?php echo form_infor('fullname-subscribe', $old) ?>">
                      <?php echo form_error('fullname-subscribe', $errors, '<span class="error">', '</span>') ?>S
-                     <input placeholder="Your Email" name="email-subscribe" type="email"
+                     <input placeholder="your email" name="email-subscribe" type="email"
                         value="<?php echo form_infor('email-subscribe', $old) ?>">
                      <?php echo form_error('email-subscribe', $errors, '<span class="error">', '</span>') ?>
                      <button type="submit" class="button primary" name="btn-subscribe">
