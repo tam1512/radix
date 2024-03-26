@@ -55,7 +55,7 @@ if(isPost()) {
          'update_at' => date('Y-m-d H:i:s')
       ];
       
-      $dataUpdateComment = [
+      $dataUpdataComment = [
          'fullname' => $fullname,
          'email' => $email
       ];
